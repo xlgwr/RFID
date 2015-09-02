@@ -259,6 +259,7 @@
             this.Name = "frmStockInSuccess";
             this.Text = "盘点项目";
             this.TopMost = true;
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmStockInSuccess_KeyDown);
             this.plnMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 

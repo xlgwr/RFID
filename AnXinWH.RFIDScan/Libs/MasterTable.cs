@@ -129,7 +129,7 @@ namespace AnXinWH.RFIDScan.MasterTable
     {
         public const string RoleId = "RoleId";
         public const string RoleName = "RoleName";
-        
+
     }
 
     public class T_FunctionInfo
@@ -251,7 +251,7 @@ namespace AnXinWH.RFIDScan.MasterTable
         public const string UpdUserNo = "UpdUserNo";
         public const string UpdDateTime = "UpdDateTime";
     }
- 
+
     /// <summary>
     /// RFID采集器信息
     /// </summary>
@@ -272,7 +272,7 @@ namespace AnXinWH.RFIDScan.MasterTable
 
         public const string TableName = "M_TerminalSetting";
         public const string Grid_TermDeviceInfo = "Grid_TermDeviceInfo";
-       
+
 
         public const string TerminalNo = "TerminalNo";
         public const string TerminalName = "TerminalName";
@@ -311,11 +311,11 @@ namespace AnXinWH.RFIDScan.MasterTable
         public const string UpdUserNo = "UpdUserNo";
         public const string UpdDateTime = "UpdDateTime";
     }
-   
+
     /// <summary>
     /// 南华超时报警
     /// </summary>
-    public class T_ExternalDelivWarning 
+    public class T_ExternalDelivWarning
     {
         public const string ExtWarnRecdNo = "ExtWarnRecdNo";
         public const string ReqstRecdNo = "ReqstRecdNo";
@@ -425,7 +425,7 @@ namespace AnXinWH.RFIDScan.MasterTable
     public class M_Documents
     {
 
-        public const string TableName ="M_Documents";
+        public const string TableName = "M_Documents";
         public const string DocNo = "DocNo";
         public const string DocName_Cn = "DocName_Cn";
         public const string DocName = "DocName";
@@ -517,7 +517,7 @@ namespace AnXinWH.RFIDScan.MasterTable
         public const string ReturnDate = "ReturnDate";
         public const string AlarmNo = "AlarmNo";
         public const string AlarmDate = "AlarmDate";
-      
+
     }
 
     #endregion
@@ -544,11 +544,11 @@ namespace AnXinWH.RFIDScan.MasterTable
         /// <summary>
         /// 未完成
         /// </summary>
-        NoComplete=0,
+        NoComplete = 0,
         /// <summary>
         /// 已完成
         /// </summary>
-        Completed=1
+        Completed = 1
     }
     /// <summary>
     /// 子表盘点状态
@@ -562,7 +562,7 @@ namespace AnXinWH.RFIDScan.MasterTable
         /// <summary>
         /// 缺少
         /// </summary>
-        Lack  = 1,
+        Lack = 1,
         /// <summary>
         /// 多余
         /// </summary>
@@ -584,7 +584,7 @@ namespace AnXinWH.RFIDScan.MasterTable
         /// <summary>
         /// 更新
         /// </summary>
-        Updated=2
+        Updated = 2
     }
     public enum DocInventStatus
     {
@@ -616,5 +616,5 @@ namespace AnXinWH.RFIDScan.MasterTable
     #endregion
 
     #endregion
-   
+
 }

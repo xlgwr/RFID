@@ -77,7 +77,7 @@ namespace AnXinWH.RFIDScan
                 //Common._dicFiledTypeSQLServer = DataFiledTypeSQLServer.FiledType;
 
                 Common._Administrator = "admin";
-                Common._SysName = "RFID图纸管理系统";
+                Common._SysName = "RFID仓库管理系统";
                 //SystemParam._strDefaultDBName = Common._sysrun.DataBaseName;
 
                 //================数据库初始化设定_E================/

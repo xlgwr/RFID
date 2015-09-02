@@ -76,6 +76,7 @@
             this.button3.Size = new System.Drawing.Size(69, 28);
             this.button3.TabIndex = 2;
             this.button3.Text = "取消(S2)";
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button2
             // 
@@ -253,6 +254,7 @@
             this.Name = "frmStockOutScan";
             this.Text = "盘点项目";
             this.TopMost = true;
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmStockOutScan_KeyDown);
             this.plnMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 

@@ -20,10 +20,6 @@ namespace AnXinWH.RFIDScan
 
         #region 变量定义
 
-        //private frmInvtrySelect m_frmScanning = new frmInvtrySelect();
-
-        //private frmScanDoc m_frmScanBox = new frmScanDoc();
-        
         /// <summary>
         /// 共通数据对象
         /// </summary>
@@ -60,7 +56,7 @@ namespace AnXinWH.RFIDScan
         private busModule m_busModule;
 
         #endregion
-      
+
         #region 初始化处理
 
         /// <summary>
@@ -68,10 +64,11 @@ namespace AnXinWH.RFIDScan
         /// </summary>
         public frmLogin()
         {
-         
+
             InitializeComponent();
 
-             Common.GetDaoCommon (ref m_daoCommon) ;
+            Common.GetDaoCommon(ref m_daoCommon);
+
             timStatus.Enabled = true;
         }
 
@@ -141,7 +138,7 @@ namespace AnXinWH.RFIDScan
             this.lblUserId.Text = Common.GetLanguageWord(this.Name, this.lblUserId.Name);
             this.lblPswd.Text = Common.GetLanguageWord(this.Name, this.lblPswd.Name);
             //this.btnScanDoc.Text = Common.GetLanguageWord(this.Name,this.btnScanDoc.Name);
-            this.btnLogin.Text = Common.GetLanguageWord(this.Name,this.btnLogin.Name);
+            this.btnLogin.Text = Common.GetLanguageWord(this.Name, this.btnLogin.Name);
             this.Label1.Text = Common.GetLanguageWord(this.Name, this.Label1.Name);
         }
 
@@ -156,20 +153,20 @@ namespace AnXinWH.RFIDScan
         /// <param name="e"></param>
         private void btnLeaveScan_Click(object sender, EventArgs e)
         {
-            
+
             Cursor.Current = Cursors.WaitCursor;
 
             try
             {
                 //该设备对应采集器运行状态为异常停止时才能使用离线扫描，确定要继续吗？ 
                 if (MessageBox.Show(Common.GetLanguageWord(this.Name, "FLG001"), Declare.Info_SysName,
-                    MessageBoxButtons .YesNo  ,MessageBoxIcon .Question ,MessageBoxDefaultButton .Button1 ) == DialogResult.No )
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.No)
                 {
-                    return ;
+                    return;
                 }
 
-                Common._authorid = string.Empty ;
-                Common._authornm = string.Empty ;
+                Common._authorid = string.Empty;
+                Common._authornm = string.Empty;
 
                 //Common._factoryname = string.Empty ;
                 //Common._factType = string.Empty ;
@@ -200,20 +197,20 @@ namespace AnXinWH.RFIDScan
             {
 
                 //用户登录处理
-                if (this.GetUserLogin() == true )
+                if (this.GetUserLogin() == true)
                 {
-                    
+
                     this.Enabled = true;
-                   
+
 
                     frmMenu frm = new frmMenu();
                     frm.ShowDialog();
 
                     this.txtPaswd.Text = "";
                     //控件设置焦点
-                    SetFocsu(this.txtUserId); 
+                    SetFocsu(this.txtUserId);
                     timStatus.Enabled = true;
-                } 
+                }
             }
             catch (Exception ex)
             {
@@ -262,7 +259,7 @@ namespace AnXinWH.RFIDScan
                 MessageBox.Show(Common.GetLanguageWord("frmDocReturn", "FDR007"),
                        Common.GetLanguageWord(Common.COM_SECTION, "MSGTITLE"), MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1);
             }
-            finally 
+            finally
             {
                 Cursor.Current = Cursors.Default;
             }
@@ -280,7 +277,7 @@ namespace AnXinWH.RFIDScan
             try
             {
 
-                 if (e.KeyCode == Keys.F11)
+                if (e.KeyCode == Keys.F11)
                 {
                     //图册定位扫描
                     // btnScanBox_Click(btnScanDoc, null);
@@ -318,7 +315,7 @@ namespace AnXinWH.RFIDScan
             try
             {
 
-                int RtnFlag = RRU9803WinCE.RWDeviceDll.GetWlanSignalStrength(); 
+                int RtnFlag = RRU9803WinCE.RWDeviceDll.GetWlanSignalStrength();
 
                 this.picAirPort.Image = Common.GetWifiStateInfo(RtnFlag);
 
@@ -376,7 +373,7 @@ namespace AnXinWH.RFIDScan
 
                 throw ex;
             }
-         
+
         }
 
         #endregion
@@ -391,11 +388,6 @@ namespace AnXinWH.RFIDScan
         {
             bool RtnValue = false;
             DataTable dtUser = null;
-            //string w_strFactoryNo1;
-            //string w_strFactoryNo2;
-            //string w_strFactoryNo3;
-
-            busUploadScan w_busUploadScan = new busUploadScan();
 
             try
             {
@@ -418,9 +410,9 @@ namespace AnXinWH.RFIDScan
                     //用户密码不能输入空！ 
                     MessageBox.Show(Common.GetLanguageWord(this.Name, "FLG004"), Declare.Info_SysName,
                       MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1);
-                    
+
                     //控件设置焦点
-                    SetFocsu(this.txtPaswd); 
+                    SetFocsu(this.txtPaswd);
                     return false;
                 }
 
@@ -455,7 +447,7 @@ namespace AnXinWH.RFIDScan
                       MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
 
                     }
-                } 
+                }
 
                 //打开数据库连接
                 Common.AdoConnect.Connect.ConnectOpen();
@@ -471,7 +463,7 @@ namespace AnXinWH.RFIDScan
                 //获取画面控件数据
                 GetGrpDataItem();
 
-                dtUser = this.m_daoCommon.GetTableInfo(MasterTable.ViewOrTable.grid_userinfo, this.dicItemData, this.dicConds, this.dicLikeConds, "",false);
+                dtUser = this.m_daoCommon.GetTableInfo(MasterTable.ViewOrTable.grid_userinfo, this.dicItemData, this.dicConds, this.dicLikeConds, "", false);
 
                 if (dtUser == null || dtUser.Rows.Count <= 0)
                 {
@@ -486,26 +478,27 @@ namespace AnXinWH.RFIDScan
                 else
                 {
 
-                    if (DateTime.Parse(dtUser.Rows[0][MasterTable.M_Users.EndDate].ToString()).CompareTo(DateTime.Now) <= 0 || dtUser.Rows[0][MasterTable.M_Users.EndDate].ToString()=="0")
-                    {
-                        //该用户已经失效，不能登录系统！
-                        MessageBox.Show(Common.GetLanguageWord(this.Name, "FLG006"), Declare.Info_SysName,
-                                MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1);
-                        //控件设置焦点
-                        SetFocsu(this.txtUserId);
-                        return false;
-                    }
+                    //if (DateTime.Parse(dtUser.Rows[0][MasterTable.M_Users.EndDate].ToString()).CompareTo(DateTime.Now) <= 0 || dtUser.Rows[0][MasterTable.M_Users.EndDate].ToString() == "0")
+                    //{
+                    //    //该用户已经失效，不能登录系统！
+                    //    MessageBox.Show(Common.GetLanguageWord(this.Name, "FLG006"), Declare.Info_SysName,
+                    //            MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1);
+                    //    //控件设置焦点
+                    //    SetFocsu(this.txtUserId);
+                    //    return false;
+                    //}
+
                     Common._personid = dtUser.Rows[0][MasterTable.M_Users.UserNo].ToString();
                     Common._personname = dtUser.Rows[0][MasterTable.M_Users.UserName].ToString();
                     Common._personpswd = dtUser.Rows[0][MasterTable.M_Users.Passward].ToString();
 
-                    Common._Language =Enum.Parse(typeof(Common.Language), dtUser.Rows[0][MasterTable.M_Users.Language].ToString(),true).ToString();
+                    Common._Language = "Chinese";// Enum.Parse(typeof(Common.Language), dtUser.Rows[0][MasterTable.M_Users.Language].ToString(), true).ToString();
 
 
                     //获取变换后的语言文件
-                    Common.SetLanguageInfo();
+                    //Common.SetLanguageInfo();
 
-                   //Enum.Parse(Common.Language,
+                    //Enum.Parse(Common.Language,
 
                     ////获取系统R/3参数信息
                     //if (GetSysR3Parameter() == false )
@@ -541,7 +534,7 @@ namespace AnXinWH.RFIDScan
         /// <summary>
         /// 操作系统时间同步处理
         /// </summary>
-        private void GetServerDate ()
+        private void GetServerDate()
         {
 
             try
@@ -619,13 +612,13 @@ namespace AnXinWH.RFIDScan
                 dicConds.Clear();
                 dicLikeConds.Clear();
 
-                this.dicItemData[MasterTable.M_Users.UserNo] = this.txtUserId.Text.Trim();
+                this.dicItemData[MasterTableWHS.musers.user_no] = this.txtUserId.Text.Trim();
 
                 //数据加密处理
-                this.dicItemData[MasterTable.M_Users.Passward] = Common.EncryptPassWord(this.txtPaswd.Text);
+                this.dicItemData[MasterTableWHS.musers.user_pwd] = this.txtPaswd.Text;// Common.EncryptPassWord(this.txtPaswd.Text);
 
-                this.dicConds[MasterTable.M_Users.UserNo] = "true";
-                this.dicConds[MasterTable.M_Users.Passward] = "true";
+                this.dicConds[MasterTableWHS.musers.user_no] = "true";
+                this.dicConds[MasterTableWHS.musers.user_pwd] = "true";
 
             }
             catch (Exception ex)
@@ -664,10 +657,10 @@ namespace AnXinWH.RFIDScan
 
                 //    return false;
                 //}
-                
+
                 //重复扫描周期
                 //Common._upInterval = int.Parse(tblSysR3Parameter.Rows[0][M_SysR3Parameter.CardFilterMaxTime].ToString());
-            
+
                 isCheck = true;
 
             }
@@ -691,7 +684,7 @@ namespace AnXinWH.RFIDScan
             bool isCheck = false;
             string w_TrmnParamUpdTime;
             //采集器运行状态 0：正常；1：停止；3：通讯异常
-            string w_intTrmnRunStatus = "1" ;
+            string w_intTrmnRunStatus = "1";
 
             try
             {
@@ -708,7 +701,7 @@ namespace AnXinWH.RFIDScan
                 dicItemData[M_TerminalSetting.TrmnStatus] = "true";
 
 
-                tblTerminal = this.m_daoCommon.GetTableInfo(M_TerminalSetting.TableName,dicItemData, dicConds, dicLikeConds,"",true);
+                tblTerminal = this.m_daoCommon.GetTableInfo(M_TerminalSetting.TableName, dicItemData, dicConds, dicLikeConds, "", true);
 
 
                 //tblTerminal = this.m_daoCommon.GetTableInfo(M_TerminalSetting.Grid_TermDeviceInfo, dicItemData, dicConds, dicLikeConds, "");
@@ -730,15 +723,15 @@ namespace AnXinWH.RFIDScan
 
                 //参数更新时间
                 w_TrmnParamUpdTime = tblTerminal.Rows[0][MasterTable.M_TerminalSetting.TrmnParamUpdTime].ToString();
-                if (string .IsNullOrEmpty (w_TrmnParamUpdTime))
+                if (string.IsNullOrEmpty(w_TrmnParamUpdTime))
                 {
-                    w_TrmnParamUpdTime = DateTime .MinValue.ToString() ;
+                    w_TrmnParamUpdTime = DateTime.MinValue.ToString();
                 }
 
                 Common._lastUpdTime = DateTime.Parse(w_TrmnParamUpdTime);
                 w_intTrmnRunStatus = tblTerminal.Rows[0][MasterTable.M_TerminalSetting.TrmnRunStatus].ToString();
 
-                if ( w_intTrmnRunStatus .Equals ("0") == true )
+                if (w_intTrmnRunStatus.Equals("0") == true)
                 {
                     //该设备对应采集器处于运行状态不能使用手持机扫描！
                     MessageBox.Show(Common.GetLanguageWord(this.Name, "FLG010"), Declare.Info_SysName,

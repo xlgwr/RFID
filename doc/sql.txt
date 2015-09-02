@@ -1,0 +1,4 @@
+--获取表属性
+select "public const string ",column_name,'="',column_name,'";' 
+from information_schema.columns
+where table_name='m_parameter'
