@@ -123,7 +123,7 @@ namespace AnXinWH.RFIDScan
             catch (Exception ex)
             {
                 this.btnLogin.Enabled = false;
-                this.btnScanDoc.Enabled = false;
+                //this.btnScanDoc.Enabled = false;
                 LogManager.WriteLog(Common.LogFile.Error, ex.Message);
                 MessageBox.Show(Common.GetLanguageWord(this.Name, "FLG007"), Declare.Info_SysName,
                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
@@ -140,7 +140,7 @@ namespace AnXinWH.RFIDScan
             this.lblTitle.Text = Common.GetLanguageWord(this.Name, this.lblTitle.Name);
             this.lblUserId.Text = Common.GetLanguageWord(this.Name, this.lblUserId.Name);
             this.lblPswd.Text = Common.GetLanguageWord(this.Name, this.lblPswd.Name);
-            this.btnScanDoc.Text = Common.GetLanguageWord(this.Name,this.btnScanDoc.Name);
+            //this.btnScanDoc.Text = Common.GetLanguageWord(this.Name,this.btnScanDoc.Name);
             this.btnLogin.Text = Common.GetLanguageWord(this.Name,this.btnLogin.Name);
             this.Label1.Text = Common.GetLanguageWord(this.Name, this.Label1.Name);
         }
@@ -283,7 +283,7 @@ namespace AnXinWH.RFIDScan
                  if (e.KeyCode == Keys.F11)
                 {
                     //图册定位扫描
-                    btnScanBox_Click(btnScanDoc, null);
+                    // btnScanBox_Click(btnScanDoc, null);
                 }
                 else if (e.KeyCode == Keys.F12)
                 {
@@ -361,12 +361,12 @@ namespace AnXinWH.RFIDScan
                     MessageBox.Show(Common.GetLanguageWord(this.Name, "FLG002"), Declare.Info_SysName,
                                            MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
 
-                    this.btnScanDoc.Enabled = false;
+                    //this.btnScanDoc.Enabled = false;
                     this.btnLogin.Enabled = false;
                 }
                 else
                 {
-                    this.btnScanDoc.Enabled = true;
+                    //this.btnScanDoc.Enabled = true;
                     this.btnLogin.Enabled = true;
                 }
 

@@ -43,7 +43,6 @@
             this.Label1 = new System.Windows.Forms.Label();
             this.imgeStatus = new System.Windows.Forms.ImageList();
             this.timStatus = new System.Windows.Forms.Timer();
-            this.btnScanDoc = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.plnMenu.SuspendLayout();
             this.SuspendLayout();
@@ -101,7 +100,7 @@
             // 
             // btnLogin
             // 
-            this.btnLogin.Location = new System.Drawing.Point(123, 189);
+            this.btnLogin.Location = new System.Drawing.Point(18, 187);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(99, 35);
             this.btnLogin.TabIndex = 11;
@@ -160,18 +159,9 @@
             this.timStatus.Interval = 10000;
             this.timStatus.Tick += new System.EventHandler(this.timStatus_Tick);
             // 
-            // btnScanDoc
-            // 
-            this.btnScanDoc.Location = new System.Drawing.Point(18, 189);
-            this.btnScanDoc.Name = "btnScanDoc";
-            this.btnScanDoc.Size = new System.Drawing.Size(99, 35);
-            this.btnScanDoc.TabIndex = 11;
-            this.btnScanDoc.Text = "图册定位(S1)";
-            this.btnScanDoc.Click += new System.EventHandler(this.btnScanBox_Click);
-            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(123, 230);
+            this.button1.Location = new System.Drawing.Point(123, 187);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(99, 35);
             this.button1.TabIndex = 11;
@@ -188,7 +178,6 @@
             this.Controls.Add(this.picBattery);
             this.Controls.Add(this.txtPaswd);
             this.Controls.Add(this.lblPswd);
-            this.Controls.Add(this.btnScanDoc);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btnLogin);
             this.Controls.Add(this.txtUserId);
@@ -225,7 +214,6 @@
         internal System.Windows.Forms.Label Label1;
         private System.Windows.Forms.ImageList imgeStatus;
         private System.Windows.Forms.Timer timStatus;
-        internal System.Windows.Forms.Button btnScanDoc;
         internal System.Windows.Forms.Button button1;
     }
 }

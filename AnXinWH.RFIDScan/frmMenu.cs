@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using Framework.Libs;
 using AnXinWH.RFIDScan.Libs;
+using AnXinWH.RFIDScan.Stock;
 
 namespace AnXinWH.RFIDScan
 {
@@ -24,7 +25,7 @@ namespace AnXinWH.RFIDScan
             Cursor.Current = Cursors.WaitCursor;
             try
             {
-                frmInvtrySelect frm = new frmInvtrySelect();
+                frmStockInScan frm = new frmStockInScan();
                 frm.ShowDialog();
             }
             catch (Exception ex)
@@ -46,7 +47,49 @@ namespace AnXinWH.RFIDScan
             Cursor.Current = Cursors.WaitCursor;
             try
             {
-                frmDocReturn frm = new frmDocReturn();
+                frmStockInSuccess frm = new frmStockInSuccess();
+                frm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+
+                LogManager.WriteLog(Common.LogFile.Error, ex.Message);
+                MessageBox.Show(Common.GetLanguageWord("frmDocReturn", "FDR007"),
+                     Common.GetLanguageWord(Common.COM_SECTION, "MSGTITLE"), MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
+          
+        }
+        private void button6_Click(object sender, EventArgs e)
+        {
+            Cursor.Current = Cursors.WaitCursor;
+            try
+            {
+                frmStockOutScan frm = new frmStockOutScan();
+                frm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+
+                LogManager.WriteLog(Common.LogFile.Error, ex.Message);
+                MessageBox.Show(Common.GetLanguageWord("frmDocReturn", "FDR007"),
+                     Common.GetLanguageWord(Common.COM_SECTION, "MSGTITLE"), MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
+          
+        }
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Cursor.Current = Cursors.WaitCursor;
+            try
+            {
+                frmStockScan frm = new frmStockScan();
                 frm.ShowDialog();
             }
             catch (Exception ex)
@@ -67,31 +110,7 @@ namespace AnXinWH.RFIDScan
         {
             this.Close();
         }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            Cursor.Current = Cursors.WaitCursor;
-            try
-            {
-                Application.DoEvents();
-                Application.Exit();
-            }
-            catch (Exception ex)
-            {
-
-                LogManager.WriteLog(Common.LogFile.Error, ex.Message);
-                MessageBox.Show(Common.GetLanguageWord("frmDocReturn", "FDR007"),
-                     Common.GetLanguageWord(Common.COM_SECTION, "MSGTITLE"), MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1);
-           
-            }
-            finally 
-            {
-                Cursor.Current = Cursors.Default;
-            }
-          
-        }
-
-
+        
         private void SetLangeage()
         {
             this.button1.Text = Common.GetLanguageWord(this.Name, this.button1.Name);
@@ -106,7 +125,8 @@ namespace AnXinWH.RFIDScan
             {
                 timStatus.Enabled = true;
                 
-                SetLangeage();
+                //SetLangeage();
+
                 timStatus_Tick(null, null);
 
             }

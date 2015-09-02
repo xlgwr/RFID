@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0"?>
 <!--=====系统数据库定義=====-->
 <Parameter>
-  <Server>192.168.1.222</Server>
-  <Database>agcsystemdb</Database>
+  <Server>192.168.1.5</Server>
+  <Database>agcsystemdb_20120625</Database>
   <User>root</User>
-  <Password>26630755</Password>
+  <Password>isecVss123</Password>
   <!--=====数据库类型=====-->
   <DataSourceType>2</DataSourceType>
   <!--=====日志文件=====-->
