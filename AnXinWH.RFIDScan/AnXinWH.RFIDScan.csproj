@@ -1,0 +1,272 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4DBF510B-6A0C-47ED-AC8A-EA90EB466EFE}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AnXinWH.RFIDScan</RootNamespace>
+    <AssemblyName>AnXinWH.RFIDScan</AssemblyName>
+    <ProjectTypeGuids>{4D628B5B-2FBC-4AA6-8C16-197242AEB884};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <PlatformFamilyName>WindowsCE</PlatformFamilyName>
+    <PlatformID>E2BECB1F-8C8C-41ba-B736-9BE7D946A398</PlatformID>
+    <OSVersion>5.0</OSVersion>
+    <DeployDirSuffix>AnXinWH.RFIDScan</DeployDirSuffix>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <NativePlatformName>Windows CE</NativePlatformName>
+    <FormFactorID>
+    </FormFactorID>
+    <ApplicationIcon>sacn_logo.ico</ApplicationIcon>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;$(PlatformFamilyName)</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <FileAlignment>512</FileAlignment>
+    <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;$(PlatformFamilyName)</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <FileAlignment>512</FileAlignment>
+    <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ClassLibraryDKG, Version=1.0.4372.30493, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.WindowsCE.Forms" />
+    <Reference Include="ModuleAPI_CE, Version=1.10.1.19, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="mscorlib" />
+    <Reference Include="MySql.Data.CF, Version=6.4.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
+    <Reference Include="PowerControl, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\WINJP\Microsoft.NET\Framework\v2.0.50727\System.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\WINJP\Microsoft.NET\Framework\v2.0.50727\System.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System.XML, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\WINJP\Microsoft.NET\Framework\v2.0.50727\System.XML.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\DataFiledTypeMySql.cs" />
+    <Compile Include="Common\DataFiledTypeSQLServer.cs" />
+    <Compile Include="frmDocSearch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDocSearch.Designer.cs">
+      <DependentUpon>frmDocSearch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMenu.Designer.cs">
+      <DependentUpon>frmMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmScanDoc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmScanDoc.Designer.cs">
+      <DependentUpon>frmScanDoc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Invtry\frmDocReturn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Invtry\frmDocReturn.Designer.cs">
+      <DependentUpon>frmDocReturn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Invtry\frmInvtryDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Invtry\frmInvtryDetail.Designer.cs">
+      <DependentUpon>frmInvtryDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Invtry\frmInvtryScan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Invtry\frmInvtryScan.Designer.cs">
+      <DependentUpon>frmInvtryScan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Invtry\frmInvtrySelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Invtry\frmInvtrySelect.Designer.cs">
+      <DependentUpon>frmInvtrySelect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Libs\busRRU9803.cs" />
+    <Compile Include="Libs\busUploadScan.cs" />
+    <Compile Include="Libs\Declare.cs" />
+    <Compile Include="Libs\Device.cs" />
+    <Compile Include="Libs\MasterTable.cs" />
+    <Compile Include="Libs\RWDeviceDll.cs" />
+    <Compile Include="Libs\SettingTable.cs" />
+    <Compile Include="Libs\SysParam.cs" />
+    <Compile Include="frmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLogin.Designer.cs">
+      <DependentUpon>frmLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Libs\WinceReg.cs" />
+    <Compile Include="Libs\busModule.cs" />
+    <Compile Include="frmLoadReader.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLoadReader.Designer.cs">
+      <DependentUpon>frmLoadReader.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="frmDocSearch.resx">
+      <DependentUpon>frmDocSearch.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmLogin.resx">
+      <DependentUpon>frmLogin.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmLoadReader.resx">
+      <DependentUpon>frmLoadReader.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMenu.resx">
+      <DependentUpon>frmMenu.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmScanDoc.resx">
+      <DependentUpon>frmScanDoc.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Invtry\frmDocReturn.resx">
+      <DependentUpon>frmDocReturn.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Invtry\frmInvtryDetail.resx">
+      <DependentUpon>frmInvtryDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Invtry\frmInvtryScan.resx">
+      <DependentUpon>frmInvtryScan.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Invtry\frmInvtrySelect.resx">
+      <DependentUpon>frmInvtrySelect.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmUpdateForm.resx">
+      <DependentUpon>frmUpdateForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="frmUpdateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmUpdateForm.Designer.cs">
+      <DependentUpon>frmUpdateForm.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Device.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Native.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="PsionTeklogixWAP.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="RRU9803WinCE.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sacn_logo.ico" />
+    <Content Include="Settings.xml">
+    </Content>
+    <Content Include="SQLite.Interop.076.dll">
+    </Content>
+    <Content Include="SysConfig.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SystemLog.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WapPowerCommutation.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WorkDll\ClassLibraryDKG.dll" />
+    <Content Include="WorkDll\log4net.dll" />
+    <Content Include="WorkDll\ModuleAPI_CE.dll" />
+    <Content Include="WorkDll\MySql.Data.CF.dll" />
+    <Content Include="WorkDll\PowerControl.dll" />
+    <Content Include="WorkDll\RRU9803WinCE.dll" />
+    <Content Include="WorkDll\System.Data.SqlClient.dll" />
+    <Content Include="WorkDll\System.Data.SQLite.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Framework\Framework.csproj">
+      <Project>{692D2DED-D74D-4724-8A4A-10BEDA3AA9E1}</Project>
+      <Name>Framework</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Language\Chinese.ini">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Language\Janpanese.ini">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CompactFramework.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}">
+        <HostingProcess disable="1" />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

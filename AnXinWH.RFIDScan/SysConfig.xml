@@ -1,0 +1,20 @@
+﻿<?xml version="1.0"?>
+<!--=====系统数据库定義=====-->
+<Parameter>
+  <Server>192.168.1.222</Server>
+  <Database>agcsystemdb</Database>
+  <User>root</User>
+  <Password>26630755</Password>
+  <!--=====数据库类型=====-->
+  <DataSourceType>2</DataSourceType>
+  <!--=====日志文件=====-->
+  <LogFileName>LogFiles</LogFileName>
+  <!--=====日志文件=====-->
+  <LogThreadFileName>LogThreadFiles</LogThreadFileName>
+  <!--=====手持设备参数=====-->
+  <Baud>5</Baud>
+  <Dminfre>0</Dminfre>
+  <Dmaxfre>62</Dmaxfre>
+  <PowerDbm>30</PowerDbm>
+  <UpInterval>20000</UpInterval>
+</Parameter>

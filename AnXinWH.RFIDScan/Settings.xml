@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<ParamsList>
+  <RUNAUTO Value="0" />
+  <RUNTYPE Value="1">0 表示调试 1 表示正常运行 2表示升级</RUNTYPE>
+  <PDATYPE Value="1">0 表示DLJ 1 表示FZYH_BC_COM2 2 表示KM 3表示RDTM 4表示FZYH_BL_COM3</PDATYPE>
+  <ANTTYPE Value="1">1 表示单天线 2 表示双天线 4 表示四天线</ANTTYPE>
+  <COM Value="COM2" />
+  <PROTOCOL Value="0">0 表示不检测 1 表示检测</PROTOCOL>
+  <TIMEOUT Value="300" />
+  <INTENVAL Value="50" />
+  <SESSION Value="0" />
+  <GEN2Q Value="0" />
+  <CHECKANT Value="0" />
+  <ANT1R Value="2300" />
+  <ANT2R Value="2300" />
+  <ANT3R Value="2300" />
+  <ANT4R Value="2300" />
+  <ANT1W Value="2300" />
+  <ANT2W Value="2300" />
+  <ANT3W Value="2300" />
+  <ANT4W Value="2300" />
+  <REGION Value="8">未定，加拿大，欧洲1，欧洲2，欧洲3，印度，韩国，日本，北美,中国,全频段,840-845依次0,1,2...</REGION>
+  <FREQUENCY Value="0">
+  </FREQUENCY>
+  <OPANT Value="1" />
+  <READERTYPE Value="9">MT_TWOANTS,MT_FOURANTS,MT_THREEANTS,MT_ONEANT,PR_ONEANT,MT_A7_FOURANTS,MT_A7_TWOANTS,SL_FOURANTS,M6_A7_FOURANTS,M1S,M2S依次0,1,2,3</READERTYPE>
+  <WRITEMODE Value="0">0 表示字写 1表示块写</WRITEMODE>
+  <BATTERY Value="5" />
+  <POWERMODE Value="0">省电模式</POWERMODE>
+</ParamsList>
