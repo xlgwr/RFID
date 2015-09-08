@@ -463,7 +463,7 @@ namespace AnXinWH.RFIDScan
                 //获取画面控件数据
                 GetGrpDataItem();
 
-                dtUser = this.m_daoCommon.GetTableInfo(MasterTable.ViewOrTable.grid_userinfo, this.dicItemData, this.dicConds, this.dicLikeConds, "", false);
+                dtUser = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.m_users, this.dicItemData, this.dicConds, this.dicLikeConds, "", false);
 
                 if (dtUser == null || dtUser.Rows.Count <= 0)
                 {
@@ -488,9 +488,9 @@ namespace AnXinWH.RFIDScan
                     //    return false;
                     //}
 
-                    Common._personid = dtUser.Rows[0][MasterTable.M_Users.UserNo].ToString();
-                    Common._personname = dtUser.Rows[0][MasterTable.M_Users.UserName].ToString();
-                    Common._personpswd = dtUser.Rows[0][MasterTable.M_Users.Passward].ToString();
+                    Common._personid = dtUser.Rows[0][MasterTableWHS.m_users.user_no].ToString();
+                    Common._personname = dtUser.Rows[0][MasterTableWHS.m_users.user_nm].ToString();
+                    Common._personpswd = dtUser.Rows[0][MasterTableWHS.m_users.user_pwd].ToString();
 
                     Common._Language = "Chinese";// Enum.Parse(typeof(Common.Language), dtUser.Rows[0][MasterTable.M_Users.Language].ToString(), true).ToString();
 
@@ -612,13 +612,13 @@ namespace AnXinWH.RFIDScan
                 dicConds.Clear();
                 dicLikeConds.Clear();
 
-                this.dicItemData[MasterTableWHS.musers.user_no] = this.txtUserId.Text.Trim();
+                this.dicItemData[MasterTableWHS.m_users.user_no] = this.txtUserId.Text.Trim();
 
                 //数据加密处理
-                this.dicItemData[MasterTableWHS.musers.user_pwd] = this.txtPaswd.Text;// Common.EncryptPassWord(this.txtPaswd.Text);
+                this.dicItemData[MasterTableWHS.m_users.user_pwd] = this.txtPaswd.Text;// Common.EncryptPassWord(this.txtPaswd.Text);
 
-                this.dicConds[MasterTableWHS.musers.user_no] = "true";
-                this.dicConds[MasterTableWHS.musers.user_pwd] = "true";
+                this.dicConds[MasterTableWHS.m_users.user_no] = "true";
+                this.dicConds[MasterTableWHS.m_users.user_pwd] = "true";
 
             }
             catch (Exception ex)

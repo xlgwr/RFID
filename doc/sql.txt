@@ -1,4 +1,25 @@
 --获取表属性
-select "public const string ",column_name,'="',column_name,'";' 
+select CONCAT("public const string ",column_name,'="',column_name,'";')
 from information_schema.columns
-where table_name='m_parameter'
+where TABLE_SCHEMA='anxinwh' --and table_name='m_parameter'
+--2
+select table_name,CONCAT("public const string ",column_name,'="',column_name,'";')
+from information_schema.columns
+where TABLE_SCHEMA='anxinwh' 
+
+ORDER BY table_name
+--3
+select CONCAT("public const string ",table_name,'="',table_name,'";')
+from information_schema.`TABLES`
+where TABLE_SCHEMA='anxinwh' 
+ORDER BY table_name
+---
+select CONCAT('FiledType["',column_name,'"] = MySqlDbType.',data_type,';')
+from information_schema.columns
+where table_name='m_users'  and TABLE_SCHEMA='anxinwh'
+
+
+--2
+select DISTINCT CONCAT('FiledType["',column_name,'"] = MySqlDbType.',data_type,';')
+from information_schema.columns
+where  TABLE_SCHEMA='anxinwh'
