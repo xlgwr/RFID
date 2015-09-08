@@ -20,18 +20,18 @@ namespace AnXinWH.RFIDScan.Stock
 {
     public partial class frmStockInScan : Form
     {
+
         /// <summary>
         /// 盘点编号
         /// </summary>
         private string m_InventNo = string.Empty;
-        private bool IsStart = false;
 
         /// <summary>
         /// 共通数据对象
         /// </summary>
         protected CBaseConnect m_daoCommon;
 
-        private StringDictionary DicData=new StringDictionary();
+        private StringDictionary DicData = new StringDictionary();
         /// <summary>
         /// 存储标签号
         /// </summary>
@@ -63,54 +63,28 @@ namespace AnXinWH.RFIDScan.Stock
         private StringDictionary m_dicCardInfo = new StringDictionary();
 
         #endregion
+        #region 初始化RFID号
+        public static string _rfidNo = string.Empty;
+        #endregion
         public frmStockInScan()
         {
             InitializeComponent();
+            tmpTestData();
         }
-
-        public frmStockInScan(string InventNO)
+        void tmpTestData()
         {
-            InitializeComponent();
-            m_InventNo = InventNO;
+            var strs = "1,2,3".Split(',');
+            var strs2 = "4,5,6".Split(',');
+            var strs3 = "7,8,9".Split(',');
+
+            ListViewItem item = new ListViewItem(strs);
+            ListViewItem item2 = new ListViewItem(strs2);
+            ListViewItem item3 = new ListViewItem(strs3);
+
+            this.listView1.Items.Add(item);
+            this.listView1.Items.Add(item2);
+            this.listView1.Items.Add(item3);
         }
-
-        /// <summary>
-        /// 获取取得的标签号
-        /// </summary>
-        private void GetInventNo()
-        {
-            //TempDocTag = "1313144";
-
-            try
-            {
-             
-                if (SysParam.m_busModule.IsSucces)
-                {
-                    TagReadData[] reads = SysParam.m_busModule.Reader.Read(100);
-
-                    foreach (TagReadData item in reads)
-                    {
-                        //卡号为八位
-                        if (item.EPCString.Trim().Length == 8)
-                        {
-                            MessageBeep(10);
-                            if (!this.m_dicCardInfo.ContainsKey(item.EPCString.Trim()))
-                            {
-                                this.m_dicCardInfo[item.EPCString.Trim()] = DateTime.Now.ToString();
-                            }
-
-                        }
-                    }
-                }
-
-            }
-            catch ( Exception ex )
-            {
-                //采集器设备连接失败，请及时与管理员联系！ 
-                throw new Exception(Common.GetLanguageWord(this.Name, "FIS001") + System.Environment.NewLine + ex.Message.ToString());
-            }
-        }
-
         private void frmInvtryScan_Load(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
@@ -119,28 +93,22 @@ namespace AnXinWH.RFIDScan.Stock
                 //SetLangeage();
 
                 Common.GetDaoCommon(ref m_daoCommon);
-                //this.lblInventryNo.Text = this.m_InventNo;
-                //如果扫描到其他盘点计划里面的图册编号，则怎么处理？
-                //如果一个盘点计划没有扫描完成，上传数据后再重新扫描，怎么处理
-                DidUserCollum[MasterTable.T_InventoryDetail.UpdUserNo] = "true";
 
-                GetInvtryDocInfo();
-
-
-                lnlTotal.Visible = false;
+                lnlTotal.Visible = true;
+                lnlTotal.Text = "";
 
 
                 //设置采集器功率
                 SysParam.m_busModule.SetUpdateAntPower(2300);
 
                 //thread1 = new System.Threading.Thread(new System.Threading.ThreadStart(StartDelegate));
-                
+
             }
-            catch (Exception ex )
+            catch (Exception ex)
             {
                 LogManager.WriteLog(Common.LogFile.Error, ex.Message);
                 //初始化失败,请联系系统管理员！ 
-                MessageBox.Show(Common.GetLanguageWord(this.Name, "FIS002"), 
+                MessageBox.Show(Common.GetLanguageWord(this.Name, "FIS002"),
                     Common.GetLanguageWord(Common.COM_SECTION, "MSGTITLE"), MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1);
             }
             finally
@@ -160,192 +128,112 @@ namespace AnXinWH.RFIDScan.Stock
                 //this.button1.Text = Common.GetLanguageWord(this.Name, //this.button1.Name);
                 this.button2.Text = Common.GetLanguageWord(this.Name, this.button2.Name);
                 this.button3.Text = Common.GetLanguageWord(this.Name, this.button3.Name);
+
                 col0XianHaoNum.Text = Common.GetLanguageWord(this.Name, "columnHeader1");
                 col2Num.Text = Common.GetLanguageWord(this.Name, "columnHeader2");
-                col1RFIDNo.Text = Common.GetLanguageWord(this.Name, "columnHeader3");
             }
             catch (Exception wx)
             {
-                
+
                 throw wx;
             }
-         
+
+        }
+        public static int IsValidHexstr(string str, int len)
+        {
+            if (str == "")
+                return -3;
+            if (str.Length % 4 != 0)
+                return -2;
+            if (str.Length > len)
+                return -4;
+            string lowstr = str.ToLower();
+            byte[] hexchars = Encoding.ASCII.GetBytes(lowstr);
+
+            foreach (byte a in hexchars)
+            {
+                if (!((a >= 48 && a <= 57) || (a >= 97 && a <= 102)))
+                    return -1;
+            }
+            return 0;
         }
 
         /// <summary>
-        /// 获取图册标签key--标签号；value--图册编号
+        /// 设得的RFID标签号
         /// </summary>
-        private void GetInvtryDocInfo()
+        private void setInventNo(string tmptag)
         {
-            StringDictionary DicItem = new StringDictionary();
+            
+           // var TempDocTag = "1234567890";
+
             try
             {
-                //DicItem[MasterTable.T_InventoryDetail.InventoryNo] = this.m_InventNo;
-                DataTable dt = this.m_daoCommon.GetTableInfo(MasterTable.M_Documents.TableName, DicItem, DicItem, DicItem, "", false);
-                if (dt == null || dt.Rows.Count <= 0) return;
 
-                for (int i = 0; i < dt.Rows.Count; i++)
+                if (SysParam.m_busModule.IsSucces)
                 {
-                    m_DocInfo[dt.Rows[i][MasterTable.M_Documents.TagNo1].ToString()] = dt.Rows[i][MasterTable.M_Documents.DocNo].ToString();
-                    m_DocInfo[dt.Rows[i][MasterTable.M_Documents.TagNo2].ToString()] = dt.Rows[i][MasterTable.M_Documents.DocNo].ToString();
-                    m_DocInfo[dt.Rows[i][MasterTable.M_Documents.TagNo3].ToString()] = dt.Rows[i][MasterTable.M_Documents.DocNo].ToString();
-                }
-
-            }
-            catch (Exception ex )
-            {
-                
-                throw ex ;
-            }
-        }
-        ///// <summary>
-        /////启动委托
-        ///// </summary>
-        //private void StartDelegate()
-        //{
-        //    delegateevent = new DelegateEvent(ShowInfo);
-        //    this.BeginInvoke(delegateevent);
-        //}
-        /// <summary>
-        /// 显示信息
-        /// </summary>
-        private void ShowInfo()
-        {
-            try
-            {
-                //System.Threading.Monitor.Enter(this);
-                //while (IsStart)
-                //{
-                    GetInventNo();
-                    //for (int i = 0; i < this.m_dicCardInfo.Keys.Count; i++)
+                    SysParam.m_busModule.Reader.ParamSet("TagopAntenna", 1);
+                    //if (IsValidHexstr(tmptag, 600) != 0)
                     //{
-                    //    //ShowListView(this.m_dicCardInfo.);
+                    //    throw new Exception("将要写入的数据是16进制的字符,且长度为4字符的整数倍");
+
                     //}
+                    TagData epccode = new TagData(tmptag);
+                    SysParam.m_busModule.Reader.WriteTag(null, epccode);
+                    lnlTotal.Text += "," + tmptag;
+                }
 
-                    foreach (var item in this.m_dicCardInfo.Keys)
-                    {
-                        ShowListView(item.ToString());
-                    }
-
-                    //lblInvtNum.Text = listView1.Items .Count. ToString();
-
-                    //System.Threading.Thread.Sleep(500);
-                //}
             }
             catch (Exception ex)
             {
-
-                throw ex;
+                string msg = string.Empty;
+                if (ex is ModuleLibrary.FatalInternalException)
+                    msg = Convert.ToString(((ModuleLibrary.FatalInternalException)ex).ErrCode, 16);
+                if (ex is ModuleLibrary.HardwareAlertException)
+                    msg = ((ModuleLibrary.HardwareAlertException)ex).ErrCode.ToString();
+                if (ex is ModuleLibrary.ModuleException)
+                    msg = ((ModuleLibrary.ModuleException)ex).ErrCode.ToString();
+                if (ex is ModuleLibrary.OpFaidedException)
+                    msg = ((ModuleLibrary.OpFaidedException)ex).ErrCode.ToString();
+                lnlTotal.Text = ex.Message + " :" + msg;
+                //采集器设备连接失败，请及时与管理员联系！ 
+                throw new Exception(Common.GetLanguageWord(this.Name, "FIS001") + System.Environment.NewLine + ex.Message.ToString());
             }
-            finally 
-            {
-                //System.Threading.Monitor.Exit(this);
-            }
-          
         }
 
-        private void ShowListView(string DocTag)
+        /// <summary>
+        /// 获取取得的RFID标签号
+        /// </summary>
+        private void GetInventNo()
         {
-            StringDictionary DicItem=new StringDictionary();
+            //TempDocTag = "1234567890";
+
             try
             {
 
-                //根据标签号码获取图册的图册编号
-                //标签号必须存在于图册信息中
-                //列表中只能显示唯一的图册号
-                if (m_DocInfo.ContainsKey(DocTag))
+                if (SysParam.m_busModule.IsSucces)
                 {
-                    if (DocList.Count(new Func<string, bool>(m => m.Trim() == m_DocInfo[DocTag].Trim())) <= 0)
-                    {
-                        //MessageBeep(10);
+                    TagReadData[] reads = SysParam.m_busModule.Reader.Read(100);
 
-                        DataTable dt = GetDocInfoByDocNO(m_DocInfo[DocTag].Trim());
-                         string[] strs=null ;
-                         string DocTittle = Common.GetBindFieldName(MasterTable.M_Documents.DocMainTitle);
-                         string DocName = Common.GetBindFieldName(MasterTable.M_Documents.DocName);
-                        if (dt != null && dt.Rows.Count > 0)
+                    foreach (TagReadData item in reads)
+                    {
+                        //卡号为八位
+                        //if (item.EPCString.Trim().Length == 8)
+                        //{
+                        MessageBeep(10);
+                        if (!this.m_dicCardInfo.ContainsKey(item.EPCString.Trim()))
                         {
-                            strs = new string[4];
-                            strs[(int)EnumInvtryScan.DocNo] = m_DocInfo[DocTag].Trim();
-                            strs[(int)EnumInvtryScan.MakeNumbers] = dt.Rows[0][MasterTable.M_Documents.MakeNumbers].ToString();
-                            strs[(int)EnumInvtryScan.DocName] = dt.Rows[0][DocName].ToString();
-                            strs[(int)EnumInvtryScan.DocMainTitle] = dt.Rows[0][DocTittle].ToString();
+                            this.m_dicCardInfo[item.EPCString.Trim()] = DateTime.Now.ToString();
                         }
-                        ListViewItem item = new ListViewItem(strs);
-                        this.listView1.Items.Add(item);
-                        DocList.Add(m_DocInfo[DocTag].Trim());
+
+                        //}
                     }
-                }
-   
-
-            }
-            catch (Exception ex )
-            {
-                
-                throw ex ;
-            }
-        }
-
-        private DataTable GetDocInfoByDocNO(string DocNO)
-        {
-            DataTable dt = new DataTable();
-            try
-            {
-                StringDictionary DicItem = new StringDictionary();
-                DicItem[MasterTable.M_Documents.DocNo] = DocNO;
-                dt = this.m_daoCommon.GetTableInfo(MasterTable.M_Documents.TableName, DicItem, DicItem, DicNull, "", false);
-
-            }
-            catch (Exception ex )
-            {
-                
-                throw ex ;
-            }
-            return dt;
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Cursor.Current = Cursors.WaitCursor;
-            try
-            {
-                if (!IsStart)
-                {
-                    IsStart = true;
-                    //停止S1
-                    //this.button1.Text = Common.GetLanguageWord(this.Name, //this.button1.Name + "_");
-                    //thread1.IsBackground = true;
-                    //thread1.Start();
-                    lnlTotal.Visible = false;
-                    timer1.Enabled = true;
-                    if (this.listView1.Items.Count <= 0)
-                    {
-                        DocList.Clear();
-                        this.m_dicCardInfo.Clear();
-                    }
-                }
-                else
-                {
-                    IsStart = false;
-                    //开始(S1) 
-                    //this.button1.Text = Common.GetLanguageWord(this.Name, //this.button1.Name);
-                    lnlTotal.Visible = false;
-                    timer1.Enabled = false;
-                    //thread1.Abort();
-                    //System.Threading.Thread.Sleep(1000);
                 }
 
             }
             catch (Exception ex)
             {
-                LogManager.WriteLog(Common.LogFile.Error, ex.Message);
-                //操作失败,请联系系统管理员！ 
-                MessageBox.Show(Common.GetLanguageWord(this.Name, "FIS003"),
-                    Common.GetLanguageWord(Common.COM_SECTION, "MSGTITLE"), MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1);
-            }
-            finally
-            {
-                Cursor.Current = Cursors.Default;
+                //采集器设备连接失败，请及时与管理员联系！ 
+                throw new Exception(Common.GetLanguageWord(this.Name, "FIS001") + System.Environment.NewLine + ex.Message.ToString());
             }
         }
 
@@ -354,6 +242,25 @@ namespace AnXinWH.RFIDScan.Stock
             Cursor.Current = Cursors.WaitCursor;
             try
             {
+                //read rfid code text
+                m_dicCardInfo.Clear();
+                for (int i = 0; i < 5; i++)
+                {
+                    GetInventNo();
+                    if (m_dicCardInfo.Count > 0)
+                    {
+                        break;
+                    }
+                }
+
+                foreach (var item in this.m_dicCardInfo.Keys)
+                {
+                    lnlTotal.Text += item.ToString();
+                }
+
+                //write rfid code test
+                setInventNo("12345678");
+
 
                 if (listView1.Items.Count <= 0)
                 {
@@ -362,36 +269,16 @@ namespace AnXinWH.RFIDScan.Stock
 
                     return;
                 }
-                //如果正在扫描，则提示先停止扫描
-                if (timer1.Enabled)
+
+                //确定上传数据？ 
+                if (MessageBox.Show(Common.GetLanguageWord(this.Name, "FIS006"), Common.GetLanguageWord(Common.COM_SECTION, "MSGTITLE"), MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.OK)
                 {
-                    //当前正在扫描!+  +确定停止扫描上传数据？
-                    if (MessageBox.Show(Common.GetLanguageWord(this.Name, "FIS004") + System.Environment.NewLine 
-                        + Common.GetLanguageWord(this.Name, "FIS005"), Common.GetLanguageWord(Common.COM_SECTION, "MSGTITLE"), 
-                        MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.OK)
-                    {
-                        //IsStart = false;
-                        //thread1.Abort();
-                        //开始(S1) 
-                        //this.button1.Text = Common.GetLanguageWord(this.Name, //this.button1.Name);
-                        timer1.Enabled = false;
-                        UpLoadData();
+                    UpLoadData();
 
-                    }
                 }
-                else
-                {
-                    //确定上传数据？ 
-                    if (MessageBox.Show(Common.GetLanguageWord(this.Name, "FIS006"), Common.GetLanguageWord(Common.COM_SECTION, "MSGTITLE"), MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.OK)
-                    {
-                        UpLoadData();
-
-                    }
-                }
-
 
             }
-            catch (Exception ex )
+            catch (Exception ex)
             {
                 LogManager.WriteLog(Common.LogFile.Error, ex.Message);
                 //数据上传失败,请联系系统管理员！ 
@@ -420,7 +307,7 @@ namespace AnXinWH.RFIDScan.Stock
             //记录查询的数据
             DataRow[] drs = null;
             //记录listview的图册编号
-            string DocNo=string.Empty ;
+            string DocNo = string.Empty;
 
             Cursor.Current = Cursors.WaitCursor;
             try
@@ -498,7 +385,7 @@ namespace AnXinWH.RFIDScan.Stock
                 //数据上传成功！ 
                 MessageBox.Show(Common.GetLanguageWord(this.Name, "FIS010"), Common.GetLanguageWord(Common.COM_SECTION, "MSGTITLE"));
             }
-            catch (Exception ex )
+            catch (Exception ex)
             {
                 if (IsStartTran)
                     Common.AdoConnect.Connect.TransactionRollback();
@@ -546,24 +433,18 @@ namespace AnXinWH.RFIDScan.Stock
             try
             {
 
-                if (timer1.Enabled)
-                    timer1.Enabled = false;
 
-                //如果已经扫描到数据，且没有上传的话 提示是否上传数据
-                if ( this.listView1.Items.Count > 0)
+                //是否上传已经扫描的数据？ 
+                if (MessageBox.Show(Common.GetLanguageWord(this.Name, "FIS011"), Common.GetLanguageWord(Common.COM_SECTION, "MSGTITLE"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
                 {
-                    //是否上传已经扫描的数据？ 
-                    if (MessageBox.Show(Common.GetLanguageWord(this.Name, "FIS011"), Common.GetLanguageWord(Common.COM_SECTION, "MSGTITLE"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
-                    {
-                        UpLoadData();
+                    //UpLoadData();
 
-                    }
                 }
 
                 this.Close();
 
             }
-            catch (Exception ex )
+            catch (Exception ex)
             {
                 LogManager.WriteLog(Common.LogFile.Error, ex.Message);
                 //操作失败,请联系系统管理员！ 
@@ -572,26 +453,8 @@ namespace AnXinWH.RFIDScan.Stock
             finally
             {
                 Cursor.Current = Cursors.Default;
-            }
-        }
 
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            try
-            {
-                ShowInfo();
             }
-            catch (Exception ex )
-            {
-
-                LogManager.WriteLog(Common.LogFile.Error, ex.Message);
-                timer1.Enabled = false;
-                              //this.button1.Text = Common.GetLanguageWord(this.Name, //this.button1.Name);
-                MessageBox.Show(Common.GetLanguageWord("frmDocReturn", "FDR007"),
-                     Common.GetLanguageWord(Common.COM_SECTION, "MSGTITLE"), MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1);
-           
-            }
-        
         }
 
         private void frmInvtryScan_KeyDown(object sender, KeyEventArgs e)
@@ -601,7 +464,7 @@ namespace AnXinWH.RFIDScan.Stock
             {
                 if (e.KeyCode == Keys.F11)
                 {
-                    button1_Click(null, null);
+                    button2_Click(null, null);
                 }
                 else if (e.KeyCode == Keys.F12)
                 {
@@ -621,5 +484,55 @@ namespace AnXinWH.RFIDScan.Stock
                 Cursor.Current = Cursors.Default;
             }
         }
+
+        private void listView1_ItemActivate(object sender, EventArgs e)
+        {
+            //选中行的索引
+            int index = listView1.SelectedIndices[0];
+            //选中行的值
+            ListViewItem selecteditem = listView1.Items[index];
+
+            //1列名
+            var colname = listView1.Columns[0].Text;
+
+            //选中行的第一列的值
+            string onetext = listView1.Items[index].SubItems[0].Text;
+
+            if (MessageBox.Show("您确定要删除：" + colname + ":" + onetext, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+            {
+                this.listView1.Items.RemoveAt(index);
+                this.lnlTotal.Text = "成功删除:" + colname + ":" + onetext;
+
+            }
+
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //选中行的索引
+            int index = listView1.SelectedIndices[0];
+            //选中行的值
+            ListViewItem selecteditem = listView1.Items[index];
+            //选中行的第一列的值
+            string onetext = listView1.Items[index].SubItems[1].Text;
+
+            this.lnlTotal.Text = "selectIndex:" + index + "," + selecteditem.Text + "," + onetext;
+
+
+        }
+    }
+    public class scanMain
+    {
+        public string stockin_no { get; set; }
+        public string prdct_no { get; set; }
+        public string pqty { get; set; }
+
+    }
+    public class scanItemDetail
+    {
+        public string ctnno_no { get; set; }
+        public string qty { get; set; }
+        public string nwet { get; set; }
+
     }
 }

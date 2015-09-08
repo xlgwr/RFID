@@ -39,7 +39,7 @@ namespace AnXinWH.RFIDScan
             {
                 Cursor.Current = Cursors.Default;
             }
-          
+
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -61,7 +61,7 @@ namespace AnXinWH.RFIDScan
             {
                 Cursor.Current = Cursors.Default;
             }
-          
+
         }
         private void button6_Click(object sender, EventArgs e)
         {
@@ -82,7 +82,7 @@ namespace AnXinWH.RFIDScan
             {
                 Cursor.Current = Cursors.Default;
             }
-          
+
         }
         private void button5_Click(object sender, EventArgs e)
         {
@@ -103,14 +103,24 @@ namespace AnXinWH.RFIDScan
             {
                 Cursor.Current = Cursors.Default;
             }
-          
+
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            this.Close();
+            try
+            {
+                this.Close();
+
+            }
+            catch (Exception ex)
+            {
+                Application.Exit();
+
+            }
+
         }
-        
+
         private void SetLangeage()
         {
             this.button1.Text = Common.GetLanguageWord(this.Name, this.button1.Name);
@@ -124,7 +134,7 @@ namespace AnXinWH.RFIDScan
             try
             {
                 timStatus.Enabled = true;
-                
+
                 //SetLangeage();
 
                 timStatus_Tick(null, null);
@@ -136,7 +146,7 @@ namespace AnXinWH.RFIDScan
                 LogManager.WriteLog(Common.LogFile.Error, ex.Message);
                 //初始化失败,请联系系统管理员！
                 MessageBox.Show(Common.GetLanguageWord(Common.COM_SECTION, "FMU001"),
-                    Common.GetLanguageWord(Common.COM_SECTION, "MSGTITLE"), 
+                    Common.GetLanguageWord(Common.COM_SECTION, "MSGTITLE"),
                     MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1);
             }
         }
