@@ -584,11 +584,23 @@ namespace AnXinWH.RFIDScan.Stock
                 {
 
                     _lisCtnNo.RemoveAt(i);
+                    value.nwet = txt23nwet.Text.Trim();
+                    value.qty = txt22qty.Text.Trim();
                     _lisCtnNo.Add(value);
                     return true;
                 }
             }
             return false;
+
+        }
+        void addToListView()
+        {
+            listView1.Items.Clear();
+            foreach (var item in _lisCtnNo)
+            {
+                addToList(item, false);
+            }
+            lblCount.Text = _lisCtnNo.Count.ToString();
 
         }
         void addToListView(scanItemDetail selectitem)
@@ -622,7 +634,7 @@ namespace AnXinWH.RFIDScan.Stock
             {
                 if (editInList(tmpfind))
                 {
-                    addToList(tmpfind, true);
+                    addToListView();
                     SetMsg(lnlTotal, tmpfind.ctnno_no + " update Success.");
                 }
                 else
