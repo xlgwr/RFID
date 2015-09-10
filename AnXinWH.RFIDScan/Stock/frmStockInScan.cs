@@ -73,7 +73,8 @@ namespace AnXinWH.RFIDScan.Stock
         public frmStockInScan()
         {
             InitializeComponent();
-            tmpTestData();
+            txt11stockin_no.Text = _stockin_no;
+            //tmpTestData();
             _lisCtnNo = new List<scanItemDetail>();
         }
         void tmpTestData()
@@ -185,6 +186,7 @@ namespace AnXinWH.RFIDScan.Stock
                     TagData epccode = new TagData(tmptag);
                     SysParam.m_busModule.Reader.WriteTag(null, epccode);
                     var tmpmsg = "设置RFID卡成功:" + tmptag + ",Value:" + strtohx;
+                    SetMsg(lnlTotal, tmpmsg);
                     MessageBox.Show(tmpmsg);
                     return true;
                     //lnlTotal.Text += "," + tmptag;
@@ -203,8 +205,9 @@ namespace AnXinWH.RFIDScan.Stock
                 if (ex is ModuleLibrary.OpFaidedException)
                     msg = ((ModuleLibrary.OpFaidedException)ex).ErrCode.ToString();
                 msg = "设置RFID卡失败." + ex.Message + " :" + msg;
+                SetMsg(lnlTotal, msg);
                 MessageBox.Show(msg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button1);
-                lnlTotal.Text = msg;
+
                 return false;
 
                 //采集器设备连接失败，请及时与管理员联系！ 
@@ -279,9 +282,9 @@ namespace AnXinWH.RFIDScan.Stock
              allTextBox(txt11stockin_no, false) &&
              allTextBox(txt12prdct_no, false) && allTextBox(txt13pqty, true);
         }
-        void msg(Label lb, string msg)
+        void SetMsg(Label lb, string msg)
         {
-            lb.Invoke(new Action(delegate()
+            this.Invoke(new Action(delegate()
             {
                 lb.Text = msg;
             }));
@@ -316,7 +319,7 @@ namespace AnXinWH.RFIDScan.Stock
                 var tmprfid = "";
                 m_dicCardInfo.Clear();
 
-                msg(lnlTotal, "开始获取RFID号。");
+                SetMsg(lnlTotal, "开始获取RFID号。");
                 for (int i = 0; i < 5; i++)
                 {
                     GetInventNo();
@@ -333,14 +336,14 @@ namespace AnXinWH.RFIDScan.Stock
                 if (tmprfid.Length > 0)
                 {
                     var tmpmsg = "读到RFID:" + tmprfid + ",value:" + Encryption.HexStringToString(tmprfid.ToString(), Encoding.UTF8);
-                    msg(lnlTotal, tmpmsg);
+                    SetMsg(lnlTotal, tmpmsg);
                     MessageBox.Show(tmpmsg);
                 }
                 //write rfid code test
                 var strtohx = txt11stockin_no.Text.Trim() + txt12prdct_no.Text.Trim() + txt13pqty.Text.Trim();
 
 
-                msg(lnlTotal, "开始设置RFID号");
+                SetMsg(lnlTotal, "开始设置RFID号");
                 var tmpset = setInventNo(strtohx);
                 while (!tmpset)
                 {
@@ -411,7 +414,7 @@ namespace AnXinWH.RFIDScan.Stock
 
                 if (dt.Rows.Count <= 0)
                 {
-
+                    _rfidNo = _lisCtnNo + txt12prdct_no.Text.Trim() + txt13pqty.Text.Trim() + "001";
                 }
                 else
                 {
@@ -561,6 +564,33 @@ namespace AnXinWH.RFIDScan.Stock
             }
             return false;
         }
+        scanItemDetail getInList(string findvalue)
+        {
+            var dd = new scanItemDetail();
+            for (int i = 0; i < _lisCtnNo.Count; i++)
+            {
+                if (_lisCtnNo[i].ctnno_no.Equals(findvalue))
+                {
+                    return _lisCtnNo[i];
+                }
+            }
+            return dd;
+        }
+        bool editInList(scanItemDetail value)
+        {
+            for (int i = 0; i < _lisCtnNo.Count; i++)
+            {
+                if (_lisCtnNo[i].ctnno_no.Equals(value.ctnno_no))
+                {
+
+                    _lisCtnNo.RemoveAt(i);
+                    _lisCtnNo.Add(value);
+                    return true;
+                }
+            }
+            return false;
+
+        }
         void addToListView(scanItemDetail selectitem)
         {
             listView1.Items.Clear();
@@ -570,6 +600,7 @@ namespace AnXinWH.RFIDScan.Stock
                 addToList(item, false);
             }
             _lisCtnNo.Add(selectitem);
+            lblCount.Text = _lisCtnNo.Count.ToString();
 
         }
         void addToList(scanItemDetail item, bool select)
@@ -581,10 +612,25 @@ namespace AnXinWH.RFIDScan.Stock
             tmpstr[2] = item.nwet;
 
             ListViewItem tmpitems1 = new ListViewItem(tmpstr);
-            tmpitems1.Selected = select;
             listView1.Items.Add(tmpitems1);
+            listView1.Items[0].Selected = true;
         }
-
+        void updateInlist()
+        {
+            var tmpfind = getInList(txt21ctnno_no.Text.Trim());
+            if (!string.IsNullOrEmpty(tmpfind.ctnno_no))
+            {
+                if (editInList(tmpfind))
+                {
+                    addToList(tmpfind, true);
+                    SetMsg(lnlTotal, tmpfind.ctnno_no + " update Success.");
+                }
+                else
+                {
+                    SetMsg(lnlTotal, "Update fails.");
+                }
+            }
+        }
         private void txt22qty_TextChanged(object sender, EventArgs e)
         {
             if (!allTextBox(txt22qty, true))
@@ -594,6 +640,7 @@ namespace AnXinWH.RFIDScan.Stock
             else
             {
 
+                updateInlist();
             }
         }
 
@@ -602,6 +649,10 @@ namespace AnXinWH.RFIDScan.Stock
             if (!allTextBox(txt23nwet, true))
             {
                 return;
+            }
+            else
+            {
+                updateInlist();
             }
         }
     }

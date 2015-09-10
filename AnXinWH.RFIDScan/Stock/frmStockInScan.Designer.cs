@@ -58,6 +58,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
+            this.lblCount = new System.Windows.Forms.Label();
             this.plnMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -204,7 +205,7 @@
             // 
             this.txt23nwet.Location = new System.Drawing.Point(81, 149);
             this.txt23nwet.Name = "txt23nwet";
-            this.txt23nwet.Size = new System.Drawing.Size(114, 23);
+            this.txt23nwet.Size = new System.Drawing.Size(95, 23);
             this.txt23nwet.TabIndex = 17;
             this.txt23nwet.TextChanged += new System.EventHandler(this.txt23nwet_TextChanged);
             // 
@@ -218,7 +219,7 @@
             // label6
             // 
             this.label6.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
-            this.label6.Location = new System.Drawing.Point(196, 151);
+            this.label6.Location = new System.Drawing.Point(178, 151);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(26, 20);
             this.label6.Text = "KG";
@@ -265,6 +266,16 @@
             this.label9.Size = new System.Drawing.Size(26, 20);
             this.label9.Text = "*";
             // 
+            // lblCount
+            // 
+            this.lblCount.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
+            this.lblCount.ForeColor = System.Drawing.Color.Red;
+            this.lblCount.Location = new System.Drawing.Point(207, 161);
+            this.lblCount.Name = "lblCount";
+            this.lblCount.Size = new System.Drawing.Size(26, 20);
+            this.lblCount.Text = "0";
+            this.lblCount.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
             // frmStockInScan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -272,6 +283,7 @@
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(240, 312);
             this.ControlBox = false;
+            this.Controls.Add(this.lblCount);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label8);
@@ -332,6 +344,7 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label lblCount;
 
 
     }
