@@ -88,6 +88,7 @@
     <Compile Include="Libs\Encryption.cs" />
     <Compile Include="Libs\LogManager.cs" />
     <Compile Include="Libs\LogThreadManager.cs" />
+    <Compile Include="Libs\PageValidate.cs" />
     <Compile Include="Libs\Settings.cs" />
     <Compile Include="Libs\SysParam.cs" />
     <Compile Include="Libs\SysRun.cs" />

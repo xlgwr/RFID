@@ -227,6 +227,7 @@
             this.txt21ctnno_no.Name = "txt21ctnno_no";
             this.txt21ctnno_no.Size = new System.Drawing.Size(129, 23);
             this.txt21ctnno_no.TabIndex = 35;
+            this.txt21ctnno_no.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt21ctnno_no_KeyDown);
             // 
             // label7
             // 
