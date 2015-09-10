@@ -148,7 +148,7 @@ namespace Framework.FileOperate
 
         //INI解析
         public string INICommon(bool isRead, string ApplicationName, string KeyName, string Default, string FileName)
-        {
+{
             string strSection = "[" + ApplicationName + "]";
             string strBuf;
             try

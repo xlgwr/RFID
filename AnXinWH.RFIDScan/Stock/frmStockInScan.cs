@@ -22,14 +22,17 @@ namespace AnXinWH.RFIDScan.Stock
     {
 
         /// <summary>
-        /// 盘点编号
+        /// 入库编号 yyyyMMDDHHmmss
         /// </summary>
-        private string m_InventNo = string.Empty;
+        private string _stockin_no = DateTime.Now.ToString("yyyyMMddHHmmss");
 
         /// <summary>
         /// 共通数据对象
         /// </summary>
         protected CBaseConnect m_daoCommon;
+
+
+        StringDictionary _disNull = new StringDictionary();
 
         private StringDictionary DicData = new StringDictionary();
         /// <summary>
@@ -65,13 +68,13 @@ namespace AnXinWH.RFIDScan.Stock
         #endregion
         #region 初始化RFID号
         public static string _rfidNo = string.Empty;
-        public static List<string> _lisCtnNo;
+        public static List<scanItemDetail> _lisCtnNo;
         #endregion
         public frmStockInScan()
         {
             InitializeComponent();
             tmpTestData();
-            _lisCtnNo = new List<string>();
+            _lisCtnNo = new List<scanItemDetail>();
         }
         void tmpTestData()
         {
@@ -163,9 +166,9 @@ namespace AnXinWH.RFIDScan.Stock
         /// <summary>
         /// 设得的RFID标签号
         /// </summary>
-        private void setInventNo(string tmptag)
+        private bool setInventNo(string strtohx)
         {
-
+            var tmptag = Encryption.StringToHexString(strtohx, Encoding.UTF8);
             // var TempDocTag = "1234567890";
 
             try
@@ -181,7 +184,9 @@ namespace AnXinWH.RFIDScan.Stock
                     //}
                     TagData epccode = new TagData(tmptag);
                     SysParam.m_busModule.Reader.WriteTag(null, epccode);
-                    MessageBox.Show("设置RFID卡成功。：" + tmptag);
+                    var tmpmsg = "设置RFID卡成功:" + tmptag + ",Value:" + strtohx;
+                    MessageBox.Show(tmpmsg);
+                    return true;
                     //lnlTotal.Text += "," + tmptag;
                 }
 
@@ -197,10 +202,15 @@ namespace AnXinWH.RFIDScan.Stock
                     msg = ((ModuleLibrary.ModuleException)ex).ErrCode.ToString();
                 if (ex is ModuleLibrary.OpFaidedException)
                     msg = ((ModuleLibrary.OpFaidedException)ex).ErrCode.ToString();
-                lnlTotal.Text = ex.Message + " :" + msg;
+                msg = "设置RFID卡失败." + ex.Message + " :" + msg;
+                MessageBox.Show(msg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button1);
+                lnlTotal.Text = msg;
+                return false;
+
                 //采集器设备连接失败，请及时与管理员联系！ 
-                throw new Exception(Common.GetLanguageWord(this.Name, "FIS001") + System.Environment.NewLine + ex.Message.ToString());
+                //throw new Exception(Common.GetLanguageWord(this.Name, "FIS001") + System.Environment.NewLine + ex.Message.ToString());
             }
+            return false;
         }
 
         /// <summary>
@@ -236,14 +246,14 @@ namespace AnXinWH.RFIDScan.Stock
             catch (Exception ex)
             {
                 //采集器设备连接失败，请及时与管理员联系！ 
-                throw new Exception(Common.GetLanguageWord(this.Name, "FIS001") + System.Environment.NewLine + ex.Message.ToString());
+                //throw new Exception(Common.GetLanguageWord(this.Name, "FIS001") + System.Environment.NewLine + ex.Message.ToString());
             }
         }
         bool allTextBox(TextBox tb, bool isnum)
         {
             if (isnum)
             {
-                if (!PageValidate.IsNumber(tb.Text))
+                if (!PageValidate.IsDecimal(tb.Text))
                 {
                     tb.Focus();
                     lnlTotal.Text = "请输入正确数字。谢谢";
@@ -298,8 +308,7 @@ namespace AnXinWH.RFIDScan.Stock
                 //确定上传数据？ 
                 if (MessageBox.Show(Common.GetLanguageWord(this.Name, "FIS006"), Common.GetLanguageWord(Common.COM_SECTION, "MSGTITLE"), MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.OK)
                 {
-                    UpLoadData();
-
+                    UploadData();
                 }
 
                 #region write/get rfid
@@ -319,21 +328,34 @@ namespace AnXinWH.RFIDScan.Stock
 
                 foreach (var item in this.m_dicCardInfo.Keys)
                 {
-                    tmprfid = Encryption.HexStringToString(item.ToString(), Encoding.UTF8);
+                    tmprfid = item.ToString();
                 }
                 if (tmprfid.Length > 0)
                 {
-                    msg(lnlTotal, "读到RFID:" + tmprfid);
-                    MessageBox.Show("读到RFID:" + tmprfid);
+                    var tmpmsg = "读到RFID:" + tmprfid + ",value:" + Encryption.HexStringToString(tmprfid.ToString(), Encoding.UTF8);
+                    msg(lnlTotal, tmpmsg);
+                    MessageBox.Show(tmpmsg);
                 }
                 //write rfid code test
-                var tmpRFID = txt11stockin_no.Text.Trim() + txt12prdct_no.Text.Trim() + txt13pqty.Text.Trim();
-
-                var strtohx = Encryption.StringToHexString(tmpRFID, Encoding.UTF8);
+                var strtohx = txt11stockin_no.Text.Trim() + txt12prdct_no.Text.Trim() + txt13pqty.Text.Trim();
 
 
-                msg(lnlTotal, "开始设置RFID号：" + strtohx);
-                setInventNo(strtohx);
+                msg(lnlTotal, "开始设置RFID号");
+                var tmpset = setInventNo(strtohx);
+                while (!tmpset)
+                {
+
+                    //确定重新设置RFID号
+                    if (MessageBox.Show("确定重新设置RFID号", "Notice", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.OK)
+                    {
+                        tmpset = setInventNo(strtohx);
+                    }
+                    else
+                    {
+                        tmpset = true;
+                    }
+
+                }
 
                 #endregion
             }
@@ -348,29 +370,34 @@ namespace AnXinWH.RFIDScan.Stock
                 Cursor.Current = Cursors.Default;
             }
         }
-
-        /// <summary>
-        /// 上传数据
-        /// </summary>
-        private void UpLoadData()
+        private void UploadData()
         {
             bool IsStartTran = false;
-            ////存储已经处理过的图册编号
-            //List<string> TempList = new List<string>();
-            StringDictionary DicItem = new StringDictionary();
-            StringDictionary DicPri = new StringDictionary();
-            //记录当次盘点的数据
+
+
+            //set value
+            StringDictionary disWhereValueMain = new StringDictionary();
+            StringDictionary disWhereValueItem = new StringDictionary();
+            //select            
+            StringDictionary disForValueMain = new StringDictionary();
+            StringDictionary disForValueItem = new StringDictionary();
+            //order by            
+            StringDictionary disForOrderByMain = new StringDictionary();
+            StringDictionary disForOrderByItem = new StringDictionary();
+
+            //主表
             DataTable dt = null;
-            StringDictionary DicItemInvt = new StringDictionary();
-            DicItemInvt[MasterTable.T_InventoryDetail.InventoryNo] = this.m_InventNo;
-            //记录查询的数据
-            DataRow[] drs = null;
-            //记录listview的图册编号
-            string DocNo = string.Empty;
+            disWhereValueMain[MasterTableWHS.t_stockinctnno.stockin_no] = this._stockin_no;
+            disWhereValueMain[MasterTableWHS.t_stockinctnno.prdct_no] = txt12prdct_no.Text.Trim();
+            disForOrderByMain[MasterTableWHS.t_stockinctnno.stockin_no] = "true";
+            disForOrderByMain[MasterTableWHS.t_stockinctnno.prdct_no] = "true";
+
+
 
             Cursor.Current = Cursors.WaitCursor;
             try
             {
+
                 if (listView1.Items.Count <= 0)
                 {
                     //尚未扫描到任何数据！ 
@@ -378,71 +405,20 @@ namespace AnXinWH.RFIDScan.Stock
 
                     return;
                 }
+                //主表
+                //get dt
+                dt = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.t_stockinctnno, disWhereValueMain, disForOrderByMain, _disNull, "", false);
 
-                //如果扫描到的图册编号不在盘点计划里面 则添加该图册数据状态为多余
-                //如果存在一个图册编号,则显示图册的状态为在库
-                //状态为已经盘点的数据不做处理
-
-                DicPri[MasterTable.T_InventoryDetail.DocNo] = "true";
-                DicPri[MasterTable.T_InventoryDetail.InventoryNo] = this.m_InventNo;
-
-                //取出档次盘点的数据
-                dt = this.m_daoCommon.GetTableInfo(MasterTable.T_InventoryDetail.TableName, DicItemInvt, DicItemInvt, DicNull, "", false);
-                Common.AdoConnect.Connect.CreateSqlTransaction();
-                IsStartTran = true;
-                this.lnlTotal.Visible = true;
-                //正在上传数据: 
-                this.lnlTotal.Text = Common.GetLanguageWord(this.Name, this.lnlTotal.Name) + "0/" + listView1.Items.Count;
-
-
-                if (this.IsCompeletedIntrv(this.m_InventNo))
+                if (dt.Rows.Count <= 0)
                 {
-                    //当前盘点已经完成,请确认！ 
-                    MessageBox.Show(Common.GetLanguageWord(this.Name, "FIS009"), Common.GetLanguageWord(Common.COM_SECTION, "MSGTITLE"), MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1);
-                    return;
+
                 }
-                for (int i = 0; i < listView1.Items.Count; i++)
+                else
                 {
-                    //正在上传数据: 
-                    this.lnlTotal.Text = Common.GetLanguageWord(this.Name, this.lnlTotal.Name) + (i + 1).ToString() + "/" + listView1.Items.Count;
 
-                    DocNo = listView1.Items[i].SubItems[(int)EnumInvtryScan.DocNo].Text.Trim();
-
-                    DicItem[MasterTable.T_InventoryDetail.InventoryNo] = this.m_InventNo;
-                    DicItem[MasterTable.T_InventoryDetail.DocNo] = DocNo;
-                    DicItem[MasterTable.T_InventoryDetail.InventFlag] = ((int)MasterTable.InventFlag.Invented).ToString();
-
-                    //判断图册编号是否存在于当前的盘点中
-                    drs = dt.Select(MasterTable.T_InventoryDetail.DocNo + "='" + DocNo + "'");
-                    if (drs.Length > 0)
-                    {
-                        //如果存在,且状态=计划 则进行更新处理
-                        //等于盘点 则不处理
-                        if (drs[0][MasterTable.T_InventoryDetail.InventFlag].ToString() == ((int)MasterTable.InventFlag.Invented).ToString())
-                            continue;
-                        DicItem[MasterTable.T_InventoryDetail.InventStatus] = ((int)MasterTable.DetailInventStatus.zaiko).ToString();
-                        this.m_daoCommon.SetModifyDataItem(MasterTable.T_InventoryDetail.TableName, DicItem, DicPri, DidUserCollum);
-                    }
-                    else
-                    {
-                        //不存在 则盘点状态为多余，添加数据
-                        DicItem[MasterTable.T_InventoryDetail.InventStatus] = ((int)MasterTable.DetailInventStatus.Redundant).ToString();
-                        this.m_daoCommon.SetInsertDataItem(MasterTable.T_InventoryDetail.TableName, DicItem, DidUserCollum);
-                    }
-                    this.m_daoCommon.WriteLog("frmInvtryPlanCreat", (int)MasterTable.OperateTyp.Edit, "手持机操作：盘点更新————用户【" + Common._personid + "】成功上传数据,盘点编号【" + this.m_InventNo + "】,图册编号【" + DocNo + "】,图册状态【" + DicItem[MasterTable.T_InventoryDetail.InventStatus] + "】");
                 }
-                Common.AdoConnect.Connect.TransactionCommit();
 
-                //上传成功 清空数据
-                this.listView1.Items.Clear();
 
-                this.lnlTotal.Visible = false;
-                //清空数据 避免从新开始时不能扫描
-                DocList.Clear();
-                this.m_dicCardInfo.Clear();
-
-                //数据上传成功！ 
-                MessageBox.Show(Common.GetLanguageWord(this.Name, "FIS010"), Common.GetLanguageWord(Common.COM_SECTION, "MSGTITLE"));
             }
             catch (Exception ex)
             {
@@ -454,36 +430,6 @@ namespace AnXinWH.RFIDScan.Stock
             {
                 Cursor.Current = Cursors.Default;
             }
-        }
-
-        /// <summary>
-        /// 判断盘点是否已经完成
-        /// </summary>
-        /// <param name="InventoryNo">盘点编号</param>
-        /// <returns></returns>
-        private bool IsCompeletedIntrv(string InventoryNo)
-        {
-            bool IsCompelete = false;
-            StringDictionary DicItem = new StringDictionary();
-            try
-            {
-                DicItem[MasterTable.T_PlanInventory.InventoryNo] = InventoryNo;
-                DataTable dt = this.m_daoCommon.GetTableInfo(MasterTable.T_PlanInventory.TableName, DicItem, DicItem, DicNull, "", false);
-
-                if (dt != null && dt.Rows.Count > 0)
-                {
-                    if (int.Parse(dt.Rows[0][MasterTable.T_PlanInventory.InventStatus].ToString()) == (int)MasterTable.InventStatus.Completed)
-                    {
-                        IsCompelete = true;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-            return IsCompelete;
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -560,7 +506,7 @@ namespace AnXinWH.RFIDScan.Stock
             if (MessageBox.Show("您确定要删除：" + colname + ":" + onetext, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
             {
                 this.listView1.Items.RemoveAt(index);
-                _lisCtnNo.Remove(colname);                 
+                checkInList(onetext, true);
                 this.lnlTotal.Text = "成功删除:" + colname + ":" + onetext;
 
             }
@@ -578,34 +524,85 @@ namespace AnXinWH.RFIDScan.Stock
 
             this.lnlTotal.Text = "selectIndex:" + index + "," + selecteditem.Text + "," + onetext;
 
-
         }
 
         private void txt21ctnno_no_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode== Keys.Enter)
+            if (e.KeyCode == Keys.Enter)
             {
-                if (string.IsNullOrEmpty(txt21ctnno_no.Text.Trim()))
+                if (!string.IsNullOrEmpty(txt21ctnno_no.Text.Trim()))
                 {
-                    if (!_lisCtnNo.Contains(txt21ctnno_no.Text.Trim()))
+
+
+                    if (!checkInList(txt21ctnno_no.Text.Trim(), false))
                     {
-                        _lisCtnNo.Add(txt21ctnno_no.Text.Trim());
-                        addToListView();
+                        scanItemDetail tmp = new scanItemDetail();
+                        tmp.ctnno_no = txt21ctnno_no.Text.Trim();
+                        tmp.qty = txt22qty.Text.Trim();
+                        tmp.nwet = txt23nwet.Text.Trim();
+
+                        addToListView(tmp);
                     }
                 }
             }
         }
-        void addToListView() 
+        bool checkInList(string findvalue, bool toremove)
+        {
+            for (int i = 0; i < _lisCtnNo.Count; i++)
+            {
+                if (_lisCtnNo[i].ctnno_no.Equals(findvalue))
+                {
+                    if (toremove)
+                    {
+                        _lisCtnNo.RemoveAt(i);
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
+        void addToListView(scanItemDetail selectitem)
+        {
+            listView1.Items.Clear();
+            addToList(selectitem, true);
+            foreach (var item in _lisCtnNo)
+            {
+                addToList(item, false);
+            }
+            _lisCtnNo.Add(selectitem);
+
+        }
+        void addToList(scanItemDetail item, bool select)
         {
             string[] tmpstr = new string[3];
 
-            tmpstr[0] = txt21ctnno_no.Text.Trim();
-            tmpstr[1] = txt22qty.Text.Trim();
-            tmpstr[2] = txt22qty.Text.Trim();
+            tmpstr[0] = item.ctnno_no;
+            tmpstr[1] = item.qty;
+            tmpstr[2] = item.nwet;
 
             ListViewItem tmpitems1 = new ListViewItem(tmpstr);
+            tmpitems1.Selected = select;
             listView1.Items.Add(tmpitems1);
+        }
 
+        private void txt22qty_TextChanged(object sender, EventArgs e)
+        {
+            if (!allTextBox(txt22qty, true))
+            {
+                return;
+            }
+            else
+            {
+
+            }
+        }
+
+        private void txt23nwet_TextChanged(object sender, EventArgs e)
+        {
+            if (!allTextBox(txt23nwet, true))
+            {
+                return;
+            }
         }
     }
     public class scanMain

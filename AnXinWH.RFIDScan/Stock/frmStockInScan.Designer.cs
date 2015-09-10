@@ -191,6 +191,7 @@
             this.txt22qty.Name = "txt22qty";
             this.txt22qty.Size = new System.Drawing.Size(129, 23);
             this.txt22qty.TabIndex = 14;
+            this.txt22qty.TextChanged += new System.EventHandler(this.txt22qty_TextChanged);
             // 
             // label4
             // 
@@ -205,6 +206,7 @@
             this.txt23nwet.Name = "txt23nwet";
             this.txt23nwet.Size = new System.Drawing.Size(114, 23);
             this.txt23nwet.TabIndex = 17;
+            this.txt23nwet.TextChanged += new System.EventHandler(this.txt23nwet_TextChanged);
             // 
             // label5
             // 
