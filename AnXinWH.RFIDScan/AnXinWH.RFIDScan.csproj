@@ -260,14 +260,14 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="sacn_logo.ico" />
-    <None Include="Settings.xml">
+    <Content Include="Settings.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </Content>
     <Content Include="SQLite.Interop.076.dll">
     </Content>
-    <None Include="SysConfig.xml">
+    <Content Include="SysConfig.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </Content>
     <Content Include="SystemLog.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

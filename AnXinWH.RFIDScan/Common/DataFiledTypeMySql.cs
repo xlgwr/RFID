@@ -290,7 +290,7 @@ namespace AGCSystem
 
 
             #region anxinwh
-            FiledType["CheckPoInt32No"] = MySqlDbType.VarChar;
+            FiledType["CheckPointNo"] = MySqlDbType.VarChar;
             FiledType["CheckTime"] = MySqlDbType.DateTime;
             FiledType["Remark"] = MySqlDbType.VarChar;
             FiledType["AddDateTime"] = MySqlDbType.DateTime;
@@ -302,7 +302,7 @@ namespace AGCSystem
             FiledType["infoval2"] = MySqlDbType.VarChar;
             FiledType["infoval3"] = MySqlDbType.VarChar;
             FiledType["sort"] = MySqlDbType.Int32;
-            FiledType["status"] = MySqlDbType.Bit;
+            FiledType["status"] = MySqlDbType.Int16;
             FiledType["adduser"] = MySqlDbType.VarChar;
             FiledType["upduser"] = MySqlDbType.VarChar;
             FiledType["updtime"] = MySqlDbType.DateTime;
@@ -343,10 +343,15 @@ namespace AGCSystem
             FiledType["Relation8"] = MySqlDbType.VarChar;
             FiledType["paramkey"] = MySqlDbType.VarChar;
             FiledType["paramvalue"] = MySqlDbType.VarChar;
-            FiledType["paramtype"] = MySqlDbType.Bit;
+            FiledType["paramtype"] = MySqlDbType.Int16;
+            FiledType["prdct_no"] = MySqlDbType.VarChar;
+            FiledType["prdct_nm"] = MySqlDbType.VarChar;
+            FiledType["prdct_abbr"] = MySqlDbType.VarChar;
+            FiledType["prdct_type"] = MySqlDbType.VarChar;
+            FiledType["unit"] = MySqlDbType.VarChar;
             FiledType["role_id"] = MySqlDbType.VarChar;
             FiledType["mod_id"] = MySqlDbType.VarChar;
-            FiledType["opr_code"] = MySqlDbType.Bit;
+            FiledType["opr_code"] = MySqlDbType.Int16;
             FiledType["role_nm"] = MySqlDbType.VarChar;
             FiledType["org_no"] = MySqlDbType.VarChar;
             FiledType["shelf_no"] = MySqlDbType.VarChar;
@@ -361,13 +366,13 @@ namespace AGCSystem
             FiledType["iconic"] = MySqlDbType.Int32;
             FiledType["islast"] = MySqlDbType.Int32;
             FiledType["version"] = MySqlDbType.VarChar;
-            FiledType["flag"] = MySqlDbType.Bit;
+            FiledType["flag"] = MySqlDbType.Int16;
             FiledType["TerminalType"] = MySqlDbType.Int32;
             FiledType["TerminalName"] = MySqlDbType.VarChar;
             FiledType["ConnectFlag"] = MySqlDbType.Int32;
             FiledType["SerialNoIPAddr"] = MySqlDbType.VarChar;
             FiledType["ReadTime"] = MySqlDbType.Int32;
-            FiledType["ReadInt32erval"] = MySqlDbType.Int32;
+            FiledType["ReadInterval"] = MySqlDbType.Int32;
             FiledType["ParamVal1"] = MySqlDbType.VarChar;
             FiledType["ParamVal2"] = MySqlDbType.VarChar;
             FiledType["ParamVal3"] = MySqlDbType.VarChar;
@@ -394,6 +399,26 @@ namespace AGCSystem
             FiledType["user_no"] = MySqlDbType.VarChar;
             FiledType["user_nm"] = MySqlDbType.VarChar;
             FiledType["user_pwd"] = MySqlDbType.VarChar;
+            FiledType["cash_no"] = MySqlDbType.VarChar;
+            FiledType["cash_date"] = MySqlDbType.DateTime;
+            FiledType["custorder"] = MySqlDbType.VarChar;
+            FiledType["contaccter"] = MySqlDbType.VarChar;
+            FiledType["tel"] = MySqlDbType.VarChar;
+            FiledType["mobile"] = MySqlDbType.VarChar;
+            FiledType["pickidentity"] = MySqlDbType.VarChar;
+            FiledType["checkcode"] = MySqlDbType.VarChar;
+            FiledType["carrrier"] = MySqlDbType.VarChar;
+            FiledType["tanspotno"] = MySqlDbType.VarChar;
+            FiledType["vendorcode"] = MySqlDbType.VarChar;
+            FiledType["gwgt"] = MySqlDbType.Float;
+            FiledType["nwgt"] = MySqlDbType.Float;
+            FiledType["coo"] = MySqlDbType.VarChar;
+            FiledType["item_no"] = MySqlDbType.VarChar;
+            FiledType["pc"] = MySqlDbType.VarChar;
+            FiledType["qty"] = MySqlDbType.Float;
+            FiledType["quanlity"] = MySqlDbType.VarChar;
+            FiledType["ctnno"] = MySqlDbType.VarChar;
+            FiledType["package"] = MySqlDbType.VarChar;
             FiledType["recd_id"] = MySqlDbType.Int32;
             FiledType["address"] = MySqlDbType.VarChar;
             FiledType["type"] = MySqlDbType.Int32;
@@ -402,22 +427,17 @@ namespace AGCSystem
             FiledType["adjunct_address"] = MySqlDbType.VarChar;
             FiledType["adjunct_value"] = MySqlDbType.VarChar;
             FiledType["status"] = MySqlDbType.Int32;
+            FiledType["pqty"] = MySqlDbType.Float;
+            FiledType["nwet"] = MySqlDbType.Float;
+            FiledType["gwet"] = MySqlDbType.Float;
+            FiledType["status"] = MySqlDbType.Bit;
+            FiledType["rfid_no"] = MySqlDbType.VarChar;
             FiledType["stockin_no"] = MySqlDbType.VarChar;
             FiledType["stockin_date"] = MySqlDbType.DateTime;
             FiledType["op_no"] = MySqlDbType.VarChar;
-            FiledType["prdct_no"] = MySqlDbType.VarChar;
-            FiledType["pqty"] = MySqlDbType.Float;
-            FiledType["qty"] = MySqlDbType.Float;
-            FiledType["nwet"] = MySqlDbType.Float;
-            FiledType["gwet"] = MySqlDbType.Float;
-            FiledType["rfid_no"] = MySqlDbType.VarChar;
-            FiledType["status"] = MySqlDbType.Bit;
             FiledType["ctnno_no"] = MySqlDbType.VarChar;
             FiledType["in_item_no"] = MySqlDbType.VarChar;
             FiledType["bespeak_no"] = MySqlDbType.VarChar;
-            FiledType["item_no"] = MySqlDbType.VarChar;
-            FiledType["pc"] = MySqlDbType.VarChar;
-            FiledType["quanlity"] = MySqlDbType.VarChar;
             FiledType["stockout_no"] = MySqlDbType.VarChar;
             FiledType["stockout_date"] = MySqlDbType.DateTime;
             FiledType["pickup_user"] = MySqlDbType.VarChar;
@@ -425,17 +445,19 @@ namespace AGCSystem
             FiledType["pickup_mobile"] = MySqlDbType.VarChar;
             FiledType["stockout_id"] = MySqlDbType.VarChar;
             FiledType["out_item_no"] = MySqlDbType.VarChar;
-            FiledType["cash_no"] = MySqlDbType.VarChar;
             FiledType["log_id"] = MySqlDbType.Int32;
             FiledType["operator"] = MySqlDbType.VarChar;
             FiledType["message"] = MySqlDbType.VarChar;
-            FiledType["type"] = MySqlDbType.Bit;
-            FiledType["result"] = MySqlDbType.Bit;
+            FiledType["type"] = MySqlDbType.Int16;
+            FiledType["result"] = MySqlDbType.Int16;
             FiledType["AlarmNo"] = MySqlDbType.VarChar;
-            FiledType["AlarmType"] = MySqlDbType.Bit;
+            FiledType["AlarmType"] = MySqlDbType.Int16;
             FiledType["AlarmDate"] = MySqlDbType.DateTime;
             FiledType["AlarmFlag"] = MySqlDbType.Int32;
             FiledType["AlarmReason"] = MySqlDbType.VarChar;
+            #endregion
+
+            #region anxinwh
 
             #endregion
             #region 图纸

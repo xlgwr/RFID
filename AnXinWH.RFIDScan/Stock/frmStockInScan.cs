@@ -49,7 +49,127 @@ namespace AnXinWH.RFIDScan.Stock
         #endregion
         #region 初始化RFID号
         public static string _rfidStrForSet = string.Empty;
+        #endregion
+        #region list do
         public static List<scanItemDetail> _lisCtnNo;
+        bool checkInList(string findvalue, bool toremove)
+        {
+            for (int i = 0; i < _lisCtnNo.Count; i++)
+            {
+                if (_lisCtnNo[i].ctnno_no.Equals(findvalue))
+                {
+                    if (toremove)
+                    {
+                        _lisCtnNo.RemoveAt(i);
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
+        scanItemDetail getInList(string findvalue)
+        {
+            var dd = new scanItemDetail();
+            for (int i = 0; i < _lisCtnNo.Count; i++)
+            {
+                if (_lisCtnNo[i].ctnno_no.Equals(findvalue))
+                {
+                    return _lisCtnNo[i];
+                }
+            }
+            return dd;
+        }
+        bool editInList(scanItemDetail value)
+        {
+            for (int i = 0; i < _lisCtnNo.Count; i++)
+            {
+                if (_lisCtnNo[i].ctnno_no.Equals(value.ctnno_no))
+                {
+
+                    _lisCtnNo.RemoveAt(i);
+                    value.nwet = txt23nwet.Text.Trim();
+                    value.qty = txt22qty.Text.Trim();
+                    _lisCtnNo.Add(value);
+                    return true;
+                }
+            }
+            return false;
+
+        }
+        void addToListView()
+        {
+            listView1.Items.Clear();
+            foreach (var item in _lisCtnNo)
+            {
+                addToList(item, false);
+            }
+            txt13pqty.Text = _lisCtnNo.Count.ToString();
+
+        }
+        void addToListView(scanItemDetail selectitem)
+        {
+            listView1.Items.Clear();
+            addToList(selectitem, true);
+            foreach (var item in _lisCtnNo)
+            {
+                addToList(item, false);
+            }
+            _lisCtnNo.Add(selectitem);
+            txt13pqty.Text = _lisCtnNo.Count.ToString();
+            SetMsg(lnlTotal, "add " + selectitem.ctnno_no + " success。");
+
+        }
+        void addToList(scanItemDetail item, bool select)
+        {
+            string[] tmpstr = new string[3];
+
+            tmpstr[0] = item.ctnno_no;
+            tmpstr[1] = item.qty;
+            tmpstr[2] = item.nwet;
+
+            ListViewItem tmpitems1 = new ListViewItem(tmpstr);
+            listView1.Items.Add(tmpitems1);
+            listView1.Items[0].Selected = true;
+        }
+        void updateInlist()
+        {
+            var tmpfind = getInList(txt21ctnno_no.Text.Trim());
+            if (!string.IsNullOrEmpty(tmpfind.ctnno_no))
+            {
+                if (editInList(tmpfind))
+                {
+                    addToListView();
+                    SetMsg(lnlTotal, tmpfind.ctnno_no + " update Success.");
+                }
+                else
+                {
+                    SetMsg(lnlTotal, "Update fails.");
+                }
+            }
+        }
+        decimal[] calQtyNwet()
+        {
+            decimal[] tmpSum = new decimal[2];
+            decimal tmpqty = 0;
+            decimal tmpnwet = 0;
+            foreach (var item in _lisCtnNo)
+            {
+                if (string.IsNullOrEmpty(item.qty))
+                {
+                    item.qty = "0";
+                }
+                if (string.IsNullOrEmpty(item.nwet))
+                {
+                    item.nwet = "0";
+                }
+
+                tmpqty += decimal.Parse(item.qty);
+                tmpnwet += decimal.Parse(item.nwet);
+            }
+            tmpSum[0] = tmpqty;
+            tmpSum[1] = tmpnwet;
+            return tmpSum;
+        }
         #endregion
         public frmStockInScan()
         {
@@ -393,6 +513,8 @@ namespace AnXinWH.RFIDScan.Stock
             }
             return tmpstr;
         }
+
+
         private bool UploadData()
         {
             bool IsStartTran = false;
@@ -457,9 +579,11 @@ namespace AnXinWH.RFIDScan.Stock
                     _rfidStrForSet += toGenSameStr(tonextNext.ToString().Length, 3, "0") + tonextNext.ToString();
 
                 }
-
+                var tmpsum = calQtyNwet();
                 disWhereValueMain[MasterTableWHS.t_stockinctnno.pqty] = txt13pqty.Text.Trim();
                 disWhereValueMain[MasterTableWHS.t_stockinctnno.rfid_no] = _rfidStrForSet;
+                disWhereValueMain[MasterTableWHS.t_stockinctnno.qty] = tmpsum[0].ToString();
+                disWhereValueMain[MasterTableWHS.t_stockinctnno.nwet] = tmpsum[1].ToString();
                 disWhereValueMain[MasterTableWHS.t_stockinctnno.status] = "1";
 
                 //上传主表
@@ -570,7 +694,7 @@ namespace AnXinWH.RFIDScan.Stock
 
                     }
                 }
-                
+
                 this.Close();
 
             }
@@ -677,101 +801,7 @@ namespace AnXinWH.RFIDScan.Stock
                 }
             }
         }
-        bool checkInList(string findvalue, bool toremove)
-        {
-            for (int i = 0; i < _lisCtnNo.Count; i++)
-            {
-                if (_lisCtnNo[i].ctnno_no.Equals(findvalue))
-                {
-                    if (toremove)
-                    {
-                        _lisCtnNo.RemoveAt(i);
-                    }
-                    return true;
-                }
-            }
-            return false;
-        }
-        scanItemDetail getInList(string findvalue)
-        {
-            var dd = new scanItemDetail();
-            for (int i = 0; i < _lisCtnNo.Count; i++)
-            {
-                if (_lisCtnNo[i].ctnno_no.Equals(findvalue))
-                {
-                    return _lisCtnNo[i];
-                }
-            }
-            return dd;
-        }
-        bool editInList(scanItemDetail value)
-        {
-            for (int i = 0; i < _lisCtnNo.Count; i++)
-            {
-                if (_lisCtnNo[i].ctnno_no.Equals(value.ctnno_no))
-                {
 
-                    _lisCtnNo.RemoveAt(i);
-                    value.nwet = txt23nwet.Text.Trim();
-                    value.qty = txt22qty.Text.Trim();
-                    _lisCtnNo.Add(value);
-                    return true;
-                }
-            }
-            return false;
-
-        }
-        void addToListView()
-        {
-            listView1.Items.Clear();
-            foreach (var item in _lisCtnNo)
-            {
-                addToList(item, false);
-            }
-            txt13pqty.Text = _lisCtnNo.Count.ToString();
-
-        }
-        void addToListView(scanItemDetail selectitem)
-        {
-            listView1.Items.Clear();
-            addToList(selectitem, true);
-            foreach (var item in _lisCtnNo)
-            {
-                addToList(item, false);
-            }
-            _lisCtnNo.Add(selectitem);
-            txt13pqty.Text = _lisCtnNo.Count.ToString();
-            SetMsg(lnlTotal, "add " + selectitem.ctnno_no + " success。");
-
-        }
-        void addToList(scanItemDetail item, bool select)
-        {
-            string[] tmpstr = new string[3];
-
-            tmpstr[0] = item.ctnno_no;
-            tmpstr[1] = item.qty;
-            tmpstr[2] = item.nwet;
-
-            ListViewItem tmpitems1 = new ListViewItem(tmpstr);
-            listView1.Items.Add(tmpitems1);
-            listView1.Items[0].Selected = true;
-        }
-        void updateInlist()
-        {
-            var tmpfind = getInList(txt21ctnno_no.Text.Trim());
-            if (!string.IsNullOrEmpty(tmpfind.ctnno_no))
-            {
-                if (editInList(tmpfind))
-                {
-                    addToListView();
-                    SetMsg(lnlTotal, tmpfind.ctnno_no + " update Success.");
-                }
-                else
-                {
-                    SetMsg(lnlTotal, "Update fails.");
-                }
-            }
-        }
         private void txt22qty_TextChanged(object sender, EventArgs e)
         {
             if (!allTextBox(txt22qty, true))
