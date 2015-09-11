@@ -58,7 +58,6 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.lblCount = new System.Windows.Forms.Label();
             this.plnMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -157,6 +156,7 @@
             this.txt11stockin_no.Name = "txt11stockin_no";
             this.txt11stockin_no.Size = new System.Drawing.Size(129, 23);
             this.txt11stockin_no.TabIndex = 6;
+            this.txt11stockin_no.TextChanged += new System.EventHandler(this.txt11stockin_no_TextChanged);
             // 
             // txt12prdct_no
             // 
@@ -226,6 +226,7 @@
             // 
             // txt21ctnno_no
             // 
+            this.txt21ctnno_no.BackColor = System.Drawing.Color.ForestGreen;
             this.txt21ctnno_no.Location = new System.Drawing.Point(81, 101);
             this.txt21ctnno_no.Name = "txt21ctnno_no";
             this.txt21ctnno_no.Size = new System.Drawing.Size(129, 23);
@@ -234,6 +235,8 @@
             // 
             // label7
             // 
+            this.label7.BackColor = System.Drawing.Color.Green;
+            this.label7.ForeColor = System.Drawing.Color.Black;
             this.label7.Location = new System.Drawing.Point(13, 102);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(73, 20);
@@ -266,16 +269,6 @@
             this.label9.Size = new System.Drawing.Size(26, 20);
             this.label9.Text = "*";
             // 
-            // lblCount
-            // 
-            this.lblCount.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
-            this.lblCount.ForeColor = System.Drawing.Color.Red;
-            this.lblCount.Location = new System.Drawing.Point(207, 161);
-            this.lblCount.Name = "lblCount";
-            this.lblCount.Size = new System.Drawing.Size(26, 20);
-            this.lblCount.Text = "0";
-            this.lblCount.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
             // frmStockInScan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -283,7 +276,6 @@
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(240, 312);
             this.ControlBox = false;
-            this.Controls.Add(this.lblCount);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label8);
@@ -344,7 +336,6 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label lblCount;
 
 
     }

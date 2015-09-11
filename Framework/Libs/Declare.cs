@@ -217,11 +217,17 @@ namespace Framework.Libs
         /// </summary>
         public static  class UserColum
         {
-            public const string AddUserNo = "adduserno";
-            public const string AddDateTime = "adddatetime";
-            public const string UpdUserNo = "upduserno";
-            public const string UpdDateTime = "upddatetime";
+            //public const string AddUserNo = "adduserno";
+            //public const string AddDateTime = "adddatetime";
+            //public const string UpdUserNo = "upduserno";
+            //public const string UpdDateTime = "upddatetime";
+
+            public const string AddUserNo = "adduser";
+            public const string AddDateTime = "addtime";
+            public const string UpdUserNo = "upduser";
+            public const string UpdDateTime = "updtime";
         }
+
 
         /// <summary>
         /// 系统默认值

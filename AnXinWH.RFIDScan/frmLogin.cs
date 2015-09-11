@@ -197,8 +197,8 @@ namespace AnXinWH.RFIDScan
             {
 
                 //用户登录处理
-                //if (this.GetUserLogin() == true)
-                //{
+                if (this.GetUserLogin() == true)
+                {
 
                     this.Enabled = true;
 
@@ -210,7 +210,7 @@ namespace AnXinWH.RFIDScan
                     //控件设置焦点
                     SetFocsu(this.txtUserId);
                     timStatus.Enabled = true;
-                //}
+                }
             }
             catch (Exception ex)
             {
