@@ -355,7 +355,7 @@ namespace AnXinWH.RFIDScan.Stock
 
             txt1RfidNo.Focus();
         }
-        void initRfid(TextBox tb)
+        void initRfid(TextBox tb, TextBox tbFocus)
         {
 
             #region write/get rfid
@@ -382,10 +382,25 @@ namespace AnXinWH.RFIDScan.Stock
             {
                 _rfidStrForSet = Encryption.HexStringToString(tmprfid.ToString(), Encoding.UTF8);
 
-                tb.Text = _rfidStrForSet;
 
-                var tmpmsg = "读到value:" + _rfidStrForSet + ",RFID:" + tmprfid;
+
+                var tmpmsg = "扫到:" + _rfidStrForSet;
+
+                if (checkInList(_rfidStrForSet, false))
+                {
+                    tb.Focus();
+                    tmpmsg = "已扫，并与货架绑定。" + _rfidStrForSet;
+                }
+                else
+                {
+                    tb.Text = _rfidStrForSet;
+                    tbFocus.Focus();
+                }
+
+
                 SetMsg(lnlTotal, tmpmsg);
+
+                tmpmsg += ",RFID:" + tmprfid;
 
                 //MessageBox.Show(tmpmsg);
             }
@@ -537,7 +552,7 @@ namespace AnXinWH.RFIDScan.Stock
                     var tonextNext = dt.Rows.Count + 1;
                     _rfidStrForSet += toGenSameStr(tonextNext.ToString().Length, 3, "0") + tonextNext.ToString();
 
-                }               
+                }
 
                 Common.AdoConnect.Connect.TransactionCommit();
                 var tmpmsg = "上传数据成功。" + _rfidStrForSet;
@@ -581,7 +596,7 @@ namespace AnXinWH.RFIDScan.Stock
 
                     }
                 }
-
+                timer1.Enabled = false;
                 this.Close();
 
             }
@@ -593,6 +608,7 @@ namespace AnXinWH.RFIDScan.Stock
             }
             finally
             {
+                timer1.Enabled = false;
                 Cursor.Current = Cursors.Default;
 
             }
@@ -701,7 +717,7 @@ namespace AnXinWH.RFIDScan.Stock
 
                 try
                 {
-                    initRfid(txt1RfidNo);
+                    initRfid(txt1RfidNo, txt2ShelfNo);
                 }
                 catch (Exception ex)
                 {

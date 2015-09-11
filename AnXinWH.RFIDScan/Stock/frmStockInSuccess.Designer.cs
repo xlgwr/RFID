@@ -54,9 +54,9 @@
             // 
             this.lnlTotal.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular);
             this.lnlTotal.ForeColor = System.Drawing.Color.Red;
-            this.lnlTotal.Location = new System.Drawing.Point(7, 238);
+            this.lnlTotal.Location = new System.Drawing.Point(2, 233);
             this.lnlTotal.Name = "lnlTotal";
-            this.lnlTotal.Size = new System.Drawing.Size(207, 15);
+            this.lnlTotal.Size = new System.Drawing.Size(234, 22);
             this.lnlTotal.Text = "正在提交数据：";
             // 
             // button3
@@ -155,9 +155,9 @@
             // 
             this.lbl0Count.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
             this.lbl0Count.ForeColor = System.Drawing.Color.Red;
-            this.lbl0Count.Location = new System.Drawing.Point(3, 82);
+            this.lbl0Count.Location = new System.Drawing.Point(114, 92);
             this.lbl0Count.Name = "lbl0Count";
-            this.lbl0Count.Size = new System.Drawing.Size(24, 20);
+            this.lbl0Count.Size = new System.Drawing.Size(24, 15);
             this.lbl0Count.Text = "0";
             // 
             // timer1
