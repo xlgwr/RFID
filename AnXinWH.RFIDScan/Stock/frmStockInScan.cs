@@ -35,26 +35,7 @@ namespace AnXinWH.RFIDScan.Stock
         StringDictionary _disNull = new StringDictionary();
 
         private StringDictionary DicData = new StringDictionary();
-        /// <summary>
-        /// 存储标签号
-        /// </summary>
-        private string TempDocTag = string.Empty;
-        /// <summary>
-        /// 存储已经扫描出的图册编号
-        /// </summary>
-        private List<string> DocList = new List<string>();
 
-        //private delegate void DelegateEvent();
-        //private DelegateEvent delegateevent;
-        //private System.Threading.Thread thread1 = null;
-
-        private StringDictionary DidUserCollum = new StringDictionary();
-
-        private StringDictionary DicNull = new StringDictionary();
-        /// <summary>
-        /// 存储该盘点单号下的图册信息；key--标签号；value--图册编号
-        /// </summary>
-        private StringDictionary m_DocInfo = new StringDictionary();
 
         #region 采集器部分
 
@@ -531,15 +512,65 @@ namespace AnXinWH.RFIDScan.Stock
             Cursor.Current = Cursors.WaitCursor;
             try
             {
-
-
-                //是否上传已经扫描的数据？ 
-                if (MessageBox.Show(Common.GetLanguageWord(this.Name, "FIS011"), Common.GetLanguageWord(Common.COM_SECTION, "MSGTITLE"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+                if (listView1.Items.Count > 0)
                 {
-                    //UpLoadData();
+                    //是否上传已经扫描的数据？ 
+                    if (MessageBox.Show(Common.GetLanguageWord(this.Name, "FIS011"), Common.GetLanguageWord(Common.COM_SECTION, "MSGTITLE"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+                    {
+                        if (UploadData())
+                        {
+                            #region write/get rfid
+                            //read rfid code text
+                            var tmprfid = "";
+                            m_dicCardInfo.Clear();
 
+                            SetMsg(lnlTotal, "开始获取RFID号。");
+                            for (int i = 0; i < 5; i++)
+                            {
+                                GetInventNo();
+                                if (m_dicCardInfo.Count > 0)
+                                {
+                                    break;
+                                }
+                            }
+
+                            foreach (var item in this.m_dicCardInfo.Keys)
+                            {
+                                tmprfid = item.ToString();
+                            }
+                            if (tmprfid.Length > 0)
+                            {
+                                var tmpmsg = "读到value:" + Encryption.HexStringToString(tmprfid.ToString(), Encoding.UTF8) + ",RFID:" + tmprfid;
+                                SetMsg(lnlTotal, tmpmsg);
+                                MessageBox.Show(tmpmsg);
+                            }
+                            //write rfid code test
+                            var strtohx = _rfidStrForSet;// txt11stockin_no.Text.Trim() + txt12prdct_no.Text.Trim() + txt13pqty.Text.Trim();
+
+
+                            SetMsg(lnlTotal, "开始设置RFID号");
+                            var tmpset = setInventNo(strtohx);
+                            while (!tmpset)
+                            {
+
+                                //确定重新设置RFID号
+                                if (MessageBox.Show("确定重新设置RFID号", "Notice", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.OK)
+                                {
+                                    tmpset = setInventNo(strtohx);
+                                }
+                                else
+                                {
+                                    tmpset = true;
+                                }
+
+                            }
+
+                            #endregion
+                        }
+
+                    }
                 }
-
+                
                 this.Close();
 
             }

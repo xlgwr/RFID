@@ -12,7 +12,7 @@ namespace AnXinWH.RFIDScan
 
         public const int SW_SHOW = 0x1;
         //'系统名/
-        public static string Info_SysName = "AGC图纸管理系统";
+        public static string Info_SysName = "仓库安信管理系统";
 
         //'系统数据启动加载,请稍候... 
         public static string Info_LoadS = "系统数据启动加载,请稍候... ";

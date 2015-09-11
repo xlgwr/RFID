@@ -87,7 +87,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(69, 28);
             this.button2.TabIndex = 1;
-            this.button2.Text = "提交";
+            this.button2.Text = "提交(S1)";
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // plnMenu
@@ -226,7 +226,6 @@
             // 
             // txt21ctnno_no
             // 
-            this.txt21ctnno_no.BackColor = System.Drawing.Color.ForestGreen;
             this.txt21ctnno_no.Location = new System.Drawing.Point(81, 101);
             this.txt21ctnno_no.Name = "txt21ctnno_no";
             this.txt21ctnno_no.Size = new System.Drawing.Size(129, 23);
@@ -235,7 +234,8 @@
             // 
             // label7
             // 
-            this.label7.BackColor = System.Drawing.Color.Green;
+            this.label7.BackColor = System.Drawing.Color.Silver;
+            this.label7.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
             this.label7.ForeColor = System.Drawing.Color.Black;
             this.label7.Location = new System.Drawing.Point(13, 102);
             this.label7.Name = "label7";
@@ -332,10 +332,10 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txt21ctnno_no;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label7;
 
 
     }
