@@ -356,7 +356,7 @@ namespace AnXinWH.RFIDScan.Stock
             txt1RfidNo.Text = "";
             txt2ShelfNo.Text = "";
 
-            
+
 
             txt1RfidNo.Focus();
         }
@@ -520,6 +520,21 @@ namespace AnXinWH.RFIDScan.Stock
 
                     if (!string.IsNullOrEmpty(txt1RfidNo.Text.Trim()) && !string.IsNullOrEmpty(txt2ShelfNo.Text.Trim()))
                     {
+                        if (!checkInList(txt1RfidNo.Text.Trim(), false))
+                        {
+                            scanMain_stock tmp = new scanMain_stock();
+                            tmp.rfid_no = txt1RfidNo.Text.Trim();
+                            tmp.shelf_no = txt2ShelfNo.Text.Trim();
+
+                            addToListView(tmp);
+
+                        }
+                        else
+                        {
+                            SetMsg(lnlTotal, "RFID：" + txt1RfidNo.Text + " 已扫。");
+                        }
+                        #region check shelf details
+
                         //check is in stock deatils
                         //set value
                         StringDictionary dis1WhereValuet_stockinctnno = new StringDictionary();
@@ -539,8 +554,25 @@ namespace AnXinWH.RFIDScan.Stock
                         //dis1WhereValuet_stockinctnno[MasterTableWHS.t_stockinctnno.status] = "0";
                         //dis2ForValuet_stockinctnno[MasterTableWHS.t_stockinctnno.status] = "true";
 
-                        #region check t_stockinctnno
 
+                        var dt = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.t_stockdetail, dis1WhereValuet_stockdetail, dis2ForValuet_stockdetail, _disNull, "", false);
+                        if (dt != null)
+                        {
+                            if (dt.Rows.Count > 0)
+                            {
+                                var tmpshelf = dt.Rows[0][MasterTableWHS.t_stockdetail.shelf_no].ToString();
+                                tmpmsg = "RFID：" + txt1RfidNo.Text + " 已上架。货架：" + tmpshelf;
+                                SetMsg(lnlTotal, tmpmsg);
+                                MessageBox.Show(tmpmsg);
+                                AllInit(false);
+                                dt = null;
+                                return;
+                            }
+                        }
+                        #endregion
+
+                        #region check t_stockinctnno
+                      
                         var dtIn = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.t_stockinctnno, dis1WhereValuet_stockinctnno, dis2ForValuet_stockinctnno, _disNull, "", false);
                         if (dtIn != null)
                         {
@@ -586,37 +618,6 @@ namespace AnXinWH.RFIDScan.Stock
 
                         #endregion
 
-                        #region check shelf details
-
-                        var dt = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.t_stockdetail, dis1WhereValuet_stockdetail, dis2ForValuet_stockdetail, _disNull, "", false);
-                        if (dt != null)
-                        {
-                            if (dt.Rows.Count > 0)
-                            {
-                                var tmpshelf = dt.Rows[0][MasterTableWHS.t_stockdetail.shelf_no].ToString();
-                                tmpmsg = "RFID：" + txt1RfidNo.Text + " 已上架。货架：" + tmpshelf;
-                                SetMsg(lnlTotal, tmpmsg);
-                                MessageBox.Show(tmpmsg);
-                                AllInit(false);
-                                dt = null;
-                                return;
-                            }
-                        }
-                        #endregion
-
-                        if (!checkInList(txt1RfidNo.Text.Trim(), false))
-                        {
-                            scanMain_stock tmp = new scanMain_stock();
-                            tmp.rfid_no = txt1RfidNo.Text.Trim();
-                            tmp.shelf_no = txt2ShelfNo.Text.Trim();
-
-                            addToListView(tmp);
-
-                        }
-                        else
-                        {
-                            SetMsg(lnlTotal, "RFID：" + txt1RfidNo.Text + " 已扫。");
-                        }
                     }
                 }
             }
