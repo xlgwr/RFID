@@ -274,7 +274,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(240, 312);
+            this.ClientSize = new System.Drawing.Size(240, 320);
             this.ControlBox = false;
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.label9);

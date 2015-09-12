@@ -56,13 +56,13 @@
             this.lnlTotal.ForeColor = System.Drawing.Color.Red;
             this.lnlTotal.Location = new System.Drawing.Point(2, 233);
             this.lnlTotal.Name = "lnlTotal";
-            this.lnlTotal.Size = new System.Drawing.Size(234, 22);
+            this.lnlTotal.Size = new System.Drawing.Size(234, 35);
             this.lnlTotal.Text = "正在提交数据：";
             // 
             // button3
             // 
             this.button3.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular);
-            this.button3.Location = new System.Drawing.Point(147, 258);
+            this.button3.Location = new System.Drawing.Point(147, 267);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(69, 28);
             this.button3.TabIndex = 2;
@@ -72,7 +72,7 @@
             // button2
             // 
             this.button2.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular);
-            this.button2.Location = new System.Drawing.Point(37, 258);
+            this.button2.Location = new System.Drawing.Point(37, 267);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(69, 28);
             this.button2.TabIndex = 1;
@@ -169,7 +169,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(240, 295);
+            this.ClientSize = new System.Drawing.Size(240, 320);
             this.ControlBox = false;
             this.Controls.Add(this.txt2ShelfNo);
             this.Controls.Add(this.txt1RfidNo);
