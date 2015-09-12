@@ -142,68 +142,72 @@
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(13, 30);
+            this.label1.Location = new System.Drawing.Point(-7, 32);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(73, 20);
             this.label1.Text = "入库单";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // txt11stockin_id
             // 
             this.txt11stockin_id.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.txt11stockin_id.Location = new System.Drawing.Point(81, 29);
+            this.txt11stockin_id.Location = new System.Drawing.Point(69, 29);
             this.txt11stockin_id.Name = "txt11stockin_id";
-            this.txt11stockin_id.Size = new System.Drawing.Size(129, 23);
+            this.txt11stockin_id.Size = new System.Drawing.Size(148, 23);
             this.txt11stockin_id.TabIndex = 6;
             this.txt11stockin_id.TextChanged += new System.EventHandler(this.txt11stockin_id_TextChanged);
             // 
             // txt12prdct_no
             // 
-            this.txt12prdct_no.Location = new System.Drawing.Point(81, 53);
+            this.txt12prdct_no.Location = new System.Drawing.Point(69, 53);
             this.txt12prdct_no.Name = "txt12prdct_no";
-            this.txt12prdct_no.Size = new System.Drawing.Size(129, 23);
+            this.txt12prdct_no.Size = new System.Drawing.Size(148, 23);
             this.txt12prdct_no.TabIndex = 8;
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(13, 54);
+            this.label2.Location = new System.Drawing.Point(-7, 55);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(73, 20);
             this.label2.Text = "货物编码";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // txt13pqty
             // 
-            this.txt13pqty.Location = new System.Drawing.Point(81, 77);
+            this.txt13pqty.Location = new System.Drawing.Point(69, 77);
             this.txt13pqty.Name = "txt13pqty";
-            this.txt13pqty.Size = new System.Drawing.Size(129, 23);
+            this.txt13pqty.Size = new System.Drawing.Size(148, 23);
             this.txt13pqty.TabIndex = 11;
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(13, 78);
+            this.label3.Location = new System.Drawing.Point(-7, 79);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(73, 20);
             this.label3.Text = "箱    数";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // txt22qty
             // 
-            this.txt22qty.Location = new System.Drawing.Point(81, 125);
+            this.txt22qty.Location = new System.Drawing.Point(69, 125);
             this.txt22qty.Name = "txt22qty";
-            this.txt22qty.Size = new System.Drawing.Size(129, 23);
+            this.txt22qty.Size = new System.Drawing.Size(148, 23);
             this.txt22qty.TabIndex = 14;
             this.txt22qty.TextChanged += new System.EventHandler(this.txt22qty_TextChanged);
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(13, 126);
+            this.label4.Location = new System.Drawing.Point(-7, 127);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(73, 20);
             this.label4.Text = "数    量";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // txt23nwet
             // 
-            this.txt23nwet.Location = new System.Drawing.Point(81, 149);
+            this.txt23nwet.Location = new System.Drawing.Point(69, 149);
             this.txt23nwet.Name = "txt23nwet";
             this.txt23nwet.Size = new System.Drawing.Size(95, 23);
             this.txt23nwet.TabIndex = 17;
@@ -211,24 +215,25 @@
             // 
             // label5
             // 
-            this.label5.Location = new System.Drawing.Point(13, 150);
+            this.label5.Location = new System.Drawing.Point(-7, 151);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(73, 20);
             this.label5.Text = "重    量";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // label6
             // 
             this.label6.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
-            this.label6.Location = new System.Drawing.Point(178, 151);
+            this.label6.Location = new System.Drawing.Point(166, 151);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(26, 20);
             this.label6.Text = "KG";
             // 
             // txt21ctnno_no
             // 
-            this.txt21ctnno_no.Location = new System.Drawing.Point(81, 101);
+            this.txt21ctnno_no.Location = new System.Drawing.Point(69, 101);
             this.txt21ctnno_no.Name = "txt21ctnno_no";
-            this.txt21ctnno_no.Size = new System.Drawing.Size(129, 23);
+            this.txt21ctnno_no.Size = new System.Drawing.Size(148, 23);
             this.txt21ctnno_no.TabIndex = 35;
             this.txt21ctnno_no.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt21ctnno_no_KeyDown);
             // 
@@ -237,36 +242,37 @@
             this.label7.BackColor = System.Drawing.Color.Silver;
             this.label7.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
             this.label7.ForeColor = System.Drawing.Color.Black;
-            this.label7.Location = new System.Drawing.Point(13, 102);
+            this.label7.Location = new System.Drawing.Point(-7, 103);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(73, 20);
             this.label7.Text = "箱    号";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // label10
             // 
             this.label10.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
             this.label10.ForeColor = System.Drawing.Color.Red;
-            this.label10.Location = new System.Drawing.Point(212, 32);
+            this.label10.Location = new System.Drawing.Point(219, 32);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(26, 20);
+            this.label10.Size = new System.Drawing.Size(18, 20);
             this.label10.Text = "*";
             // 
             // label8
             // 
             this.label8.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
             this.label8.ForeColor = System.Drawing.Color.Red;
-            this.label8.Location = new System.Drawing.Point(212, 56);
+            this.label8.Location = new System.Drawing.Point(219, 56);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(26, 20);
+            this.label8.Size = new System.Drawing.Size(18, 20);
             this.label8.Text = "*";
             // 
             // label9
             // 
             this.label9.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
             this.label9.ForeColor = System.Drawing.Color.Red;
-            this.label9.Location = new System.Drawing.Point(212, 80);
+            this.label9.Location = new System.Drawing.Point(219, 80);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(26, 20);
+            this.label9.Size = new System.Drawing.Size(18, 20);
             this.label9.Text = "*";
             // 
             // frmStockInScan
@@ -276,23 +282,23 @@
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(240, 320);
             this.ControlBox = false;
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.txt21ctnno_no);
-            this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.txt23nwet);
-            this.Controls.Add(this.label5);
             this.Controls.Add(this.txt22qty);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.txt13pqty);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.txt12prdct_no);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.txt11stockin_id);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.plnMenu);
             this.Controls.Add(this.button2);
