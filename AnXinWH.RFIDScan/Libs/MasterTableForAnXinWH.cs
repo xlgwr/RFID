@@ -402,6 +402,7 @@ namespace AnXinWH.RFIDScan.MasterTableWHS
         public const string prdct_no = "prdct_no";
         public const string rfid_no = "rfid_no";
         public const string shelf_no = "shelf_no";
+        public const string pqty = "pqty";
         public const string qty = "qty";
         public const string nwet = "nwet";
         public const string gwet = "gwet";

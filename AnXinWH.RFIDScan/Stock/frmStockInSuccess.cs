@@ -33,6 +33,9 @@ namespace AnXinWH.RFIDScan.Stock
 
         private StringDictionary DicData = new StringDictionary();
 
+        //m_Shelf 
+        private DataSet _ds_m_Shelf = new DataSet();
+
 
         #region 采集器部分
         bool _isRun = false;
@@ -349,9 +352,10 @@ namespace AnXinWH.RFIDScan.Stock
                 listView1.Items.Clear();
             }
 
-
             txt1RfidNo.Text = "";
             txt2ShelfNo.Text = "";
+
+            lbl0Count.Text = "";
 
             txt1RfidNo.Focus();
         }
@@ -432,12 +436,13 @@ namespace AnXinWH.RFIDScan.Stock
         }
         private void button2_Click(object sender, EventArgs e)
         {
-            if (!checkTxt())
-            {
-                return;
-            }
+            //if (!checkTxt())
+            //{
+            //    return;
+            //}
 
             Cursor.Current = Cursors.WaitCursor;
+            timer1.Enabled = false;
             try
             {
 
@@ -470,6 +475,7 @@ namespace AnXinWH.RFIDScan.Stock
             }
             finally
             {
+                timer1.Enabled = true;
                 Cursor.Current = Cursors.Default;
             }
         }
@@ -486,39 +492,126 @@ namespace AnXinWH.RFIDScan.Stock
             }
             return tmpstr;
         }
+        private void txt21ctnno_no_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (!string.IsNullOrEmpty(txt1RfidNo.Text.Trim()) && !string.IsNullOrEmpty(txt2ShelfNo.Text.Trim()))
+                {
+                    //check is in stock deatils
+                    //set value
+                    StringDictionary dis1WhereValuet_stockinctnno = new StringDictionary();
 
+                    StringDictionary dis1WhereValuet_stockdetail = new StringDictionary();
+                    //select            
+                    StringDictionary dis2ForValuet_stockdetail = new StringDictionary();
+                    StringDictionary dis2ForValuet_stockinctnno = new StringDictionary();
+
+                    dis1WhereValuet_stockdetail[MasterTableWHS.t_stockdetail.rfid_no] = txt1RfidNo.Text.Trim();
+                    dis2ForValuet_stockdetail[MasterTableWHS.t_stockdetail.rfid_no] = "true";
+
+                    //t_stockinctnno
+                    dis1WhereValuet_stockinctnno[MasterTableWHS.t_stockinctnno.rfid_no] = txt1RfidNo.Text.Trim();
+                    dis2ForValuet_stockinctnno[MasterTableWHS.t_stockinctnno.rfid_no] = "true";
+
+                    dis1WhereValuet_stockinctnno[MasterTableWHS.t_stockinctnno.status] = "0";
+                    dis2ForValuet_stockinctnno[MasterTableWHS.t_stockinctnno.status] = "true";
+
+                    #region check shelf details
+
+                    var dtIn = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.t_stockinctnno, dis1WhereValuet_stockinctnno, dis2ForValuet_stockinctnno, _disNull, "", false);
+                    if (dtIn != null)
+                    {
+                        if (dtIn.Rows.Count > 0)
+                        {
+                            var tmpshelf = dtIn.Rows[0][MasterTableWHS.t_stockinctnno.prdct_no].ToString();
+                            var tmpmsg = "RFID：" + txt1RfidNo.Text + " 已失效。货物编码：" + tmpshelf;
+                            SetMsg(lnlTotal, tmpmsg);
+                            MessageBox.Show(tmpmsg);
+                            AllInit(false);
+                            return;
+                        }
+                    }
+                    #endregion
+
+                    #region check shelf details
+
+                    var dt = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.t_stockdetail, dis1WhereValuet_stockdetail, dis2ForValuet_stockdetail, _disNull, "", false);
+                    if (dt != null)
+                    {
+                        if (dt.Rows.Count > 0)
+                        {
+                            var tmpshelf = dt.Rows[0][MasterTableWHS.t_stockdetail.shelf_no].ToString();
+                            SetMsg(lnlTotal, "RFID：" + txt1RfidNo.Text + " 已上架。货架：" + tmpshelf);
+
+                            AllInit(false);
+                            return;
+                        }
+                    }
+                    #endregion
+
+                    if (!checkInList(txt1RfidNo.Text.Trim(), false))
+                    {
+                        scanMain_stock tmp = new scanMain_stock();
+                        tmp.rfid_no = txt1RfidNo.Text.Trim();
+                        tmp.shelf_no = txt2ShelfNo.Text.Trim();
+
+                        addToListView(tmp);
+
+                    }
+                    else
+                    {
+                        SetMsg(lnlTotal, "RFID：" + txt1RfidNo.Text + " 已扫。");
+                    }
+                }
+            }
+        }
 
         private bool UploadData()
         {
 
             //test
-            return true;
+            // return true;
 
             bool IsStartTran = false;
-
+            var ErrorMsg = "";
 
             //set value
-            StringDictionary disWhereValueMain = new StringDictionary();
-            StringDictionary disWhereValueItem = new StringDictionary();
+            StringDictionary dis1WhereValueMain = new StringDictionary();
+            StringDictionary dis1WhereValueItem = new StringDictionary();
+
+            StringDictionary dis1WhereValue_t_stock = new StringDictionary();
+            StringDictionary dis1WhereValue_t_stockdetail = new StringDictionary();
             //select            
-            StringDictionary disForValueMain = new StringDictionary();
-            StringDictionary disForValueItem = new StringDictionary();
+            StringDictionary dis2ForValueMain = new StringDictionary();
+            StringDictionary dis2ForValueItem = new StringDictionary();
+
+            StringDictionary dis2ForValue_t_stock = new StringDictionary();
+            StringDictionary dis2ForValue_t_stockdetail = new StringDictionary();
+
+            //primary key       
+            StringDictionary dis5ForPrimaryKeyMain = new StringDictionary();
+            StringDictionary dis5ForPrimaryKeyItem = new StringDictionary();
+
+            StringDictionary dis5ForPrimaryKey_t_stock = new StringDictionary();
+            StringDictionary dis5ForPrimaryKey_t_stockdetail = new StringDictionary();
             //order by            
-            StringDictionary disForOrderByMain = new StringDictionary();
-            StringDictionary disForOrderByItem = new StringDictionary();
+            StringDictionary dis3ForOrderByMain = new StringDictionary();
+            StringDictionary dis3ForOrderByItem = new StringDictionary();
+
+            StringDictionary dis3ForOrderBy_t_stock = new StringDictionary();
+            StringDictionary dis3ForOrderBy_t_stockdetail = new StringDictionary();
             //user
-            StringDictionary DidUserCollum = new StringDictionary();
+            StringDictionary dis00UserCollum = new StringDictionary();
 
             //主表
             DataTable dt = null;
-            disWhereValueMain[MasterTableWHS.t_stockinctnno.rfid_no] = _rfidStrForSet;
-            disForOrderByMain[MasterTableWHS.t_stockinctnno.rfid_no] = "true";
 
             //log for use
-            DidUserCollum[MasterTableWHS.t_stockinctnno.adduser] = "true";
-            DidUserCollum[MasterTableWHS.t_stockinctnno.addtime] = "true";
-            DidUserCollum[MasterTableWHS.t_stockinctnno.updtime] = "true";
-            DidUserCollum[MasterTableWHS.t_stockinctnno.upduser] = "true";
+            dis00UserCollum[MasterTableWHS.t_stockinctnno.adduser] = "true";
+            dis00UserCollum[MasterTableWHS.t_stockinctnno.addtime] = "true";
+            dis00UserCollum[MasterTableWHS.t_stockinctnno.updtime] = "true";
+            dis00UserCollum[MasterTableWHS.t_stockinctnno.upduser] = "true";
 
 
             Cursor.Current = Cursors.WaitCursor;
@@ -533,30 +626,162 @@ namespace AnXinWH.RFIDScan.Stock
                     Cursor.Current = Cursors.Default;
                     return false;
                 }
-                //主表
-                //get dt
-                dt = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.t_stockinctnno, disWhereValueMain, disForOrderByMain, _disNull, "", false);
 
                 Common.AdoConnect.Connect.CreateSqlTransaction();
                 IsStartTran = true;
                 this.lnlTotal.Visible = true;
 
 
-                if (dt.Rows.Count <= 0)
-                {
-                    _rfidStrForSet += "001";
 
-                }
-                else
+                foreach (var item in _lisCtnNo)
                 {
-                    var tonextNext = dt.Rows.Count + 1;
-                    _rfidStrForSet += toGenSameStr(tonextNext.ToString().Length, 3, "0") + tonextNext.ToString();
+                    //主表
+                    //get dt stock in
+
+                    dis1WhereValueMain[MasterTableWHS.t_stockinctnno.rfid_no] = item.rfid_no;
+                    dis2ForValueMain[MasterTableWHS.t_stockinctnno.rfid_no] = "true";
+
+                    dis1WhereValueMain[MasterTableWHS.t_stockinctnno.status] = "1";
+                    dis2ForValueMain[MasterTableWHS.t_stockinctnno.status] = "true";
+
+                    dt = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.t_stockinctnno, dis1WhereValueMain, dis2ForValueMain, _disNull, "", false);
+
+                    if (dt.Rows.Count <= 0)
+                    {
+                        if (string.IsNullOrEmpty(ErrorMsg))
+                        {
+                            ErrorMsg = item.rfid_no + "," + item.shelf_no;
+                        }
+                        else
+                        {
+                            ErrorMsg += "\n" + item.rfid_no + "," + item.shelf_no;
+                        }
+                    }
+                    else
+                    {
+                        //save to stock
+                        foreach (DataRow dr in dt.Rows)
+                        {
+                            var tmpprdct_no = dr[MasterTableWHS.t_stockinctnno.prdct_no].ToString();
+
+                            if (string.IsNullOrEmpty(tmpprdct_no))
+                            {
+                                ErrorMsg += "\n" + item.rfid_no + ": product no is null.";
+                                continue;
+                            }
+                            #region save stock
+                            //get stock
+                            dis2ForValue_t_stock = new StringDictionary();
+                            dis1WhereValue_t_stock = new StringDictionary();
+
+                            dis1WhereValue_t_stock[MasterTableWHS.t_stock.prdct_no] = tmpprdct_no;
+                            dis2ForValue_t_stock[MasterTableWHS.t_stock.prdct_no] = "true";
+
+                            var dtStock = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.t_stock, dis1WhereValue_t_stock, dis2ForValue_t_stock, _disNull, "", false);
+
+                            if (dtStock.Rows.Count <= 0)
+                            {
+                                dis1WhereValue_t_stock[MasterTableWHS.t_stock.prdct_no] = tmpprdct_no;
+                                dis1WhereValue_t_stock[MasterTableWHS.t_stock.pqty] = dr[MasterTableWHS.t_stockinctnno.pqty].ToString();
+                                dis1WhereValue_t_stock[MasterTableWHS.t_stock.qty] = dr[MasterTableWHS.t_stockinctnno.qty].ToString();
+                                dis1WhereValue_t_stock[MasterTableWHS.t_stock.nwet] = dr[MasterTableWHS.t_stockinctnno.nwet].ToString();
+                                dis1WhereValue_t_stock[MasterTableWHS.t_stock.gwet] = dr[MasterTableWHS.t_stockinctnno.gwet].ToString();
+                                dis1WhereValue_t_stock[MasterTableWHS.t_stock.status] = "1";
+
+                                this.m_daoCommon.SetInsertDataItem(MasterTableWHS.ViewOrTable.t_stock, dis1WhereValue_t_stock, dis00UserCollum);
+
+                            }
+                            else
+                            {
+                                //edit data
+                                var tmp_pqty_Stock = decimal.Parse(dtStock.Rows[0][MasterTableWHS.t_stock.pqty].ToString());
+                                var tmp_pqty_StockIn = decimal.Parse(dr[MasterTableWHS.t_stockinctnno.pqty].ToString());
+
+                                var tmp_qty_Stock = decimal.Parse(dtStock.Rows[0][MasterTableWHS.t_stock.qty].ToString());
+                                var tmp_qty_StockIn = decimal.Parse(dr[MasterTableWHS.t_stockinctnno.qty].ToString());
+
+                                var tmp_nwet_Stock = decimal.Parse(dtStock.Rows[0][MasterTableWHS.t_stock.nwet].ToString());
+                                var tmp_nwet_StockIn = decimal.Parse(dr[MasterTableWHS.t_stockinctnno.nwet].ToString());
+
+                                var tmp_gwet_Stock = decimal.Parse(dtStock.Rows[0][MasterTableWHS.t_stock.gwet].ToString());
+                                var tmp_gwet_StockIn = decimal.Parse(dr[MasterTableWHS.t_stockinctnno.gwet].ToString());
+
+                                dis1WhereValue_t_stock[MasterTableWHS.t_stock.prdct_no] = tmpprdct_no;
+                                dis1WhereValue_t_stock[MasterTableWHS.t_stock.pqty] = (tmp_pqty_Stock + tmp_pqty_StockIn).ToString();
+                                dis1WhereValue_t_stock[MasterTableWHS.t_stock.qty] = (tmp_qty_Stock + tmp_qty_StockIn).ToString();
+                                dis1WhereValue_t_stock[MasterTableWHS.t_stock.nwet] = (tmp_nwet_Stock + tmp_nwet_StockIn).ToString();
+                                dis1WhereValue_t_stock[MasterTableWHS.t_stock.gwet] = (tmp_gwet_Stock + tmp_gwet_StockIn).ToString();
+                                dis1WhereValue_t_stock[MasterTableWHS.t_stock.status] = "1";
+
+                                //primary ke
+                                dis5ForPrimaryKey_t_stock[MasterTableWHS.t_stock.prdct_no] = tmpprdct_no;
+
+                                var dis00UserCollum2 = new StringDictionary();
+                                dis00UserCollum2[MasterTableWHS.t_stockinctnno.updtime] = "true";
+                                dis00UserCollum2[MasterTableWHS.t_stockinctnno.upduser] = "true";
+
+                                this.m_daoCommon.SetModifyDataItem(MasterTableWHS.ViewOrTable.t_stock, dis1WhereValue_t_stock, dis5ForPrimaryKey_t_stock, dis00UserCollum2);
+
+                            }
+                            #endregion
+
+
+                            #region save stockdetail
+                            //get stock
+                            dis1WhereValue_t_stockdetail = new StringDictionary();
+                            dis2ForValue_t_stockdetail = new StringDictionary();
+
+                            dis1WhereValue_t_stockdetail[MasterTableWHS.t_stockdetail.prdct_no] = tmpprdct_no;
+                            dis2ForValue_t_stockdetail[MasterTableWHS.t_stockdetail.prdct_no] = "true";
+
+
+                            dis1WhereValue_t_stockdetail[MasterTableWHS.t_stockdetail.rfid_no] = item.rfid_no;
+                            dis2ForValue_t_stockdetail[MasterTableWHS.t_stockdetail.rfid_no] = "true";
+
+                            var dtStockDetails = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.t_stockdetail, dis1WhereValue_t_stockdetail, dis1WhereValue_t_stockdetail, _disNull, "", false);
+
+                            dis1WhereValue_t_stockdetail[MasterTableWHS.t_stockdetail.prdct_no] = tmpprdct_no;
+                            dis1WhereValue_t_stockdetail[MasterTableWHS.t_stockdetail.rfid_no] = item.rfid_no;
+                            dis1WhereValue_t_stockdetail[MasterTableWHS.t_stockdetail.shelf_no] = item.shelf_no;
+                            dis1WhereValue_t_stockdetail[MasterTableWHS.t_stockdetail.pqty] = dr[MasterTableWHS.t_stockinctnno.pqty].ToString();
+                            dis1WhereValue_t_stockdetail[MasterTableWHS.t_stockdetail.qty] = dr[MasterTableWHS.t_stockinctnno.qty].ToString();
+                            dis1WhereValue_t_stockdetail[MasterTableWHS.t_stockdetail.nwet] = dr[MasterTableWHS.t_stockinctnno.nwet].ToString();
+                            dis1WhereValue_t_stockdetail[MasterTableWHS.t_stockdetail.gwet] = dr[MasterTableWHS.t_stockinctnno.gwet].ToString();
+                            dis1WhereValue_t_stockdetail[MasterTableWHS.t_stockdetail.status] = dr[MasterTableWHS.t_stockinctnno.status].ToString();
+
+                            if (dtStockDetails.Rows.Count <= 0)
+                            {
+                                this.m_daoCommon.SetInsertDataItem(MasterTableWHS.ViewOrTable.t_stockdetail, dis1WhereValue_t_stockdetail, dis00UserCollum);
+                            }
+                            else
+                            {
+
+                                //primary ke
+                                dis5ForPrimaryKey_t_stockdetail[MasterTableWHS.t_stockdetail.prdct_no] = tmpprdct_no;
+                                dis5ForPrimaryKey_t_stockdetail[MasterTableWHS.t_stockdetail.rfid_no] = item.rfid_no;
+
+                                var dis00UserCollum2 = new StringDictionary();
+                                dis00UserCollum2[MasterTableWHS.t_stockinctnno.updtime] = "true";
+                                dis00UserCollum2[MasterTableWHS.t_stockinctnno.upduser] = "true";
+
+                                this.m_daoCommon.SetModifyDataItem(MasterTableWHS.ViewOrTable.t_stockdetail, dis1WhereValue_t_stockdetail, dis5ForPrimaryKey_t_stockdetail, dis00UserCollum2);
+
+                            }
+                            #endregion
+
+                        }
+
+                    }
 
                 }
 
                 Common.AdoConnect.Connect.TransactionCommit();
-                var tmpmsg = "上传数据成功。" + _rfidStrForSet;
+                var tmpmsg = "提交数据成功。";
                 SetMsg(lnlTotal, tmpmsg);
+                if (ErrorMsg.Length > 0)
+                {
+                    tmpmsg += "\n" + ErrorMsg;
+                }
                 MessageBox.Show(tmpmsg);
 
 
@@ -582,6 +807,7 @@ namespace AnXinWH.RFIDScan.Stock
         private void button3_Click(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
+            timer1.Enabled = false;
             try
             {
                 if (listView1.Items.Count > 0)
@@ -596,8 +822,6 @@ namespace AnXinWH.RFIDScan.Stock
 
                     }
                 }
-                timer1.Enabled = false;
-                this.Close();
 
             }
             catch (Exception ex)
@@ -605,10 +829,11 @@ namespace AnXinWH.RFIDScan.Stock
                 LogManager.WriteLog(Common.LogFile.Error, ex.Message);
                 //操作失败,请联系系统管理员！ 
                 MessageBox.Show(Common.GetLanguageWord(this.Name, "FIS003"), Common.GetLanguageWord(Common.COM_SECTION, "MSGTITLE"), MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1);
+
             }
             finally
             {
-                timer1.Enabled = false;
+                this.Close();
                 Cursor.Current = Cursors.Default;
 
             }
@@ -679,30 +904,7 @@ namespace AnXinWH.RFIDScan.Stock
 
         }
 
-        private void txt21ctnno_no_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                if (!string.IsNullOrEmpty(txt1RfidNo.Text.Trim()) && !string.IsNullOrEmpty(txt2ShelfNo.Text.Trim()))
-                {
 
-
-                    if (!checkInList(txt1RfidNo.Text.Trim(), false))
-                    {
-                        scanMain_stock tmp = new scanMain_stock();
-                        tmp.rfid_no = txt1RfidNo.Text.Trim();
-                        tmp.shelf_no = txt2ShelfNo.Text.Trim();
-
-                        addToListView(tmp);
-
-                    }
-                    else
-                    {
-                        SetMsg(lnlTotal, "RFID：" + txt1RfidNo.Text + " 已扫。");
-                    }
-                }
-            }
-        }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
