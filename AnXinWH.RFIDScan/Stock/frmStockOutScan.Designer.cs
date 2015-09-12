@@ -198,6 +198,7 @@
             this.txt4Qty.Name = "txt4Qty";
             this.txt4Qty.Size = new System.Drawing.Size(157, 23);
             this.txt4Qty.TabIndex = 14;
+            this.txt4Qty.TextChanged += new System.EventHandler(this.txt4Qty_TextChanged);
             // 
             // label4
             // 
@@ -213,6 +214,7 @@
             this.txt5nwet.Name = "txt5nwet";
             this.txt5nwet.Size = new System.Drawing.Size(114, 23);
             this.txt5nwet.TabIndex = 17;
+            this.txt5nwet.TextChanged += new System.EventHandler(this.txt5nwet_TextChanged);
             // 
             // label5
             // 
@@ -263,6 +265,7 @@
             this.txt21pqty.Name = "txt21pqty";
             this.txt21pqty.Size = new System.Drawing.Size(157, 23);
             this.txt21pqty.TabIndex = 33;
+            this.txt21pqty.TextChanged += new System.EventHandler(this.txt21pqty_TextChanged);
             // 
             // label7
             // 
@@ -276,7 +279,7 @@
             // 
             this.lbl0Count.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
             this.lbl0Count.ForeColor = System.Drawing.Color.Red;
-            this.lbl0Count.Location = new System.Drawing.Point(88, 177);
+            this.lbl0Count.Location = new System.Drawing.Point(213, 156);
             this.lbl0Count.Name = "lbl0Count";
             this.lbl0Count.Size = new System.Drawing.Size(24, 15);
             this.lbl0Count.Text = "0";

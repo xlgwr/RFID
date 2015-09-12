@@ -77,9 +77,9 @@ namespace AnXinWH.RFIDScan.Stock
             listView1.Items[0].Selected = true;
         }
         //
-        void updateInlist()
+        void updateInlist(string findValue)
         {
-            var tmpfind = getInList(txt12Rfid_no.Text.Trim());
+            var tmpfind = getInList(findValue);
 
             if (!string.IsNullOrEmpty(tmpfind.rfid_no))
             {
@@ -206,6 +206,8 @@ namespace AnXinWH.RFIDScan.Stock
             }
             catch (Exception ex)
             {
+                timer1.Enabled = false;
+
                 LogManager.WriteLog(Common.LogFile.Error, ex.Message);
                 //初始化失败,请联系系统管理员！ 
                 MessageBox.Show(Common.GetLanguageWord(this.Name, "FIS002"),
@@ -382,10 +384,11 @@ namespace AnXinWH.RFIDScan.Stock
                 _lisCtnNo.Clear();
                 listView1.Items.Clear();
                 lbl0Count.Text = "";
+
+                txt11stockout_id.Text = "";
+                txt12Rfid_no.Text = "";
             }
 
-            txt11stockout_id.Text = "";
-            txt12Rfid_no.Text = "";
             txt13Shelf_no.Text = "";
             txt21pqty.Text = "";
             txt4Qty.Text = "";
@@ -431,7 +434,8 @@ namespace AnXinWH.RFIDScan.Stock
                     if (checkInList(_rfidStrForSet, false))
                     {
                         tb.Focus();
-                        tmpmsg = "已扫，并与货架绑定。" + _rfidStrForSet;
+
+                        tmpmsg = "已扫 RFID：" + _rfidStrForSet;
                     }
                     else
                     {
@@ -567,12 +571,13 @@ namespace AnXinWH.RFIDScan.Stock
 
                             addToListView(tmp);
 
+                            txt21pqty.Focus();
                         }
                         else
                         {
                             SetMsg(lnlTotal, "RFID：" + _rfidStrForSet + " 已扫。");
-                        }        
-           
+                        }
+
                         //text 
                         return;
 
@@ -612,10 +617,10 @@ namespace AnXinWH.RFIDScan.Stock
                                 return;
                             }
                         }
-                        #endregion   
+                        #endregion
                         #region check t_stockinctnno
-                        
-                       
+
+
 
                         var dtIn = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.t_stockinctnno, dis1WhereValuet_stockinctnno, dis2ForValuet_stockinctnno, _disNull, "", false);
                         if (dtIn != null)
@@ -660,7 +665,7 @@ namespace AnXinWH.RFIDScan.Stock
                             return;
                         }
 
-                        #endregion                       
+                        #endregion
                     }
                 }
             }
@@ -1026,10 +1031,9 @@ namespace AnXinWH.RFIDScan.Stock
                 return;
             }
 
-            if (_rfidStrForSet.Trim().Length <= 0)
+            if (txt12Rfid_no.Text.Trim().Length <= 0)
             {
                 _isRun = true;
-
                 try
                 {
                     initRfid(txt12Rfid_no, txt12Rfid_no);
@@ -1048,6 +1052,45 @@ namespace AnXinWH.RFIDScan.Stock
         private void txt12Rfid_no_TextChanged(object sender, EventArgs e)
         {
             _rfidStrForSet = txt12Rfid_no.Text.Trim();
+        }
+
+        private void txt21pqty_TextChanged(object sender, EventArgs e)
+        {
+            if (!allTextBox(txt21pqty, true))
+            {
+                return;
+            }
+            else
+            {
+
+                updateInlist(_rfidStrForSet);
+            }
+        }
+
+        private void txt4Qty_TextChanged(object sender, EventArgs e)
+        {
+            if (!allTextBox(txt4Qty, true))
+            {
+                return;
+            }
+            else
+            {
+
+                updateInlist(_rfidStrForSet);
+            }
+        }
+
+        private void txt5nwet_TextChanged(object sender, EventArgs e)
+        {
+            if (!allTextBox(txt5nwet, true))
+            {
+                return;
+            }
+            else
+            {
+
+                updateInlist(_rfidStrForSet);
+            }
         }
     }
     public class scanMain_stockDetails
