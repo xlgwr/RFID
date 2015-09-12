@@ -82,6 +82,10 @@
             this.button3.Text = "取消(S2)";
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // plnMenu
             // 
             this.plnMenu.BackColor = System.Drawing.SystemColors.Highlight;
@@ -310,6 +314,7 @@
             this.Name = "frmStockOutScan";
             this.Text = "盘点项目";
             this.TopMost = true;
+            this.Load += new System.EventHandler(this.frmInvtryScan_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmInvtryScan_KeyDown);
             this.plnMenu.ResumeLayout(false);
             this.ResumeLayout(false);
