@@ -350,12 +350,13 @@ namespace AnXinWH.RFIDScan.Stock
             {
                 _lisCtnNo.Clear();
                 listView1.Items.Clear();
+                lbl0Count.Text = "";
             }
 
             txt1RfidNo.Text = "";
             txt2ShelfNo.Text = "";
 
-            lbl0Count.Text = "";
+            
 
             txt1RfidNo.Focus();
         }
@@ -510,10 +511,13 @@ namespace AnXinWH.RFIDScan.Stock
         }
         private void txt21ctnno_no_KeyDown(object sender, KeyEventArgs e)
         {
+            var tmpmsg = "";
+            Cursor.Current = Cursors.WaitCursor;
             try
             {
                 if (e.KeyCode == Keys.Enter)
                 {
+
                     if (!string.IsNullOrEmpty(txt1RfidNo.Text.Trim()) && !string.IsNullOrEmpty(txt2ShelfNo.Text.Trim()))
                     {
                         //check is in stock deatils
@@ -532,26 +536,54 @@ namespace AnXinWH.RFIDScan.Stock
                         dis1WhereValuet_stockinctnno[MasterTableWHS.t_stockinctnno.rfid_no] = txt1RfidNo.Text.Trim();
                         dis2ForValuet_stockinctnno[MasterTableWHS.t_stockinctnno.rfid_no] = "true";
 
-                        dis1WhereValuet_stockinctnno[MasterTableWHS.t_stockinctnno.status] = "0";
-                        dis2ForValuet_stockinctnno[MasterTableWHS.t_stockinctnno.status] = "true";
+                        //dis1WhereValuet_stockinctnno[MasterTableWHS.t_stockinctnno.status] = "0";
+                        //dis2ForValuet_stockinctnno[MasterTableWHS.t_stockinctnno.status] = "true";
 
-                        #region check shelf details
+                        #region check t_stockinctnno
 
                         var dtIn = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.t_stockinctnno, dis1WhereValuet_stockinctnno, dis2ForValuet_stockinctnno, _disNull, "", false);
                         if (dtIn != null)
                         {
                             if (dtIn.Rows.Count > 0)
                             {
-                                var tmpstockin_id = dtIn.Rows[0][MasterTableWHS.t_stockinctnno.stockin_id].ToString();
-                                var tmpshelf = dtIn.Rows[0][MasterTableWHS.t_stockinctnno.prdct_no].ToString();
-                                var tmpmsg = "RFID：" + txt1RfidNo.Text + " 已失效。货物编码：" + tmpshelf + ",入库单:" + tmpstockin_id;
+                                var tmpstatus = dtIn.Rows[0][MasterTableWHS.t_stockinctnno.status].ToString().Trim();
+                                if (tmpstatus.Equals("0"))
+                                {
+                                    var tmpstockin_id = dtIn.Rows[0][MasterTableWHS.t_stockinctnno.stockin_id].ToString();
+                                    var tmpshelf = dtIn.Rows[0][MasterTableWHS.t_stockinctnno.prdct_no].ToString();
+                                    tmpmsg = "RFID：" + txt1RfidNo.Text + " 已失效。货物编码：" + tmpshelf + ",入库单:" + tmpstockin_id;
 
+                                    SetMsg(lnlTotal, tmpmsg);
+                                    MessageBox.Show(tmpmsg);
+                                    AllInit(false);
+                                    dtIn = null;
+                                    tmpstatus = string.Empty;
+                                    return;
+                                }
+                            }
+                            else
+                            {
+                                tmpmsg = "Error1: RFID：" + txt1RfidNo.Text + " 不存在系统中。。。请检查数据的准确性。";
                                 SetMsg(lnlTotal, tmpmsg);
+
                                 MessageBox.Show(tmpmsg);
                                 AllInit(false);
+                                dtIn = null;
                                 return;
                             }
+
                         }
+                        else
+                        {
+                            tmpmsg = "Error2:RFID：" + txt1RfidNo.Text + "  不存在系统中。。。请检查数据的准确性。";
+                            SetMsg(lnlTotal, tmpmsg);
+
+                            MessageBox.Show(tmpmsg);
+                            AllInit(false);
+                            dtIn = null;
+                            return;
+                        }
+
                         #endregion
 
                         #region check shelf details
@@ -562,10 +594,11 @@ namespace AnXinWH.RFIDScan.Stock
                             if (dt.Rows.Count > 0)
                             {
                                 var tmpshelf = dt.Rows[0][MasterTableWHS.t_stockdetail.shelf_no].ToString();
-                                var tmpmsg = "RFID：" + txt1RfidNo.Text + " 已上架。货架：" + tmpshelf;
+                                tmpmsg = "RFID：" + txt1RfidNo.Text + " 已上架。货架：" + tmpshelf;
                                 SetMsg(lnlTotal, tmpmsg);
                                 MessageBox.Show(tmpmsg);
                                 AllInit(false);
+                                dt = null;
                                 return;
                             }
                         }
@@ -591,6 +624,10 @@ namespace AnXinWH.RFIDScan.Stock
             {
                 MessageBox.Show(ex.Message);
             }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
         }
 
         private bool UploadData()
@@ -598,7 +635,7 @@ namespace AnXinWH.RFIDScan.Stock
 
             //test
             // return true;
-
+            var tmpmsg = "";
             bool IsStartTran = false;
             var ErrorMsg = "";
 
@@ -802,15 +839,13 @@ namespace AnXinWH.RFIDScan.Stock
                 }
 
                 Common.AdoConnect.Connect.TransactionCommit();
-                var tmpmsg = "提交数据成功。";
+                tmpmsg = "提交数据成功。";
                 SetMsg(lnlTotal, tmpmsg);
                 if (ErrorMsg.Length > 0)
                 {
                     tmpmsg += "\n" + ErrorMsg;
                 }
                 MessageBox.Show(tmpmsg);
-
-
                 return true;
 
             }
@@ -843,7 +878,7 @@ namespace AnXinWH.RFIDScan.Stock
                     {
                         if (UploadData())
                         {
-                            MessageBox.Show("Save OK");
+                            //MessageBox.Show("Save OK");
                         }
 
                     }

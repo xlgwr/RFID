@@ -795,6 +795,7 @@ namespace AnXinWH.RFIDScan.Stock
 
         private void txt21ctnno_no_KeyDown(object sender, KeyEventArgs e)
         {
+            Cursor.Current = Cursors.WaitCursor;
             try
             {
                 if (e.KeyCode == Keys.Enter)
@@ -823,6 +824,10 @@ namespace AnXinWH.RFIDScan.Stock
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
             }
 
         }
