@@ -228,7 +228,7 @@ namespace AnXinWH.RFIDScan.MasterTableWHS
     }
     public class t_stockin
     {
-        public const string stockin_no = "stockin_no";
+        public const string stockin_id = "stockin_id";
         public const string stockin_date = "stockin_date";
         public const string user_no = "user_no";
         public const string status = "status";
@@ -244,7 +244,7 @@ namespace AnXinWH.RFIDScan.MasterTableWHS
     {
 
 
-        public const string stockin_no = "stockin_no";
+        public const string stockin_id = "stockin_id";
         public const string prdct_no = "prdct_no";
         public const string pqty = "pqty";
         public const string qty = "qty";
@@ -272,7 +272,7 @@ namespace AnXinWH.RFIDScan.MasterTableWHS
     }
     public class t_stockindetail
     {
-        public const string stockin_no = "stockin_no";
+        public const string stockin_id = "stockin_id";
         public const string in_item_no = "in_item_no";
         public const string bespeak_no = "bespeak_no";
         public const string item_no = "item_no";
@@ -293,7 +293,7 @@ namespace AnXinWH.RFIDScan.MasterTableWHS
     public class t_stockout
     {
 
-        public const string stockout_no = "stockout_no";
+        public const string stockout_id = "stockout_id";
         public const string stockout_date = "stockout_date";
         public const string user_no = "user_no";
         public const string pickup_user = "pickup_user";
@@ -338,7 +338,7 @@ namespace AnXinWH.RFIDScan.MasterTableWHS
     public class t_stockoutdetail
     {
 
-        public const string stockout_no = "stockout_no";
+        public const string stockout_id = "stockout_id";
         public const string out_item_no = "out_item_no";
         public const string cash_no = "cash_no";
         public const string item_no = "item_no";

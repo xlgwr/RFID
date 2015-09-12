@@ -124,29 +124,29 @@
             // 
             // txt1RfidNo
             // 
-            this.txt1RfidNo.Location = new System.Drawing.Point(87, 37);
+            this.txt1RfidNo.Location = new System.Drawing.Point(66, 34);
             this.txt1RfidNo.Name = "txt1RfidNo";
-            this.txt1RfidNo.Size = new System.Drawing.Size(139, 23);
+            this.txt1RfidNo.Size = new System.Drawing.Size(170, 23);
             this.txt1RfidNo.TabIndex = 8;
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(19, 38);
+            this.label2.Location = new System.Drawing.Point(3, 35);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(73, 20);
             this.label2.Text = "RFID卡号";
             // 
             // txt2ShelfNo
             // 
-            this.txt2ShelfNo.Location = new System.Drawing.Point(87, 61);
+            this.txt2ShelfNo.Location = new System.Drawing.Point(66, 62);
             this.txt2ShelfNo.Name = "txt2ShelfNo";
-            this.txt2ShelfNo.Size = new System.Drawing.Size(139, 23);
+            this.txt2ShelfNo.Size = new System.Drawing.Size(170, 23);
             this.txt2ShelfNo.TabIndex = 11;
             this.txt2ShelfNo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt21ctnno_no_KeyDown);
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(19, 62);
+            this.label3.Location = new System.Drawing.Point(3, 63);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(73, 20);
             this.label3.Text = "货架番号";
@@ -171,10 +171,10 @@
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(240, 295);
             this.ControlBox = false;
-            this.Controls.Add(this.lbl0Count);
             this.Controls.Add(this.txt2ShelfNo);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.txt1RfidNo);
+            this.Controls.Add(this.lbl0Count);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.plnMenu);

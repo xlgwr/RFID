@@ -24,7 +24,7 @@ namespace AnXinWH.RFIDScan.Stock
         /// <summary>
         /// 入库编号 yyyyMMDDHHmmss
         /// </summary>
-        public string _stockin_no = string.Empty;
+        public string _stockin_id = string.Empty;
 
         /// <summary>
         /// 共通数据对象
@@ -133,19 +133,27 @@ namespace AnXinWH.RFIDScan.Stock
         }
         void updateInlist()
         {
-            var tmpfind = getInList(txt21ctnno_no.Text.Trim());
-            if (!string.IsNullOrEmpty(tmpfind.ctnno_no))
+            try
             {
-                if (editInList(tmpfind))
+                var tmpfind = getInList(txt21ctnno_no.Text.Trim());
+                if (!string.IsNullOrEmpty(tmpfind.ctnno_no))
                 {
-                    addToListView();
-                    SetMsg(lnlTotal, tmpfind.ctnno_no + " update Success.");
-                }
-                else
-                {
-                    SetMsg(lnlTotal, "Update fails.");
+                    if (editInList(tmpfind))
+                    {
+                        addToListView();
+                        SetMsg(lnlTotal, tmpfind.ctnno_no + " update Success.");
+                    }
+                    else
+                    {
+                        SetMsg(lnlTotal, "Update fails.");
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
         }
         decimal[] calQtyNwet()
         {
@@ -176,9 +184,9 @@ namespace AnXinWH.RFIDScan.Stock
             InitializeComponent();
             //tmpTestData();
 
-            //for test new stockin_no
-            _stockin_no = DateTime.Now.ToString("yyyyMMddHHmmss");
-            txt11stockin_no.Text = _stockin_no;
+            //for test new stockin_id
+            _stockin_id = DateTime.Now.ToString("yyyyMMddHHmmss");
+            txt11stockin_id.Text = _stockin_id;
 
             //
             _lisCtnNo = new List<scanItemDetail>();
@@ -385,7 +393,7 @@ namespace AnXinWH.RFIDScan.Stock
         bool checkTxt()
         {
             return
-             allTextBox(txt11stockin_no, false) &&
+             allTextBox(txt11stockin_id, false) &&
              allTextBox(txt12prdct_no, false) && allTextBox(txt13pqty, true);
         }
         void SetMsg(Label lb, string msg)
@@ -400,7 +408,7 @@ namespace AnXinWH.RFIDScan.Stock
             _lisCtnNo.Clear();
             listView1.Items.Clear();
 
-            txt11stockin_no.Text = "";
+            txt11stockin_id.Text = "";
             txt12prdct_no.Text = "";
             txt13pqty.Text = "";
             txt21ctnno_no.Text = "";
@@ -408,7 +416,7 @@ namespace AnXinWH.RFIDScan.Stock
             txt23nwet.Text = "";
             lnlTotal.Text = "";
 
-            txt11stockin_no.Focus();
+            txt11stockin_id.Focus();
         }
         private void button2_Click(object sender, EventArgs e)
         {
@@ -461,7 +469,7 @@ namespace AnXinWH.RFIDScan.Stock
                             MessageBox.Show(tmpmsg);
                         }
                         //write rfid code test
-                        var strtohx = _rfidStrForSet;// txt11stockin_no.Text.Trim() + txt12prdct_no.Text.Trim() + txt13pqty.Text.Trim();
+                        var strtohx = _rfidStrForSet;// txt11stockin_id.Text.Trim() + txt12prdct_no.Text.Trim() + txt13pqty.Text.Trim();
 
 
                         SetMsg(lnlTotal, "开始设置RFID号");
@@ -534,9 +542,9 @@ namespace AnXinWH.RFIDScan.Stock
 
             //主表
             DataTable dt = null;
-            disWhereValueMain[MasterTableWHS.t_stockinctnno.stockin_no] = this._stockin_no;
+            disWhereValueMain[MasterTableWHS.t_stockinctnno.stockin_id] = this._stockin_id;
             disWhereValueMain[MasterTableWHS.t_stockinctnno.prdct_no] = txt12prdct_no.Text.Trim();
-            disForOrderByMain[MasterTableWHS.t_stockinctnno.stockin_no] = "true";
+            disForOrderByMain[MasterTableWHS.t_stockinctnno.stockin_id] = "true";
             disForOrderByMain[MasterTableWHS.t_stockinctnno.prdct_no] = "true";
 
             //log for use
@@ -566,7 +574,7 @@ namespace AnXinWH.RFIDScan.Stock
                 IsStartTran = true;
                 this.lnlTotal.Visible = true;
 
-                _rfidStrForSet = txt11stockin_no.Text.Trim() + txt12prdct_no.Text.Trim() + txt13pqty.Text.Trim();
+                _rfidStrForSet = txt11stockin_id.Text.Trim() + txt12prdct_no.Text.Trim() + txt13pqty.Text.Trim();
 
                 if (dt.Rows.Count <= 0)
                 {
@@ -669,7 +677,7 @@ namespace AnXinWH.RFIDScan.Stock
                                 MessageBox.Show(tmpmsg);
                             }
                             //write rfid code test
-                            var strtohx = _rfidStrForSet;// txt11stockin_no.Text.Trim() + txt12prdct_no.Text.Trim() + txt13pqty.Text.Trim();
+                            var strtohx = _rfidStrForSet;// txt11stockin_id.Text.Trim() + txt12prdct_no.Text.Trim() + txt13pqty.Text.Trim();
 
 
                             SetMsg(lnlTotal, "开始设置RFID号");
@@ -741,25 +749,34 @@ namespace AnXinWH.RFIDScan.Stock
 
         private void listView1_ItemActivate(object sender, EventArgs e)
         {
-            //选中行的索引
-            int index = listView1.SelectedIndices[0];
-            //选中行的值
-            ListViewItem selecteditem = listView1.Items[index];
-
-            //1列名
-            var colname = listView1.Columns[0].Text;
-
-            //选中行的第一列的值
-            string onetext = listView1.Items[index].SubItems[0].Text;
-
-            if (MessageBox.Show("您确定要删除：" + colname + ":" + onetext, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+            try
             {
-                this.listView1.Items.RemoveAt(index);
-                checkInList(onetext, true);
-                this.lnlTotal.Text = "成功删除:" + colname + ":" + onetext;
-                txt13pqty.Text = _lisCtnNo.Count.ToString();
+                //选中行的索引
+                int index = listView1.SelectedIndices[0];
+                //选中行的值
+                ListViewItem selecteditem = listView1.Items[index];
+
+                //1列名
+                var colname = listView1.Columns[0].Text;
+
+                //选中行的第一列的值
+                string onetext = listView1.Items[index].SubItems[0].Text;
+
+                if (MessageBox.Show("您确定要删除：" + colname + ":" + onetext, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                {
+                    this.listView1.Items.RemoveAt(index);
+                    checkInList(onetext, true);
+                    this.lnlTotal.Text = "成功删除:" + colname + ":" + onetext;
+                    txt13pqty.Text = _lisCtnNo.Count.ToString();
+
+                }
 
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
 
         }
 
@@ -778,28 +795,36 @@ namespace AnXinWH.RFIDScan.Stock
 
         private void txt21ctnno_no_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
+            try
             {
-                if (!string.IsNullOrEmpty(txt21ctnno_no.Text.Trim()))
+                if (e.KeyCode == Keys.Enter)
                 {
-
-
-                    if (!checkInList(txt21ctnno_no.Text.Trim(), false))
+                    if (!string.IsNullOrEmpty(txt21ctnno_no.Text.Trim()))
                     {
-                        scanItemDetail tmp = new scanItemDetail();
-                        tmp.ctnno_no = txt21ctnno_no.Text.Trim();
-                        tmp.qty = txt22qty.Text.Trim();
-                        tmp.nwet = txt23nwet.Text.Trim();
 
-                        addToListView(tmp);
 
-                    }
-                    else
-                    {
-                        SetMsg(lnlTotal, "箱号：" + txt21ctnno_no.Text + " 已扫。");
+                        if (!checkInList(txt21ctnno_no.Text.Trim(), false))
+                        {
+                            scanItemDetail tmp = new scanItemDetail();
+                            tmp.ctnno_no = txt21ctnno_no.Text.Trim();
+                            tmp.qty = txt22qty.Text.Trim();
+                            tmp.nwet = txt23nwet.Text.Trim();
+
+                            addToListView(tmp);
+
+                        }
+                        else
+                        {
+                            SetMsg(lnlTotal, "箱号：" + txt21ctnno_no.Text + " 已扫。");
+                        }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
         }
 
         private void txt22qty_TextChanged(object sender, EventArgs e)
@@ -827,16 +852,16 @@ namespace AnXinWH.RFIDScan.Stock
             }
         }
 
-        private void txt11stockin_no_TextChanged(object sender, EventArgs e)
+        private void txt11stockin_id_TextChanged(object sender, EventArgs e)
         {
-            _stockin_no = txt11stockin_no.Text.Trim();
-            SetMsg(lnlTotal, _stockin_no);
+            _stockin_id = txt11stockin_id.Text.Trim();
+            SetMsg(lnlTotal, _stockin_id);
 
         }
     }
     public class scanMain
     {
-        public string stockin_no { get; set; }
+        public string stockin_id { get; set; }
         public string prdct_no { get; set; }
         public string pqty { get; set; }
 

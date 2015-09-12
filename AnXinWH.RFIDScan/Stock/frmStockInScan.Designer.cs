@@ -43,7 +43,7 @@
             this.col3Weight = new System.Windows.Forms.ColumnHeader();
             this.listView1 = new System.Windows.Forms.ListView();
             this.label1 = new System.Windows.Forms.Label();
-            this.txt11stockin_no = new System.Windows.Forms.TextBox();
+            this.txt11stockin_id = new System.Windows.Forms.TextBox();
             this.txt12prdct_no = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txt13pqty = new System.Windows.Forms.TextBox();
@@ -147,16 +147,16 @@
             this.label1.Size = new System.Drawing.Size(73, 20);
             this.label1.Text = "入库单";
             // 
-            // txt11stockin_no
+            // txt11stockin_id
             // 
-            this.txt11stockin_no.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.txt11stockin_id.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.txt11stockin_no.Location = new System.Drawing.Point(81, 29);
-            this.txt11stockin_no.Name = "txt11stockin_no";
-            this.txt11stockin_no.Size = new System.Drawing.Size(129, 23);
-            this.txt11stockin_no.TabIndex = 6;
-            this.txt11stockin_no.TextChanged += new System.EventHandler(this.txt11stockin_no_TextChanged);
+            this.txt11stockin_id.Location = new System.Drawing.Point(81, 29);
+            this.txt11stockin_id.Name = "txt11stockin_id";
+            this.txt11stockin_id.Size = new System.Drawing.Size(129, 23);
+            this.txt11stockin_id.TabIndex = 6;
+            this.txt11stockin_id.TextChanged += new System.EventHandler(this.txt11stockin_id_TextChanged);
             // 
             // txt12prdct_no
             // 
@@ -291,7 +291,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txt12prdct_no);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.txt11stockin_no);
+            this.Controls.Add(this.txt11stockin_id);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.plnMenu);
@@ -321,7 +321,7 @@
         private System.Windows.Forms.ColumnHeader col3Weight;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txt11stockin_no;
+        private System.Windows.Forms.TextBox txt11stockin_id;
         private System.Windows.Forms.TextBox txt12prdct_no;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txt13pqty;

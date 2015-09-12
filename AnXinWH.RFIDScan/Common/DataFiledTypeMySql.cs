@@ -432,13 +432,13 @@ namespace AGCSystem
             FiledType["gwet"] = MySqlDbType.Float;
             FiledType["status"] = MySqlDbType.Bit;
             FiledType["rfid_no"] = MySqlDbType.VarChar;
-            FiledType["stockin_no"] = MySqlDbType.VarChar;
+            FiledType["stockin_id"] = MySqlDbType.VarChar;
             FiledType["stockin_date"] = MySqlDbType.DateTime;
             FiledType["op_no"] = MySqlDbType.VarChar;
             FiledType["ctnno_no"] = MySqlDbType.VarChar;
             FiledType["in_item_no"] = MySqlDbType.VarChar;
             FiledType["bespeak_no"] = MySqlDbType.VarChar;
-            FiledType["stockout_no"] = MySqlDbType.VarChar;
+            FiledType["stockout_id"] = MySqlDbType.VarChar;
             FiledType["stockout_date"] = MySqlDbType.DateTime;
             FiledType["pickup_user"] = MySqlDbType.VarChar;
             FiledType["pickup_card"] = MySqlDbType.VarChar;
