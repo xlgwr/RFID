@@ -63,6 +63,15 @@ namespace AnXinWH.RFIDScan.Stock
 
             return value;
         }
+        void initValueToTxt(scanMain_stockDetails value)
+        {
+            txt13Shelf_no.Text = value.shelf_no.Trim();
+
+            txt21pqty.Text = value.pqty.Trim();
+            txt4Qty.Text = value.qty.Trim();
+            txt5nwet.Text = value.nwet.Trim();
+
+        }
         void addToList(scanMain_stockDetails item, bool select)
         {
             string[] tmpstr = new string[4];
@@ -74,7 +83,8 @@ namespace AnXinWH.RFIDScan.Stock
 
             ListViewItem tmpitems1 = new ListViewItem(tmpstr);
             listView1.Items.Add(tmpitems1);
-            listView1.Items[0].Selected = true;
+
+            //listView1.Items[0].Selected = true;
         }
         //
         void updateInlist(string findValue)
@@ -550,6 +560,16 @@ namespace AnXinWH.RFIDScan.Stock
                 Cursor.Current = Cursors.Default;
             }
         }
+        private scanMain_stockDetails getRowToModel(DataRow dr)
+        {
+            var tmpStockDetail = new scanMain_stockDetails();
+            tmpStockDetail.shelf_no = dr[MasterTableWHS.t_stockdetail.shelf_no].ToString();
+            tmpStockDetail.pqty = dr[MasterTableWHS.t_stockdetail.pqty].ToString();
+            tmpStockDetail.qty = dr[MasterTableWHS.t_stockdetail.qty].ToString();
+            tmpStockDetail.nwet = dr[MasterTableWHS.t_stockdetail.nwet].ToString();
+            tmpStockDetail.prdct_no = dr[MasterTableWHS.t_stockdetail.prdct_no].ToString();
+            return tmpStockDetail;
+        }
         private void txt21ctnno_no_KeyDown(object sender, KeyEventArgs e)
         {
             var tmpmsg = "";
@@ -558,9 +578,101 @@ namespace AnXinWH.RFIDScan.Stock
             {
                 if (e.KeyCode == Keys.Enter)
                 {
+                    if (!timer1.Enabled)
+                    {
+                        timer1.Enabled = true;
+                    }
 
                     if (!string.IsNullOrEmpty(txt11stockout_id.Text.Trim()) && !string.IsNullOrEmpty(txt12Rfid_no.Text.Trim()))
                     {
+                        var tmpshelfModel = new scanMain_stockDetails();
+                        #region check shelf details
+
+                        //check is in stock deatils
+                        //set value
+
+                        StringDictionary dis1WhereValuet_stockdetail = new StringDictionary();
+                        //select            
+                        StringDictionary dis2ForValuet_stockdetail = new StringDictionary();
+
+                        //t_stockdetail
+                        dis1WhereValuet_stockdetail[MasterTableWHS.t_stockdetail.rfid_no] = _rfidStrForSet.Trim();
+                        dis2ForValuet_stockdetail[MasterTableWHS.t_stockdetail.rfid_no] = "true";
+
+
+
+                        var dt = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.t_stockdetail, dis1WhereValuet_stockdetail, dis2ForValuet_stockdetail, _disNull, "", false);
+                        if (dt != null)
+                        {
+                            if (dt.Rows.Count <= 0)
+                            {
+                                //var tmpshelf = dt.Rows[0][MasterTableWHS.t_stockdetail.shelf_no].ToString();
+                                tmpmsg = "RFID：" + _rfidStrForSet + " 未上架。请上架后再出库，谢谢。";
+                                SetMsg(lnlTotal, tmpmsg);
+                                MessageBox.Show(tmpmsg);
+                                AllInit(false);
+                                txt12Rfid_no.Text = "";
+                                dt = null;
+                                return;
+                            }
+                            else
+                            {
+                                tmpshelfModel = getRowToModel(dt.Rows[0]);
+                                initValueToTxt(tmpshelfModel);
+                            }
+                        }
+                        else
+                        {
+                            tmpmsg = "RFID：" + _rfidStrForSet + " 未上架。请上架后再出库，谢谢。";
+                            SetMsg(lnlTotal, tmpmsg);
+                            MessageBox.Show(tmpmsg);
+                            AllInit(false);
+                            txt12Rfid_no.Text = "";
+                            dt = null;
+                            return;
+                        }
+                        #endregion
+
+
+
+
+                        #region check t_stockoutctnno
+
+
+                        StringDictionary dis1WhereValuet_stockoutctnno = new StringDictionary();
+                        StringDictionary dis2ForValuet_stockoutctnno = new StringDictionary();
+                        //t_stockoutctnno
+                        dis1WhereValuet_stockoutctnno[MasterTableWHS.t_stockoutctnno.rfid_no] = _rfidStrForSet.Trim();
+                        dis2ForValuet_stockoutctnno[MasterTableWHS.t_stockoutctnno.rfid_no] = "true";
+
+
+                        dis1WhereValuet_stockoutctnno[MasterTableWHS.t_stockoutctnno.stockout_id] = txt11stockout_id.Text.Trim();
+                        dis2ForValuet_stockoutctnno[MasterTableWHS.t_stockoutctnno.stockout_id] = "true";
+
+
+                        dis1WhereValuet_stockoutctnno[MasterTableWHS.t_stockoutctnno.prdct_no] = tmpshelfModel.prdct_no;
+                        dis2ForValuet_stockoutctnno[MasterTableWHS.t_stockoutctnno.prdct_no] = "true";
+
+                        var dtIn = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.t_stockoutctnno, dis1WhereValuet_stockoutctnno, dis2ForValuet_stockoutctnno, _disNull, "", false);
+                        if (dtIn != null)
+                        {
+                            if (dtIn.Rows.Count > 0)
+                            {
+                                tmpmsg = "RFID：" + _rfidStrForSet + " 已出库。货物编码：" + tmpshelfModel.prdct_no + ",出库单:" + txt11stockout_id.Text.Trim();
+
+                                SetMsg(lnlTotal, tmpmsg);
+                                MessageBox.Show(tmpmsg);
+                                AllInit(false);
+                                txt12Rfid_no.Text = "";
+                                dtIn = null;
+                                return;
+                            }
+
+                        }
+
+                        #endregion
+
+
                         if (!checkInList(_rfidStrForSet.Trim(), false))
                         {
                             scanMain_stockDetails tmp = new scanMain_stockDetails();
@@ -571,101 +683,14 @@ namespace AnXinWH.RFIDScan.Stock
 
                             addToListView(tmp);
 
-                            txt21pqty.Focus();
+                            txt12Rfid_no.Focus();
                         }
                         else
                         {
+                            AllInit(false);
+                            txt12Rfid_no.Text = "";
                             SetMsg(lnlTotal, "RFID：" + _rfidStrForSet + " 已扫。");
                         }
-
-                        //text 
-                        return;
-
-
-                        #region check shelf details
-
-                        //check is in stock deatils
-                        //set value
-                        StringDictionary dis1WhereValuet_stockinctnno = new StringDictionary();
-
-                        StringDictionary dis1WhereValuet_stockdetail = new StringDictionary();
-                        //select            
-                        StringDictionary dis2ForValuet_stockdetail = new StringDictionary();
-                        StringDictionary dis2ForValuet_stockinctnno = new StringDictionary();
-
-                        dis1WhereValuet_stockdetail[MasterTableWHS.t_stockdetail.rfid_no] = _rfidStrForSet.Trim();
-                        dis2ForValuet_stockdetail[MasterTableWHS.t_stockdetail.rfid_no] = "true";
-
-                        //t_stockinctnno
-                        dis1WhereValuet_stockinctnno[MasterTableWHS.t_stockinctnno.rfid_no] = _rfidStrForSet.Trim();
-                        dis2ForValuet_stockinctnno[MasterTableWHS.t_stockinctnno.rfid_no] = "true";
-
-                        //dis1WhereValuet_stockinctnno[MasterTableWHS.t_stockinctnno.status] = "0";
-                        //dis2ForValuet_stockinctnno[MasterTableWHS.t_stockinctnno.status] = "true";
-
-                        var dt = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.t_stockdetail, dis1WhereValuet_stockdetail, dis2ForValuet_stockdetail, _disNull, "", false);
-                        if (dt != null)
-                        {
-                            if (dt.Rows.Count > 0)
-                            {
-                                var tmpshelf = dt.Rows[0][MasterTableWHS.t_stockdetail.shelf_no].ToString();
-                                tmpmsg = "RFID：" + _rfidStrForSet + " 已上架。货架：" + tmpshelf;
-                                SetMsg(lnlTotal, tmpmsg);
-                                MessageBox.Show(tmpmsg);
-                                AllInit(false);
-                                dt = null;
-                                return;
-                            }
-                        }
-                        #endregion
-                        #region check t_stockinctnno
-
-
-
-                        var dtIn = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.t_stockinctnno, dis1WhereValuet_stockinctnno, dis2ForValuet_stockinctnno, _disNull, "", false);
-                        if (dtIn != null)
-                        {
-                            if (dtIn.Rows.Count > 0)
-                            {
-                                var tmpstatus = dtIn.Rows[0][MasterTableWHS.t_stockinctnno.status].ToString().Trim();
-                                if (tmpstatus.Equals("0"))
-                                {
-                                    var tmpstockin_id = dtIn.Rows[0][MasterTableWHS.t_stockinctnno.stockin_id].ToString();
-                                    var tmpshelf = dtIn.Rows[0][MasterTableWHS.t_stockinctnno.prdct_no].ToString();
-                                    tmpmsg = "RFID：" + _rfidStrForSet + " 已失效。货物编码：" + tmpshelf + ",入库单:" + tmpstockin_id;
-
-                                    SetMsg(lnlTotal, tmpmsg);
-                                    MessageBox.Show(tmpmsg);
-                                    AllInit(false);
-                                    dtIn = null;
-                                    tmpstatus = string.Empty;
-                                    return;
-                                }
-                            }
-                            else
-                            {
-                                tmpmsg = "Error1: RFID：" + _rfidStrForSet + " 不存在系统中。。。请检查数据的准确性。";
-                                SetMsg(lnlTotal, tmpmsg);
-
-                                MessageBox.Show(tmpmsg);
-                                AllInit(false);
-                                dtIn = null;
-                                return;
-                            }
-
-                        }
-                        else
-                        {
-                            tmpmsg = "Error2:RFID：" + _rfidStrForSet + "  不存在系统中。。。请检查数据的准确性。";
-                            SetMsg(lnlTotal, tmpmsg);
-
-                            MessageBox.Show(tmpmsg);
-                            AllInit(false);
-                            dtIn = null;
-                            return;
-                        }
-
-                        #endregion
                     }
                 }
             }
@@ -979,31 +1004,35 @@ namespace AnXinWH.RFIDScan.Stock
 
         private void listView1_ItemActivate(object sender, EventArgs e)
         {
+            int index = 0;
             try
             {
                 //选中行的索引
-                int index = listView1.SelectedIndices[0];
-                //选中行的值
-                ListViewItem selecteditem = listView1.Items[index];
-
-                //1列名
-                var colname = listView1.Columns[0].Text;
-
-                //选中行的第一列的值
-                string onetext = listView1.Items[index].SubItems[0].Text;
-
-                if (MessageBox.Show("您确定要删除：" + colname + ":" + onetext, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                if (listView1.SelectedIndices.Count > 0)
                 {
-                    this.listView1.Items.RemoveAt(index);
-                    checkInList(onetext, true);
-                    this.lnlTotal.Text = "成功删除:" + colname + ":" + onetext;
-                    lbl0Count.Text = _lisCtnNo.Count.ToString();
+                     index = listView1.SelectedIndices[0];
+                    //选中行的值
+                    ListViewItem selecteditem = listView1.Items[index];
 
+                    //1列名
+                    var colname = listView1.Columns[0].Text;
+
+                    //选中行的第一列的值
+                    string onetext = listView1.Items[index].SubItems[0].Text;
+
+                    if (MessageBox.Show("您确定要删除：" + colname + ":" + onetext, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                    {
+                        this.listView1.Items.RemoveAt(index);
+                        checkInList(onetext, true);
+                        this.lnlTotal.Text = "成功删除:" + colname + ":" + onetext;
+                        lbl0Count.Text = _lisCtnNo.Count.ToString();
+
+                    }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(index + "," + ex.Message);
             }
 
 
@@ -1011,14 +1040,44 @@ namespace AnXinWH.RFIDScan.Stock
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //选中行的索引
-            int index = listView1.SelectedIndices[0];
-            //选中行的值
-            ListViewItem selecteditem = listView1.Items[index];
-            //选中行的第一列的值
-            string onetext = listView1.Items[index].SubItems[1].Text;
+            int index = 0;
+            try
+            {
 
-            this.lnlTotal.Text = "selectIndex:" + index + "," + selecteditem.Text + "," + onetext;
+                //选中行的索引
+                if (listView1.SelectedIndices.Count > 0)
+                {
+                    index = listView1.SelectedIndices[0];
+
+                    if (index >= 0)
+                    {
+                        //选中行的值
+                        ListViewItem selecteditem = listView1.Items[index];
+
+
+                        txt12Rfid_no.Text = selecteditem.SubItems[0].Text;
+                        txt21pqty.Text = selecteditem.SubItems[1].Text;
+                        txt4Qty.Text = selecteditem.SubItems[2].Text;
+                        txt5nwet.Text = selecteditem.SubItems[3].Text;
+
+                        txt21pqty.Focus();
+
+                        selecteditem.Selected = true;
+                        //选中行的第一列的值
+
+                        string onetext = listView1.Items[index].SubItems[1].Text;
+
+                        this.lnlTotal.Text = "selectIndex:" + index + "," + selecteditem.Text + "," + onetext;
+                    }
+                }
+
+
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(index + "," + ex.Message);
+            }
 
         }
 
@@ -1095,10 +1154,15 @@ namespace AnXinWH.RFIDScan.Stock
     }
     public class scanMain_stockDetails
     {
+        public string shelf_no { get; set; }
+        public string prdct_no { get; set; }
+
+
         public string rfid_no { get; set; }
         public string pqty { get; set; }
         public string qty { get; set; }
         public string nwet { get; set; }
 
     }
+
 }

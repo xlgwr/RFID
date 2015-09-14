@@ -520,19 +520,7 @@ namespace AnXinWH.RFIDScan.Stock
 
                     if (!string.IsNullOrEmpty(txt1RfidNo.Text.Trim()) && !string.IsNullOrEmpty(txt2ShelfNo.Text.Trim()))
                     {
-                        if (!checkInList(txt1RfidNo.Text.Trim(), false))
-                        {
-                            scanMain_stock tmp = new scanMain_stock();
-                            tmp.rfid_no = txt1RfidNo.Text.Trim();
-                            tmp.shelf_no = txt2ShelfNo.Text.Trim();
 
-                            addToListView(tmp);
-
-                        }
-                        else
-                        {
-                            SetMsg(lnlTotal, "RFID：" + txt1RfidNo.Text + " 已扫。");
-                        }
                         #region check shelf details
 
                         //check is in stock deatils
@@ -572,7 +560,7 @@ namespace AnXinWH.RFIDScan.Stock
                         #endregion
 
                         #region check t_stockinctnno
-                      
+
                         var dtIn = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.t_stockinctnno, dis1WhereValuet_stockinctnno, dis2ForValuet_stockinctnno, _disNull, "", false);
                         if (dtIn != null)
                         {
@@ -618,6 +606,19 @@ namespace AnXinWH.RFIDScan.Stock
 
                         #endregion
 
+                        if (!checkInList(txt1RfidNo.Text.Trim(), false))
+                        {
+                            scanMain_stock tmp = new scanMain_stock();
+                            tmp.rfid_no = txt1RfidNo.Text.Trim();
+                            tmp.shelf_no = txt2ShelfNo.Text.Trim();
+
+                            addToListView(tmp);
+
+                        }
+                        else
+                        {
+                            SetMsg(lnlTotal, "RFID：" + txt1RfidNo.Text + " 已扫。");
+                        }
                     }
                 }
             }
