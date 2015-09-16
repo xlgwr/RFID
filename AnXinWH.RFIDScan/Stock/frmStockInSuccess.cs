@@ -521,27 +521,99 @@ namespace AnXinWH.RFIDScan.Stock
                     if (!string.IsNullOrEmpty(txt1RfidNo.Text.Trim()) && !string.IsNullOrEmpty(txt2ShelfNo.Text.Trim()))
                     {
 
-                        #region check shelf details
-
                         //check is in stock deatils
                         //set value
                         StringDictionary dis1WhereValuet_stockinctnno = new StringDictionary();
-
                         StringDictionary dis1WhereValuet_stockdetail = new StringDictionary();
+                        StringDictionary dis1WhereValuem_shelf = new StringDictionary();
+
                         //select            
                         StringDictionary dis2ForValuet_stockdetail = new StringDictionary();
                         StringDictionary dis2ForValuet_stockinctnno = new StringDictionary();
-
-                        dis1WhereValuet_stockdetail[MasterTableWHS.t_stockdetail.rfid_no] = txt1RfidNo.Text.Trim();
-                        dis2ForValuet_stockdetail[MasterTableWHS.t_stockdetail.rfid_no] = "true";
+                        StringDictionary dis2ForValuem_shelf = new StringDictionary();
 
                         //t_stockinctnno
                         dis1WhereValuet_stockinctnno[MasterTableWHS.t_stockinctnno.rfid_no] = txt1RfidNo.Text.Trim();
                         dis2ForValuet_stockinctnno[MasterTableWHS.t_stockinctnno.rfid_no] = "true";
 
+
+                        //check shelf no
+                        dis1WhereValuem_shelf[MasterTableWHS.m_shelf.shelf_no] = txt2ShelfNo.Text.Trim();
+                        dis2ForValuem_shelf[MasterTableWHS.m_shelf.shelf_no] = "true";
+
+                        //check shelf details
+                        dis1WhereValuet_stockdetail[MasterTableWHS.t_stockdetail.rfid_no] = txt1RfidNo.Text.Trim();
+                        dis2ForValuet_stockdetail[MasterTableWHS.t_stockdetail.rfid_no] = "true";
+
+
                         //dis1WhereValuet_stockinctnno[MasterTableWHS.t_stockinctnno.status] = "0";
                         //dis2ForValuet_stockinctnno[MasterTableWHS.t_stockinctnno.status] = "true";
 
+                        #region check t_stockinctnno
+
+                        var dtIn = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.t_stockinctnno, dis1WhereValuet_stockinctnno, dis2ForValuet_stockinctnno, _disNull, "", false);
+                        
+                        if (dtIn.Rows.Count > 0)
+                        {
+                            var tmpstatus = dtIn.Rows[0][MasterTableWHS.t_stockinctnno.status].ToString().Trim();
+                            if (tmpstatus.Equals("0"))
+                            {
+                                var tmpstockin_id = dtIn.Rows[0][MasterTableWHS.t_stockinctnno.stockin_id].ToString();
+                                var tmpshelf = dtIn.Rows[0][MasterTableWHS.t_stockinctnno.prdct_no].ToString();
+                                tmpmsg = "RFID：" + txt1RfidNo.Text + " 已失效。货物编码：" + tmpshelf + ",入库单:" + tmpstockin_id;
+
+                                SetMsg(lnlTotal, tmpmsg);
+                                MessageBox.Show(tmpmsg);
+                                AllInit(false);
+                                dtIn = null;
+                                tmpstatus = string.Empty;
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            tmpmsg = "Error1: RFID：" + txt1RfidNo.Text + " 不存在系统中。。。请检查数据的准确性。";
+                            SetMsg(lnlTotal, tmpmsg);
+
+                            MessageBox.Show(tmpmsg);
+                            AllInit(false);
+                            dtIn = null;
+                            return;
+                        }
+
+                        #endregion
+
+                        #region check shell no
+
+                        var dtShell = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.m_shelf, dis1WhereValuem_shelf, dis2ForValuem_shelf, _disNull, "", false);
+
+                        if (dtShell.Rows.Count > 0)
+                        {
+                            var tmpstatus = dtShell.Rows[0][MasterTableWHS.m_shelf.status].ToString().Trim();
+                            if (tmpstatus.Equals("0"))
+                            {
+                                tmpmsg = "货架：" + txt2ShelfNo.Text + " 已失效.";
+
+                                SetMsg(lnlTotal, tmpmsg);
+                                MessageBox.Show(tmpmsg);
+                                AllInit(false);
+                                dtIn = null;
+                                tmpstatus = string.Empty;
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            tmpmsg = "Error1: 货架：" + txt2ShelfNo.Text + " 不存在系统中。。。请检查数据的准确性。";
+                            SetMsg(lnlTotal, tmpmsg);
+
+                            MessageBox.Show(tmpmsg);
+                            AllInit(false);
+                            dtIn = null;
+                            return;
+                        }
+                        #endregion
+                        #region check shelf details
 
                         var dt = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.t_stockdetail, dis1WhereValuet_stockdetail, dis2ForValuet_stockdetail, _disNull, "", false);
                         if (dt != null)
@@ -557,53 +629,6 @@ namespace AnXinWH.RFIDScan.Stock
                                 return;
                             }
                         }
-                        #endregion
-
-                        #region check t_stockinctnno
-
-                        var dtIn = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.t_stockinctnno, dis1WhereValuet_stockinctnno, dis2ForValuet_stockinctnno, _disNull, "", false);
-                        if (dtIn != null)
-                        {
-                            if (dtIn.Rows.Count > 0)
-                            {
-                                var tmpstatus = dtIn.Rows[0][MasterTableWHS.t_stockinctnno.status].ToString().Trim();
-                                if (tmpstatus.Equals("0"))
-                                {
-                                    var tmpstockin_id = dtIn.Rows[0][MasterTableWHS.t_stockinctnno.stockin_id].ToString();
-                                    var tmpshelf = dtIn.Rows[0][MasterTableWHS.t_stockinctnno.prdct_no].ToString();
-                                    tmpmsg = "RFID：" + txt1RfidNo.Text + " 已失效。货物编码：" + tmpshelf + ",入库单:" + tmpstockin_id;
-
-                                    SetMsg(lnlTotal, tmpmsg);
-                                    MessageBox.Show(tmpmsg);
-                                    AllInit(false);
-                                    dtIn = null;
-                                    tmpstatus = string.Empty;
-                                    return;
-                                }
-                            }
-                            else
-                            {
-                                tmpmsg = "Error1: RFID：" + txt1RfidNo.Text + " 不存在系统中。。。请检查数据的准确性。";
-                                SetMsg(lnlTotal, tmpmsg);
-
-                                MessageBox.Show(tmpmsg);
-                                AllInit(false);
-                                dtIn = null;
-                                return;
-                            }
-
-                        }
-                        else
-                        {
-                            tmpmsg = "Error2:RFID：" + txt1RfidNo.Text + "  不存在系统中。。。请检查数据的准确性。";
-                            SetMsg(lnlTotal, tmpmsg);
-
-                            MessageBox.Show(tmpmsg);
-                            AllInit(false);
-                            dtIn = null;
-                            return;
-                        }
-
                         #endregion
 
                         if (!checkInList(txt1RfidNo.Text.Trim(), false))

@@ -158,6 +158,7 @@
             this.txt11stockout_id.Name = "txt11stockout_id";
             this.txt11stockout_id.Size = new System.Drawing.Size(157, 23);
             this.txt11stockout_id.TabIndex = 6;
+            this.txt11stockout_id.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt11stockout_id_KeyDown);
             // 
             // txt12Rfid_no
             // 

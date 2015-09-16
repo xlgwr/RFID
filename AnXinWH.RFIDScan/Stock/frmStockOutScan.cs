@@ -15,6 +15,7 @@ using AnXinWH.RFIDScan.Libs;
 using ModuleTech;
 using ClassLibraryDKG;
 using ModuleLibrary;
+using AnXinWH.RFIDScan.MasterTableWHS;
 
 
 namespace AnXinWH.RFIDScan.Stock
@@ -676,8 +677,8 @@ namespace AnXinWH.RFIDScan.Stock
                         dis2ForValuet_stockoutctnno[MasterTableWHS.t_stockoutctnno.rfid_no] = "true";
 
 
-                        dis1WhereValuet_stockoutctnno[MasterTableWHS.t_stockoutctnno.stockout_id] = txt11stockout_id.Text.Trim();
-                        dis2ForValuet_stockoutctnno[MasterTableWHS.t_stockoutctnno.stockout_id] = "true";
+                        //dis1WhereValuet_stockoutctnno[MasterTableWHS.t_stockoutctnno.stockout_id] = txt11stockout_id.Text.Trim();
+                        //dis2ForValuet_stockoutctnno[MasterTableWHS.t_stockoutctnno.stockout_id] = "true";
 
 
                         dis1WhereValuet_stockoutctnno[MasterTableWHS.t_stockoutctnno.prdct_no] = tmpshelfModel.prdct_no;
@@ -688,7 +689,8 @@ namespace AnXinWH.RFIDScan.Stock
                         {
                             if (dtIn.Rows.Count > 0)
                             {
-                                tmpmsg = "RFID：" + _rfidStrForSet + " 已出库。货物编码：" + tmpshelfModel.prdct_no + ",出库单:" + txt11stockout_id.Text.Trim();
+                                var tmpStockOutid = dtIn.Rows[0][t_stockoutctnno.stockout_id].ToString();
+                                tmpmsg = "RFID：" + _rfidStrForSet + " 已出库。货物编码：" + tmpshelfModel.prdct_no + ",出库单:" + tmpStockOutid;
 
                                 SetMsg(lnlTotal, tmpmsg);
                                 MessageBox.Show(tmpmsg);
@@ -1181,6 +1183,17 @@ namespace AnXinWH.RFIDScan.Stock
             {
 
                 updateInlist(_rfidStrForSet);
+            }
+        }
+
+        private void txt11stockout_id_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode== Keys.Enter)
+            {
+                if (txt11stockout_id.Text.Trim().Length>0)
+                {
+                    txt12Rfid_no.Focus();
+                }
             }
         }
     }
