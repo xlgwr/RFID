@@ -5,7 +5,6 @@ using System.Data;
 using System.Text;
 using Framework.DataAccess;
 using Framework.Libs;
-using AnXinWH.RFIDScan.MasterTable;
 using System.Windows.Forms;
 
 namespace AnXinWH.RFIDScan.Libs

@@ -10,7 +10,6 @@ using Framework.Libs;
 using AnXinWH.RFIDScan.Libs;
 using Framework.DataAccess;
 using System.Collections.Specialized;
-using AnXinWH.RFIDScan.MasterTable;
 using System.Runtime.InteropServices;
 
 namespace AnXinWH.RFIDScan
@@ -227,43 +226,6 @@ namespace AnXinWH.RFIDScan
         }
 
 
-        /// <summary>
-        /// 图册定位扫描
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnScanBox_Click(object sender, EventArgs e)
-        {
-            Cursor.Current = Cursors.WaitCursor;
-
-            try
-            {
-
-                Common._authorid = string.Empty;
-                Common._authornm = string.Empty;
-
-                //Common._factoryname = string.Empty;
-                //Common._factType = string.Empty;
-                Common._personid = string.Empty;
-                Common._personname = string.Empty;
-                Common._personpswd = string.Empty;
-                //this.m_frmScanBox.ShowDialog();
-                frmScanDoc frm = new frmScanDoc();
-                frm.ShowDialog();
-
-            }
-            catch (Exception ex)
-            {
-
-                LogManager.WriteLog(Common.LogFile.Error, ex.Message);
-                MessageBox.Show(Common.GetLanguageWord("frmDocReturn", "FDR007"),
-                       Common.GetLanguageWord(Common.COM_SECTION, "MSGTITLE"), MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1);
-            }
-            finally
-            {
-                Cursor.Current = Cursors.Default;
-            }
-        }
 
         #region 画面按下事件
 
@@ -279,15 +241,9 @@ namespace AnXinWH.RFIDScan
 
                 if (e.KeyCode == Keys.F11)
                 {
-                    //图册定位扫描
-                    // btnScanBox_Click(btnScanDoc, null);
-                }
-                else if (e.KeyCode == Keys.F12)
-                {
                     //用户登录
                     btnLogin_Click(btnLogin, null);
                 }
-
                 else if (e.KeyCode == Keys.Escape)
                 {
                     Close();
@@ -627,130 +583,6 @@ namespace AnXinWH.RFIDScan
             }
         }
 
-
-        /// <summary>
-        /// 获取系统R/3参数信息
-        /// </summary>
-        public bool GetSysR3Parameter()
-        {
-
-            DataTable tblSysR3Parameter;
-
-            bool isCheck = false;
-
-            try
-            {
-
-                //=============获取采集器信息===============
-
-                dicItemData.Clear();
-                dicConds.Clear();
-                dicLikeConds.Clear();
-
-                //tblSysR3Parameter = this.m_daoCommon.GetTableInfo(M_SysR3Parameter.TableName, dicItemData, dicConds, dicLikeConds, "");
-
-                //if (tblSysR3Parameter == null || tblSysR3Parameter.Rows.Count <= 0)
-                //{
-
-                //    MessageBox.Show("系统R/3参数被删除，请与供应商联系！", Declare.Info_SysName,
-                //                MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1);
-
-                //    return false;
-                //}
-
-                //重复扫描周期
-                //Common._upInterval = int.Parse(tblSysR3Parameter.Rows[0][M_SysR3Parameter.CardFilterMaxTime].ToString());
-
-                isCheck = true;
-
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            return isCheck;
-        }
-
-
-        /// <summary>
-        /// 获取采集器信息
-        /// </summary>
-        public bool GetTerminalInfo()
-        {
-
-            DataTable tblTerminal;
-
-            bool isCheck = false;
-            string w_TrmnParamUpdTime;
-            //采集器运行状态 0：正常；1：停止；3：通讯异常
-            string w_intTrmnRunStatus = "1";
-
-            try
-            {
-
-                //=============获取采集器信息===============
-
-                dicItemData.Clear();
-                dicConds.Clear();
-                dicLikeConds.Clear();
-                dicConds[M_TerminalSetting.TerminalNo] = "true";
-                dicConds[M_TerminalSetting.TrmnStatus] = "true";
-
-                dicItemData[M_TerminalSetting.TerminalNo] = Common._terminalNo;
-                dicItemData[M_TerminalSetting.TrmnStatus] = "true";
-
-
-                tblTerminal = this.m_daoCommon.GetTableInfo(M_TerminalSetting.TableName, dicItemData, dicConds, dicLikeConds, "", true);
-
-
-                //tblTerminal = this.m_daoCommon.GetTableInfo(M_TerminalSetting.Grid_TermDeviceInfo, dicItemData, dicConds, dicLikeConds, "");
-
-                if (tblTerminal == null || tblTerminal.Rows.Count <= 0)
-                {
-                    //已注册采集设备系统中被禁用或删除，请与供应商联系！
-                    MessageBox.Show(Common.GetLanguageWord(this.Name, "FLG009"), Declare.Info_SysName,
-                                MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1);
-
-                    return false;
-                }
-
-
-                //采集器功能类型区分
-                Common._deviceFuncType = int.Parse(tblTerminal.Rows[0][MasterTable.M_TerminalType.TypeFlag].ToString());
-                //工厂编号
-                //Common._factoryno = tblTerminal.Rows[0][MasterTable.M_Factory.FactoryNo].ToString();
-
-                //参数更新时间
-                w_TrmnParamUpdTime = tblTerminal.Rows[0][MasterTable.M_TerminalSetting.TrmnParamUpdTime].ToString();
-                if (string.IsNullOrEmpty(w_TrmnParamUpdTime))
-                {
-                    w_TrmnParamUpdTime = DateTime.MinValue.ToString();
-                }
-
-                Common._lastUpdTime = DateTime.Parse(w_TrmnParamUpdTime);
-                w_intTrmnRunStatus = tblTerminal.Rows[0][MasterTable.M_TerminalSetting.TrmnRunStatus].ToString();
-
-                if (w_intTrmnRunStatus.Equals("0") == true)
-                {
-                    //该设备对应采集器处于运行状态不能使用手持机扫描！
-                    MessageBox.Show(Common.GetLanguageWord(this.Name, "FLG010"), Declare.Info_SysName,
-                    MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1);
-                    return false;
-                }
-
-                isCheck = true;
-
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            return isCheck;
-        }
-
-
         /// <summary>
         /// 控件设置焦点
         /// </summary>
@@ -793,6 +625,17 @@ namespace AnXinWH.RFIDScan
         private void button1_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void txtUserId_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode== Keys.Enter)
+            {
+                if (txtUserId.Text.Trim().Length>=0)
+                {
+                    txtPaswd.Focus();
+                }
+            }
         }
     }
 }

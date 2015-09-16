@@ -104,7 +104,7 @@
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(99, 35);
             this.btnLogin.TabIndex = 11;
-            this.btnLogin.Text = "用户登录(S2)";
+            this.btnLogin.Text = "用户登录(S1)";
             this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
             // 
             // txtUserId
@@ -114,6 +114,7 @@
             this.txtUserId.Name = "txtUserId";
             this.txtUserId.Size = new System.Drawing.Size(204, 23);
             this.txtUserId.TabIndex = 9;
+            this.txtUserId.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtUserId_KeyDown);
             // 
             // lblDeviceInfo
             // 

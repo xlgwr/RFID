@@ -81,53 +81,16 @@
   <ItemGroup>
     <Compile Include="Common\DataFiledTypeMySql.cs" />
     <Compile Include="Common\DataFiledTypeSQLServer.cs" />
-    <Compile Include="frmDocSearch.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmDocSearch.Designer.cs">
-      <DependentUpon>frmDocSearch.cs</DependentUpon>
-    </Compile>
     <Compile Include="frmMenu.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmMenu.Designer.cs">
       <DependentUpon>frmMenu.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmScanDoc.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmScanDoc.Designer.cs">
-      <DependentUpon>frmScanDoc.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Invtry\frmDocReturn.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Invtry\frmDocReturn.Designer.cs">
-      <DependentUpon>frmDocReturn.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Invtry\frmInvtryDetail.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Invtry\frmInvtryDetail.Designer.cs">
-      <DependentUpon>frmInvtryDetail.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Invtry\frmInvtryScan.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Invtry\frmInvtryScan.Designer.cs">
-      <DependentUpon>frmInvtryScan.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Invtry\frmInvtrySelect.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Invtry\frmInvtrySelect.Designer.cs">
-      <DependentUpon>frmInvtrySelect.cs</DependentUpon>
-    </Compile>
     <Compile Include="Libs\busRRU9803.cs" />
     <Compile Include="Libs\busUploadScan.cs" />
     <Compile Include="Libs\Declare.cs" />
     <Compile Include="Libs\Device.cs" />
-    <Compile Include="Libs\MasterTable.cs" />
     <Compile Include="Libs\enum.cs" />
     <Compile Include="Libs\MasterTableForAnXinWH.cs" />
     <Compile Include="Libs\RWDeviceDll.cs" />
@@ -149,10 +112,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="frmDocSearch.resx">
-      <DependentUpon>frmDocSearch.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="frmLogin.resx">
       <DependentUpon>frmLogin.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -163,26 +122,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmMenu.resx">
       <DependentUpon>frmMenu.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmScanDoc.resx">
-      <DependentUpon>frmScanDoc.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Invtry\frmDocReturn.resx">
-      <DependentUpon>frmDocReturn.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Invtry\frmInvtryDetail.resx">
-      <DependentUpon>frmInvtryDetail.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Invtry\frmInvtryScan.resx">
-      <DependentUpon>frmInvtryScan.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Invtry\frmInvtrySelect.resx">
-      <DependentUpon>frmInvtrySelect.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
