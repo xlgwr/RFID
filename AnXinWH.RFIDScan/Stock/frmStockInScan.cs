@@ -185,8 +185,11 @@ namespace AnXinWH.RFIDScan.Stock
             //tmpTestData();
 
             //for test new stockin_id
-            _stockin_id = DateTime.Now.ToString("yyyyMMddHHmmss");
-            txt11stockin_id.Text = _stockin_id;
+            //_stockin_id = DateTime.Now.ToString("yyyyMMddHHmmss");
+
+            txt11stockin_id.Text = "";// _stockin_id;
+
+            txt11stockin_id.Focus();
 
             //
             _lisCtnNo = new List<scanItemDetail>();

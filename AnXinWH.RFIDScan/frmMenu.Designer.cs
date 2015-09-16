@@ -125,6 +125,7 @@
             this.button5.Size = new System.Drawing.Size(108, 41);
             this.button5.TabIndex = 3;
             this.button5.Text = "货物盘点";
+            this.button5.Visible = false;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // frmMenu

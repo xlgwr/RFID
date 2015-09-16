@@ -129,11 +129,11 @@
             this.listView1.Columns.Add(this.col2pqty);
             this.listView1.Columns.Add(this.col3qty);
             this.listView1.Columns.Add(this.col3Weight);
-            this.listView1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular);
+            this.listView1.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular);
             this.listView1.FullRowSelect = true;
-            this.listView1.Location = new System.Drawing.Point(2, 174);
+            this.listView1.Location = new System.Drawing.Point(2, 170);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(238, 79);
+            this.listView1.Size = new System.Drawing.Size(238, 83);
             this.listView1.TabIndex = 0;
             this.listView1.View = System.Windows.Forms.View.Details;
             this.listView1.ItemActivate += new System.EventHandler(this.listView1_ItemActivate);
@@ -241,6 +241,7 @@
             this.button2.Size = new System.Drawing.Size(69, 28);
             this.button2.TabIndex = 25;
             this.button2.Text = "提交(S1)";
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // label8
             // 
@@ -280,7 +281,7 @@
             // 
             this.lbl0Count.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
             this.lbl0Count.ForeColor = System.Drawing.Color.Red;
-            this.lbl0Count.Location = new System.Drawing.Point(213, 156);
+            this.lbl0Count.Location = new System.Drawing.Point(213, 154);
             this.lbl0Count.Name = "lbl0Count";
             this.lbl0Count.Size = new System.Drawing.Size(24, 15);
             this.lbl0Count.Text = "0";
@@ -293,6 +294,7 @@
             this.ClientSize = new System.Drawing.Size(240, 320);
             this.ControlBox = false;
             this.Controls.Add(this.lbl0Count);
+            this.Controls.Add(this.listView1);
             this.Controls.Add(this.txt21pqty);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.button2);
@@ -309,7 +311,6 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.plnMenu);
-            this.Controls.Add(this.listView1);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.lnlTotal);
