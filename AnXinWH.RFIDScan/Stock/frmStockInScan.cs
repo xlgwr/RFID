@@ -428,9 +428,47 @@ namespace AnXinWH.RFIDScan.Stock
                 return;
             }
             Cursor.Current = Cursors.WaitCursor;
+
+            var tmpmsg = "";
             try
             {
+                #region check product no
 
+                StringDictionary dis1WhereValue_m_products = new StringDictionary();
+                StringDictionary dis2ForValue_m_products = new StringDictionary();
+
+                var tmpValue = txt12prdct_no.Text.Trim();
+                dis1WhereValue_m_products[MasterTableWHS.m_products.prdct_no] = tmpValue;
+                dis2ForValue_m_products[MasterTableWHS.m_products.prdct_no] = "true";
+
+                var dtproducts = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.m_products, dis1WhereValue_m_products, dis2ForValue_m_products, _disNull, "", false);
+
+                if (dtproducts.Rows.Count > 0)
+                {
+                    var tmpstatus = dtproducts.Rows[0][MasterTableWHS.m_products.status].ToString().Trim();
+                    if (tmpstatus.Equals("0"))
+                    {
+                        tmpmsg = "货物：" + tmpValue + " 已失效.";
+
+                        SetMsg(lnlTotal, tmpmsg);
+                        MessageBox.Show(tmpmsg);
+
+
+                        txt12prdct_no.Focus();
+                        return;
+                    }
+                }
+                else
+                {
+                    tmpmsg = "Error1: 货物：" + tmpValue + " 不存在系统中。。。请检查数据的准确性。";
+
+                    SetMsg(lnlTotal, tmpmsg);
+                    MessageBox.Show(tmpmsg);
+
+                    txt12prdct_no.Focus();
+                    return;
+                }
+                #endregion
 
                 if (listView1.Items.Count <= 0)
                 {
@@ -467,7 +505,7 @@ namespace AnXinWH.RFIDScan.Stock
                         }
                         if (tmprfid.Length > 0)
                         {
-                            var tmpmsg = "读到value:" + Encryption.HexStringToString(tmprfid.ToString(), Encoding.UTF8) + ",RFID:" + tmprfid;
+                            tmpmsg = "读到value:" + Encryption.HexStringToString(tmprfid.ToString(), Encoding.UTF8) + ",RFID:" + tmprfid;
                             SetMsg(lnlTotal, tmpmsg);
                             MessageBox.Show(tmpmsg);
                         }
@@ -816,11 +854,14 @@ namespace AnXinWH.RFIDScan.Stock
 
                             addToListView(tmp);
 
+                            setFouces(e, txt22qty);
                         }
                         else
                         {
                             SetMsg(lnlTotal, "箱号：" + txt21ctnno_no.Text + " 已扫。");
                         }
+
+
                     }
                 }
             }
@@ -864,6 +905,39 @@ namespace AnXinWH.RFIDScan.Stock
         {
             _stockin_id = txt11stockin_id.Text.Trim();
             SetMsg(lnlTotal, _stockin_id);
+
+        }
+
+        private void txt11stockin_id_KeyDown(object sender, KeyEventArgs e)
+        {
+            setFouces(e, txt12prdct_no);
+        }
+        void setFouces(KeyEventArgs e, TextBox tb)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (tb.Text.Trim().Length <= 0)
+                {
+                    tb.Focus();
+                }
+            }
+        }
+        private void txt12prdct_no_KeyDown(object sender, KeyEventArgs e)
+        {
+            setFouces(e, txt21ctnno_no);
+        }
+
+        private void txt22qty_KeyDown(object sender, KeyEventArgs e)
+        {
+            setFouces(e, txt23nwet);
+        }
+
+        private void txt23nwet_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                txt21ctnno_no.Focus();
+            }
 
         }
     }

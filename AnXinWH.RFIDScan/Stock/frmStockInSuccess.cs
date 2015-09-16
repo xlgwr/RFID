@@ -524,12 +524,14 @@ namespace AnXinWH.RFIDScan.Stock
                         //check is in stock deatils
                         //set value
                         StringDictionary dis1WhereValuet_stockinctnno = new StringDictionary();
-                        StringDictionary dis1WhereValuet_stockdetail = new StringDictionary();
-                        StringDictionary dis1WhereValuem_shelf = new StringDictionary();
+                        StringDictionary dis2ForValuet_stockinctnno = new StringDictionary(); 
 
+                      
                         //select            
                         StringDictionary dis2ForValuet_stockdetail = new StringDictionary();
-                        StringDictionary dis2ForValuet_stockinctnno = new StringDictionary();
+                        StringDictionary dis1WhereValuet_stockdetail = new StringDictionary();
+                        
+                        StringDictionary dis1WhereValuem_shelf = new StringDictionary();
                         StringDictionary dis2ForValuem_shelf = new StringDictionary();
 
                         //t_stockinctnno
@@ -565,8 +567,6 @@ namespace AnXinWH.RFIDScan.Stock
                                 SetMsg(lnlTotal, tmpmsg);
                                 MessageBox.Show(tmpmsg);
                                 AllInit(false);
-                                dtIn = null;
-                                tmpstatus = string.Empty;
                                 return;
                             }
                         }
@@ -574,10 +574,8 @@ namespace AnXinWH.RFIDScan.Stock
                         {
                             tmpmsg = "Error1: RFID：" + txt1RfidNo.Text + " 不存在系统中。。。请检查数据的准确性。";
                             SetMsg(lnlTotal, tmpmsg);
-
                             MessageBox.Show(tmpmsg);
                             AllInit(false);
-                            dtIn = null;
                             return;
                         }
 
@@ -597,19 +595,16 @@ namespace AnXinWH.RFIDScan.Stock
                                 SetMsg(lnlTotal, tmpmsg);
                                 MessageBox.Show(tmpmsg);
                                 AllInit(false);
-                                dtIn = null;
-                                tmpstatus = string.Empty;
                                 return;
                             }
                         }
                         else
                         {
                             tmpmsg = "Error1: 货架：" + txt2ShelfNo.Text + " 不存在系统中。。。请检查数据的准确性。";
-                            SetMsg(lnlTotal, tmpmsg);
 
+                            SetMsg(lnlTotal, tmpmsg);
                             MessageBox.Show(tmpmsg);
                             AllInit(false);
-                            dtIn = null;
                             return;
                         }
                         #endregion
@@ -625,7 +620,6 @@ namespace AnXinWH.RFIDScan.Stock
                                 SetMsg(lnlTotal, tmpmsg);
                                 MessageBox.Show(tmpmsg);
                                 AllInit(false);
-                                dt = null;
                                 return;
                             }
                         }
@@ -636,7 +630,6 @@ namespace AnXinWH.RFIDScan.Stock
                             scanMain_stock tmp = new scanMain_stock();
                             tmp.rfid_no = txt1RfidNo.Text.Trim();
                             tmp.shelf_no = txt2ShelfNo.Text.Trim();
-
                             addToListView(tmp);
 
                         }

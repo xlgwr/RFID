@@ -413,6 +413,23 @@ namespace AnXinWH.RFIDScan.MasterTableWHS
         public const string addtime = "addtime";
         public const string updtime = "updtime";
     }
+
+    public class m_products
+    {
+        public const string prdct_no = "prdct_no";
+        public const string prdct_nm = "prdct_nm";
+        public const string prdct_abbr = "prdct_abbr";
+        public const string depot_no = "depot_no";
+        public const string prdct_type = "prdct_type";
+        public const string unit = "unit";
+        public const string remark = "remark";
+        public const string upduser = "upduser";
+        public const string addtime = "addtime";
+        public const string updtime = "updtime";
+        public const string adduser = "adduser";
+        public const string status = "status";
+
+    }
     #endregion
     #region  视图/表
     public class ViewOrTable
@@ -444,6 +461,9 @@ namespace AnXinWH.RFIDScan.MasterTableWHS
 
         public const string t_stock = "t_stock";
         public const string t_stockdetail = "t_stockdetail";
+        public const string m_products = "m_products";
+
+        
 
     }
     #endregion

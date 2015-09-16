@@ -13,6 +13,13 @@ select CONCAT("public const string ",table_name,'="',table_name,'";')
 from information_schema.`TABLES`
 where TABLE_SCHEMA='anxinwh' 
 ORDER BY table_name
+
+
+
+
+
+
+
 ---
 select CONCAT('FiledType["',column_name,'"] = MySqlDbType.',data_type,';')
 from information_schema.columns

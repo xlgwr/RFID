@@ -458,7 +458,18 @@ namespace AGCSystem
             #endregion
 
             #region anxinwh
-
+            FiledType["prdct_no"] = MySqlDbType.VarChar;
+            FiledType["prdct_nm"] = MySqlDbType.VarChar;
+            FiledType["prdct_abbr"] = MySqlDbType.VarChar;
+            FiledType["depot_no"] = MySqlDbType.VarChar;
+            FiledType["prdct_type"] = MySqlDbType.VarChar;
+            FiledType["unit"] = MySqlDbType.VarChar;
+            FiledType["remark"] = MySqlDbType.VarChar;
+            FiledType["upduser"] = MySqlDbType.VarChar;
+            FiledType["addtime"] = MySqlDbType.Datetime;
+            FiledType["updtime"] = MySqlDbType.Datetime;
+            FiledType["adduser"] = MySqlDbType.VarChar;
+            FiledType["status"] = MySqlDbType.Bit;
             #endregion
             #region 图纸
             FiledType["docno"] = MySqlDbType.VarChar;

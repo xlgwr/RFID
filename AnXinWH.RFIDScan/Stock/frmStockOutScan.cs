@@ -205,10 +205,10 @@ namespace AnXinWH.RFIDScan.Stock
             InitializeComponent();
 
             //for test new stockin_id
-           // _stockout_id = DateTime.Now.ToString("yyyyMMddHHmmss");
+            // _stockout_id = DateTime.Now.ToString("yyyyMMddHHmmss");
 
             txt11stockout_id.Text = "";// _stockout_id;
-            
+
             txt11stockout_id.Focus();
 
             _lisCtnNo = new List<scanMain_stockDetails>();
@@ -633,35 +633,22 @@ namespace AnXinWH.RFIDScan.Stock
 
 
                         var dt = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.t_stockdetail, dis1WhereValuet_stockdetail, dis2ForValuet_stockdetail, _disNull, "", false);
-                        if (dt != null)
+                        if (dt.Rows.Count <= 0)
                         {
-                            if (dt.Rows.Count <= 0)
-                            {
-                                //var tmpshelf = dt.Rows[0][MasterTableWHS.t_stockdetail.shelf_no].ToString();
-                                tmpmsg = "RFID：" + _rfidStrForSet + " 未上架。请上架后再出库，谢谢。";
-                                SetMsg(lnlTotal, tmpmsg);
-                                MessageBox.Show(tmpmsg);
-                                AllInit(false);
-                                txt12Rfid_no.Text = "";
-                                dt = null;
-                                return;
-                            }
-                            else
-                            {
-                                tmpshelfModel = getRowToModel(dt.Rows[0]);
-                                initValueToTxt(tmpshelfModel);
-                            }
-                        }
-                        else
-                        {
+                            //var tmpshelf = dt.Rows[0][MasterTableWHS.t_stockdetail.shelf_no].ToString();
                             tmpmsg = "RFID：" + _rfidStrForSet + " 未上架。请上架后再出库，谢谢。";
                             SetMsg(lnlTotal, tmpmsg);
                             MessageBox.Show(tmpmsg);
                             AllInit(false);
                             txt12Rfid_no.Text = "";
-                            dt = null;
                             return;
                         }
+                        else
+                        {
+                            tmpshelfModel = getRowToModel(dt.Rows[0]);
+                            initValueToTxt(tmpshelfModel);
+                        }
+
                         #endregion
 
 
@@ -916,7 +903,7 @@ namespace AnXinWH.RFIDScan.Stock
                                 dis1WhereValuet_stockoutctnnodetail[MasterTableWHS.t_stockoutctnnodetail.status] = ird[MasterTableWHS.t_stockinctnnodetail.status].ToString();
 
                                 this.m_daoCommon.SetInsertDataItem(MasterTableWHS.ViewOrTable.t_stockoutctnnodetail, dis1WhereValuet_stockoutctnnodetail, dis00UserCollum);
-                            
+
                             }
 
                         }
@@ -1188,9 +1175,9 @@ namespace AnXinWH.RFIDScan.Stock
 
         private void txt11stockout_id_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode== Keys.Enter)
+            if (e.KeyCode == Keys.Enter)
             {
-                if (txt11stockout_id.Text.Trim().Length>0)
+                if (txt11stockout_id.Text.Trim().Length > 0)
                 {
                     txt12Rfid_no.Focus();
                 }

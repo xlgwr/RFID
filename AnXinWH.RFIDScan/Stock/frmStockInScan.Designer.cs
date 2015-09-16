@@ -158,6 +158,7 @@
             this.txt11stockin_id.Size = new System.Drawing.Size(148, 23);
             this.txt11stockin_id.TabIndex = 6;
             this.txt11stockin_id.TextChanged += new System.EventHandler(this.txt11stockin_id_TextChanged);
+            this.txt11stockin_id.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt11stockin_id_KeyDown);
             // 
             // txt12prdct_no
             // 
@@ -165,6 +166,7 @@
             this.txt12prdct_no.Name = "txt12prdct_no";
             this.txt12prdct_no.Size = new System.Drawing.Size(148, 23);
             this.txt12prdct_no.TabIndex = 8;
+            this.txt12prdct_no.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt12prdct_no_KeyDown);
             // 
             // label2
             // 
@@ -196,6 +198,7 @@
             this.txt22qty.Size = new System.Drawing.Size(148, 23);
             this.txt22qty.TabIndex = 14;
             this.txt22qty.TextChanged += new System.EventHandler(this.txt22qty_TextChanged);
+            this.txt22qty.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt22qty_KeyDown);
             // 
             // label4
             // 
@@ -212,6 +215,7 @@
             this.txt23nwet.Size = new System.Drawing.Size(95, 23);
             this.txt23nwet.TabIndex = 17;
             this.txt23nwet.TextChanged += new System.EventHandler(this.txt23nwet_TextChanged);
+            this.txt23nwet.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt23nwet_KeyDown);
             // 
             // label5
             // 
