@@ -646,6 +646,9 @@ namespace AnXinWH.RFIDScan.Stock
                 {
 
                     //次表
+                    //仓单号
+                    disWhereValueItem[MasterTableWHS.t_stockinctnnodetail.receiptNo] = "A001";
+
                     disWhereValueItem[MasterTableWHS.t_stockinctnnodetail.ctnno_no] = item.ctnno_no;
                     disWhereValueItem[MasterTableWHS.t_stockinctnnodetail.qty] = item.qty.Length <= 0 ? "0" : item.qty;
                     disWhereValueItem[MasterTableWHS.t_stockinctnnodetail.nwet] = item.nwet.Length <= 0 ? "0" : item.nwet;

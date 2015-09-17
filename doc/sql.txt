@@ -23,10 +23,14 @@ ORDER BY table_name
 ---
 select CONCAT('FiledType["',column_name,'"] = MySqlDbType.',data_type,';')
 from information_schema.columns
-where table_name='m_users'  and TABLE_SCHEMA='anxinwh'
+where table_name='m_products'  and TABLE_SCHEMA='anxinwh'
+order by DATA_TYPE
+
 
 
 --2
-select DISTINCT CONCAT('FiledType["',column_name,'"] = MySqlDbType.',data_type,';')
+select DISTINCT CONCAT('FiledType["',LOWER(column_name),'"] = MySqlDbType.',data_type,';')
 from information_schema.columns
-where  TABLE_SCHEMA='anxinwh'
+where TABLE_SCHEMA='anxinwh'
+order by DATA_TYPE
+

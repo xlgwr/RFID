@@ -60,6 +60,12 @@
             this.txt21pqty = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.lbl0Count = new System.Windows.Forms.Label();
+            this.txt21CartonNo = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.txt15ReceidNo = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
             this.plnMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -67,17 +73,16 @@
             // 
             this.lnlTotal.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular);
             this.lnlTotal.ForeColor = System.Drawing.Color.Red;
-            this.lnlTotal.Location = new System.Drawing.Point(6, 258);
+            this.lnlTotal.Location = new System.Drawing.Point(6, 269);
             this.lnlTotal.Name = "lnlTotal";
             this.lnlTotal.Size = new System.Drawing.Size(229, 21);
             this.lnlTotal.Text = "正在提交数据：";
             // 
             // button3
             // 
-            this.button3.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular);
-            this.button3.Location = new System.Drawing.Point(145, 276);
+            this.button3.Location = new System.Drawing.Point(145, 289);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(69, 28);
+            this.button3.Size = new System.Drawing.Size(69, 25);
             this.button3.TabIndex = 2;
             this.button3.Text = "取消(S2)";
             this.button3.Click += new System.EventHandler(this.button3_Click);
@@ -110,18 +115,18 @@
             // 
             this.col1RFIDNo.Text = "RFID卡号";
             this.col1RFIDNo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.col1RFIDNo.Width = 106;
+            this.col1RFIDNo.Width = 123;
             // 
             // col3qty
             // 
             this.col3qty.Text = "数量";
             this.col3qty.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.col3qty.Width = 50;
+            this.col3qty.Width = 44;
             // 
             // col3Weight
             // 
             this.col3Weight.Text = "重量";
-            this.col3Weight.Width = 50;
+            this.col3Weight.Width = 36;
             // 
             // listView1
             // 
@@ -131,9 +136,9 @@
             this.listView1.Columns.Add(this.col3Weight);
             this.listView1.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular);
             this.listView1.FullRowSelect = true;
-            this.listView1.Location = new System.Drawing.Point(2, 170);
+            this.listView1.Location = new System.Drawing.Point(2, 187);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(238, 83);
+            this.listView1.Size = new System.Drawing.Size(238, 80);
             this.listView1.TabIndex = 0;
             this.listView1.View = System.Windows.Forms.View.Details;
             this.listView1.ItemActivate += new System.EventHandler(this.listView1_ItemActivate);
@@ -141,105 +146,113 @@
             // 
             // col2pqty
             // 
-            this.col2pqty.Text = "箱数";
-            this.col2pqty.Width = 40;
+            this.col2pqty.Text = "箱号";
+            this.col2pqty.Width = 32;
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(-11, 31);
+            this.label1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
+            this.label1.Location = new System.Drawing.Point(-11, 29);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(78, 20);
-            this.label1.Text = "出库单";
+            this.label1.Size = new System.Drawing.Size(78, 15);
+            this.label1.Text = "出 库 单";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // txt11stockout_id
             // 
+            this.txt11stockout_id.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular);
             this.txt11stockout_id.Location = new System.Drawing.Point(68, 27);
             this.txt11stockout_id.Name = "txt11stockout_id";
-            this.txt11stockout_id.Size = new System.Drawing.Size(157, 23);
+            this.txt11stockout_id.Size = new System.Drawing.Size(157, 19);
             this.txt11stockout_id.TabIndex = 6;
             this.txt11stockout_id.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt11stockout_id_KeyDown);
             // 
             // txt12Rfid_no
             // 
-            this.txt12Rfid_no.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular);
-            this.txt12Rfid_no.Location = new System.Drawing.Point(68, 52);
+            this.txt12Rfid_no.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular);
+            this.txt12Rfid_no.Location = new System.Drawing.Point(68, 46);
             this.txt12Rfid_no.Name = "txt12Rfid_no";
-            this.txt12Rfid_no.Size = new System.Drawing.Size(157, 21);
+            this.txt12Rfid_no.Size = new System.Drawing.Size(157, 19);
             this.txt12Rfid_no.TabIndex = 8;
             this.txt12Rfid_no.TextChanged += new System.EventHandler(this.txt12Rfid_no_TextChanged);
-            this.txt12Rfid_no.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt21ctnno_no_KeyDown);
+            this.txt12Rfid_no.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt12Rfid_no_KeyDown);
             // 
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
-            this.label2.Location = new System.Drawing.Point(-11, 54);
+            this.label2.ForeColor = System.Drawing.Color.Red;
+            this.label2.Location = new System.Drawing.Point(-11, 48);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(78, 20);
+            this.label2.Size = new System.Drawing.Size(78, 15);
             this.label2.Text = "RFID卡号";
             this.label2.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // txt13Shelf_no
             // 
-            this.txt13Shelf_no.Location = new System.Drawing.Point(68, 75);
+            this.txt13Shelf_no.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular);
+            this.txt13Shelf_no.Location = new System.Drawing.Point(68, 103);
             this.txt13Shelf_no.Name = "txt13Shelf_no";
-            this.txt13Shelf_no.Size = new System.Drawing.Size(157, 23);
+            this.txt13Shelf_no.Size = new System.Drawing.Size(157, 19);
             this.txt13Shelf_no.TabIndex = 11;
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(-11, 75);
+            this.label3.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
+            this.label3.Location = new System.Drawing.Point(-11, 107);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(78, 20);
+            this.label3.Size = new System.Drawing.Size(78, 15);
             this.label3.Text = "货架编号";
             this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // txt4Qty
             // 
-            this.txt4Qty.Location = new System.Drawing.Point(68, 123);
+            this.txt4Qty.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular);
+            this.txt4Qty.Location = new System.Drawing.Point(68, 141);
             this.txt4Qty.Name = "txt4Qty";
-            this.txt4Qty.Size = new System.Drawing.Size(157, 23);
+            this.txt4Qty.Size = new System.Drawing.Size(157, 19);
             this.txt4Qty.TabIndex = 14;
             this.txt4Qty.TextChanged += new System.EventHandler(this.txt4Qty_TextChanged);
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(-11, 123);
+            this.label4.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
+            this.label4.Location = new System.Drawing.Point(-11, 144);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(78, 20);
+            this.label4.Size = new System.Drawing.Size(78, 15);
             this.label4.Text = "数  量";
             this.label4.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // txt5nwet
             // 
-            this.txt5nwet.Location = new System.Drawing.Point(68, 147);
+            this.txt5nwet.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular);
+            this.txt5nwet.Location = new System.Drawing.Point(68, 160);
             this.txt5nwet.Name = "txt5nwet";
-            this.txt5nwet.Size = new System.Drawing.Size(114, 23);
+            this.txt5nwet.Size = new System.Drawing.Size(114, 19);
             this.txt5nwet.TabIndex = 17;
             this.txt5nwet.TextChanged += new System.EventHandler(this.txt5nwet_TextChanged);
             // 
             // label5
             // 
-            this.label5.Location = new System.Drawing.Point(-11, 147);
+            this.label5.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
+            this.label5.Location = new System.Drawing.Point(-11, 163);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(78, 20);
+            this.label5.Size = new System.Drawing.Size(78, 15);
             this.label5.Text = "重  量";
             this.label5.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // label6
             // 
-            this.label6.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
-            this.label6.Location = new System.Drawing.Point(188, 149);
+            this.label6.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Bold);
+            this.label6.Location = new System.Drawing.Point(185, 163);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(26, 20);
             this.label6.Text = "KG";
             // 
             // button2
             // 
-            this.button2.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular);
-            this.button2.Location = new System.Drawing.Point(29, 276);
+            this.button2.Location = new System.Drawing.Point(29, 289);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(69, 28);
+            this.button2.Size = new System.Drawing.Size(69, 25);
             this.button2.TabIndex = 25;
             this.button2.Text = "提交(S1)";
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -248,7 +261,7 @@
             // 
             this.label8.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
             this.label8.ForeColor = System.Drawing.Color.Red;
-            this.label8.Location = new System.Drawing.Point(222, 58);
+            this.label8.Location = new System.Drawing.Point(222, 49);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(18, 20);
             this.label8.Text = "*";
@@ -257,24 +270,26 @@
             // 
             this.label10.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
             this.label10.ForeColor = System.Drawing.Color.Red;
-            this.label10.Location = new System.Drawing.Point(222, 34);
+            this.label10.Location = new System.Drawing.Point(222, 30);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(18, 20);
             this.label10.Text = "*";
             // 
             // txt21pqty
             // 
-            this.txt21pqty.Location = new System.Drawing.Point(68, 99);
+            this.txt21pqty.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular);
+            this.txt21pqty.Location = new System.Drawing.Point(68, 122);
             this.txt21pqty.Name = "txt21pqty";
-            this.txt21pqty.Size = new System.Drawing.Size(157, 23);
+            this.txt21pqty.Size = new System.Drawing.Size(157, 19);
             this.txt21pqty.TabIndex = 33;
             this.txt21pqty.TextChanged += new System.EventHandler(this.txt21pqty_TextChanged);
             // 
             // label7
             // 
-            this.label7.Location = new System.Drawing.Point(-11, 99);
+            this.label7.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
+            this.label7.Location = new System.Drawing.Point(-11, 125);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(78, 20);
+            this.label7.Size = new System.Drawing.Size(78, 15);
             this.label7.Text = "箱  数";
             this.label7.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
@@ -282,10 +297,64 @@
             // 
             this.lbl0Count.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
             this.lbl0Count.ForeColor = System.Drawing.Color.Red;
-            this.lbl0Count.Location = new System.Drawing.Point(213, 154);
+            this.lbl0Count.Location = new System.Drawing.Point(213, 171);
             this.lbl0Count.Name = "lbl0Count";
             this.lbl0Count.Size = new System.Drawing.Size(24, 15);
             this.lbl0Count.Text = "0";
+            // 
+            // txt21CartonNo
+            // 
+            this.txt21CartonNo.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular);
+            this.txt21CartonNo.Location = new System.Drawing.Point(68, 84);
+            this.txt21CartonNo.Name = "txt21CartonNo";
+            this.txt21CartonNo.Size = new System.Drawing.Size(157, 19);
+            this.txt21CartonNo.TabIndex = 48;
+            this.txt21CartonNo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt21ctnno_no_KeyDown);
+            // 
+            // label9
+            // 
+            this.label9.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
+            this.label9.Location = new System.Drawing.Point(-11, 67);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(78, 15);
+            this.label9.Text = "仓 单 号";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // txt15ReceidNo
+            // 
+            this.txt15ReceidNo.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular);
+            this.txt15ReceidNo.Location = new System.Drawing.Point(68, 65);
+            this.txt15ReceidNo.Name = "txt15ReceidNo";
+            this.txt15ReceidNo.Size = new System.Drawing.Size(157, 19);
+            this.txt15ReceidNo.TabIndex = 47;
+            // 
+            // label11
+            // 
+            this.label11.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
+            this.label11.ForeColor = System.Drawing.Color.Red;
+            this.label11.Location = new System.Drawing.Point(-11, 87);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(78, 15);
+            this.label11.Text = "箱 号";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // label12
+            // 
+            this.label12.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
+            this.label12.ForeColor = System.Drawing.Color.Red;
+            this.label12.Location = new System.Drawing.Point(222, 69);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(18, 20);
+            this.label12.Text = "*";
+            // 
+            // label13
+            // 
+            this.label13.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
+            this.label13.ForeColor = System.Drawing.Color.Red;
+            this.label13.Location = new System.Drawing.Point(222, 87);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(18, 20);
+            this.label13.Text = "*";
             // 
             // frmStockOutScan
             // 
@@ -294,6 +363,10 @@
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(240, 320);
             this.ControlBox = false;
+            this.Controls.Add(this.txt21CartonNo);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.txt15ReceidNo);
+            this.Controls.Add(this.label11);
             this.Controls.Add(this.lbl0Count);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.txt21pqty);
@@ -315,6 +388,8 @@
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.lnlTotal);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.label13);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.KeyPreview = true;
             this.Name = "frmStockOutScan";
@@ -356,5 +431,11 @@
         private System.Windows.Forms.TextBox txt21pqty;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label lbl0Count;
+        private System.Windows.Forms.TextBox txt21CartonNo;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox txt15ReceidNo;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label13;
     }
 }
