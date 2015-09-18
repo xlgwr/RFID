@@ -196,6 +196,7 @@
             this.txt13Shelf_no.Name = "txt13Shelf_no";
             this.txt13Shelf_no.Size = new System.Drawing.Size(138, 19);
             this.txt13Shelf_no.TabIndex = 11;
+            this.txt13Shelf_no.TextChanged += new System.EventHandler(this.txt13Shelf_no_TextChanged);
             // 
             // label3
             // 

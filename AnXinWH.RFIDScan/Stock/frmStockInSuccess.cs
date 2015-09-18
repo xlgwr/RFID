@@ -564,18 +564,21 @@ namespace AnXinWH.RFIDScan.Stock
                                 var tmpshelf = dtIn.Rows[0][MasterTableWHS.t_stockinctnno.prdct_no].ToString();
                                 tmpmsg = "RFID：" + txt1RfidNo.Text + " 已失效。货物编码：" + tmpshelf + ",入库单:" + tmpstockin_id;
 
+                                AllInit(false);
+
                                 SetMsg(lnlTotal, tmpmsg);
                                 MessageBox.Show(tmpmsg);
-                                AllInit(false);
                                 return;
                             }
                         }
                         else
                         {
                             tmpmsg = "Error1: RFID：" + txt1RfidNo.Text + " 不存在系统中。。。请检查数据的准确性。";
+                          
+                            AllInit(false);
+                            
                             SetMsg(lnlTotal, tmpmsg);
                             MessageBox.Show(tmpmsg);
-                            AllInit(false);
                             return;
                         }
 
