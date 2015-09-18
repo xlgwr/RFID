@@ -66,6 +66,7 @@
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
+            this.col4SumPty = new System.Windows.Forms.ColumnHeader();
             this.plnMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -134,6 +135,7 @@
             this.listView1.Columns.Add(this.col2pqty);
             this.listView1.Columns.Add(this.col3qty);
             this.listView1.Columns.Add(this.col3Weight);
+            this.listView1.Columns.Add(this.col4SumPty);
             this.listView1.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular);
             this.listView1.FullRowSelect = true;
             this.listView1.Location = new System.Drawing.Point(2, 187);
@@ -147,32 +149,32 @@
             // col2pqty
             // 
             this.col2pqty.Text = "箱号";
-            this.col2pqty.Width = 32;
+            this.col2pqty.Width = 50;
             // 
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
-            this.label1.Location = new System.Drawing.Point(-11, 29);
+            this.label1.Location = new System.Drawing.Point(-7, 29);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(78, 15);
+            this.label1.Size = new System.Drawing.Size(86, 17);
             this.label1.Text = "出 库 单";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // txt11stockout_id
             // 
             this.txt11stockout_id.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular);
-            this.txt11stockout_id.Location = new System.Drawing.Point(68, 27);
+            this.txt11stockout_id.Location = new System.Drawing.Point(81, 27);
             this.txt11stockout_id.Name = "txt11stockout_id";
-            this.txt11stockout_id.Size = new System.Drawing.Size(157, 19);
+            this.txt11stockout_id.Size = new System.Drawing.Size(138, 19);
             this.txt11stockout_id.TabIndex = 6;
             this.txt11stockout_id.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt11stockout_id_KeyDown);
             // 
             // txt12Rfid_no
             // 
             this.txt12Rfid_no.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular);
-            this.txt12Rfid_no.Location = new System.Drawing.Point(68, 46);
+            this.txt12Rfid_no.Location = new System.Drawing.Point(81, 46);
             this.txt12Rfid_no.Name = "txt12Rfid_no";
-            this.txt12Rfid_no.Size = new System.Drawing.Size(157, 19);
+            this.txt12Rfid_no.Size = new System.Drawing.Size(138, 19);
             this.txt12Rfid_no.TabIndex = 8;
             this.txt12Rfid_no.TextChanged += new System.EventHandler(this.txt12Rfid_no_TextChanged);
             this.txt12Rfid_no.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt12Rfid_no_KeyDown);
@@ -181,62 +183,62 @@
             // 
             this.label2.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
             this.label2.ForeColor = System.Drawing.Color.Red;
-            this.label2.Location = new System.Drawing.Point(-11, 48);
+            this.label2.Location = new System.Drawing.Point(-7, 48);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(78, 15);
+            this.label2.Size = new System.Drawing.Size(86, 17);
             this.label2.Text = "RFID卡号";
             this.label2.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // txt13Shelf_no
             // 
             this.txt13Shelf_no.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular);
-            this.txt13Shelf_no.Location = new System.Drawing.Point(68, 103);
+            this.txt13Shelf_no.Location = new System.Drawing.Point(81, 103);
             this.txt13Shelf_no.Name = "txt13Shelf_no";
-            this.txt13Shelf_no.Size = new System.Drawing.Size(157, 19);
+            this.txt13Shelf_no.Size = new System.Drawing.Size(138, 19);
             this.txt13Shelf_no.TabIndex = 11;
             // 
             // label3
             // 
             this.label3.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
-            this.label3.Location = new System.Drawing.Point(-11, 107);
+            this.label3.Location = new System.Drawing.Point(-7, 107);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(78, 15);
+            this.label3.Size = new System.Drawing.Size(86, 17);
             this.label3.Text = "货架编号";
             this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // txt4Qty
             // 
             this.txt4Qty.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular);
-            this.txt4Qty.Location = new System.Drawing.Point(68, 141);
+            this.txt4Qty.Location = new System.Drawing.Point(81, 141);
             this.txt4Qty.Name = "txt4Qty";
-            this.txt4Qty.Size = new System.Drawing.Size(157, 19);
+            this.txt4Qty.Size = new System.Drawing.Size(138, 19);
             this.txt4Qty.TabIndex = 14;
             this.txt4Qty.TextChanged += new System.EventHandler(this.txt4Qty_TextChanged);
             // 
             // label4
             // 
             this.label4.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
-            this.label4.Location = new System.Drawing.Point(-11, 144);
+            this.label4.Location = new System.Drawing.Point(-7, 144);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(78, 15);
+            this.label4.Size = new System.Drawing.Size(86, 17);
             this.label4.Text = "数  量";
             this.label4.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // txt5nwet
             // 
             this.txt5nwet.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular);
-            this.txt5nwet.Location = new System.Drawing.Point(68, 160);
+            this.txt5nwet.Location = new System.Drawing.Point(81, 160);
             this.txt5nwet.Name = "txt5nwet";
-            this.txt5nwet.Size = new System.Drawing.Size(114, 19);
+            this.txt5nwet.Size = new System.Drawing.Size(95, 19);
             this.txt5nwet.TabIndex = 17;
             this.txt5nwet.TextChanged += new System.EventHandler(this.txt5nwet_TextChanged);
             // 
             // label5
             // 
             this.label5.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
-            this.label5.Location = new System.Drawing.Point(-11, 163);
+            this.label5.Location = new System.Drawing.Point(-7, 163);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(78, 15);
+            this.label5.Size = new System.Drawing.Size(86, 17);
             this.label5.Text = "重  量";
             this.label5.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
@@ -278,18 +280,18 @@
             // txt21pqty
             // 
             this.txt21pqty.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular);
-            this.txt21pqty.Location = new System.Drawing.Point(68, 122);
+            this.txt21pqty.Location = new System.Drawing.Point(81, 122);
             this.txt21pqty.Name = "txt21pqty";
-            this.txt21pqty.Size = new System.Drawing.Size(157, 19);
+            this.txt21pqty.Size = new System.Drawing.Size(138, 19);
             this.txt21pqty.TabIndex = 33;
             this.txt21pqty.TextChanged += new System.EventHandler(this.txt21pqty_TextChanged);
             // 
             // label7
             // 
             this.label7.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
-            this.label7.Location = new System.Drawing.Point(-11, 125);
+            this.label7.Location = new System.Drawing.Point(-7, 125);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(78, 15);
+            this.label7.Size = new System.Drawing.Size(86, 17);
             this.label7.Text = "箱  数";
             this.label7.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
@@ -305,37 +307,38 @@
             // txt21CartonNo
             // 
             this.txt21CartonNo.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular);
-            this.txt21CartonNo.Location = new System.Drawing.Point(68, 84);
+            this.txt21CartonNo.Location = new System.Drawing.Point(81, 84);
             this.txt21CartonNo.Name = "txt21CartonNo";
-            this.txt21CartonNo.Size = new System.Drawing.Size(157, 19);
+            this.txt21CartonNo.Size = new System.Drawing.Size(138, 19);
             this.txt21CartonNo.TabIndex = 48;
             this.txt21CartonNo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt21ctnno_no_KeyDown);
             // 
             // label9
             // 
             this.label9.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
-            this.label9.Location = new System.Drawing.Point(-11, 67);
+            this.label9.Location = new System.Drawing.Point(-7, 67);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(78, 15);
+            this.label9.Size = new System.Drawing.Size(86, 17);
             this.label9.Text = "仓 单 号";
             this.label9.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // txt15ReceidNo
             // 
             this.txt15ReceidNo.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular);
-            this.txt15ReceidNo.Location = new System.Drawing.Point(68, 65);
+            this.txt15ReceidNo.Location = new System.Drawing.Point(81, 65);
             this.txt15ReceidNo.Name = "txt15ReceidNo";
-            this.txt15ReceidNo.Size = new System.Drawing.Size(157, 19);
+            this.txt15ReceidNo.Size = new System.Drawing.Size(138, 19);
             this.txt15ReceidNo.TabIndex = 47;
+            this.txt15ReceidNo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt15ReceidNo_KeyDown);
             // 
             // label11
             // 
             this.label11.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
             this.label11.ForeColor = System.Drawing.Color.Red;
-            this.label11.Location = new System.Drawing.Point(-11, 87);
+            this.label11.Location = new System.Drawing.Point(-7, 87);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(78, 15);
-            this.label11.Text = "箱 号";
+            this.label11.Size = new System.Drawing.Size(86, 17);
+            this.label11.Text = "托盘号/箱号";
             this.label11.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // label12
@@ -355,6 +358,11 @@
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(18, 20);
             this.label13.Text = "*";
+            // 
+            // col4SumPty
+            // 
+            this.col4SumPty.Text = "箱数";
+            this.col4SumPty.Width = 60;
             // 
             // frmStockOutScan
             // 
@@ -437,5 +445,6 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.ColumnHeader col4SumPty;
     }
 }

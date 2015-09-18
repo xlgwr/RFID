@@ -74,7 +74,7 @@ namespace AnXinWH.RFIDScan.Stock
         {
             txt13Shelf_no.Text = value.shelf_no.Trim();
 
-            //txt21pqty.Text = value.pqty.Trim();
+            txt21pqty.Text = value.pqty.Trim();
 
             txt4Qty.Text = value.qty.Trim();
             txt5nwet.Text = value.nwet.Trim();
@@ -84,12 +84,13 @@ namespace AnXinWH.RFIDScan.Stock
         }
         void addToList(scanMain_stockDetails item, bool select)
         {
-            string[] tmpstr = new string[4];
+            string[] tmpstr = new string[5];
 
             tmpstr[0] = item.rfid_no;
             tmpstr[1] = item.ctnno_no;
             tmpstr[2] = item.qty;
             tmpstr[3] = item.nwet;
+            tmpstr[4] = item.pqty;
 
             ListViewItem tmpitems1 = new ListViewItem(tmpstr);
             listView1.Items.Add(tmpitems1);
@@ -134,11 +135,11 @@ namespace AnXinWH.RFIDScan.Stock
                         return true;
                     }
 
-                    if (!_lisCtnNo[i].rfid_no.Equals(findvalue))
-                    {
-                        MessageBox.Show("只接收一个RFID号:" + _lisCtnNo[i].rfid_no);
-                        return true;
-                    }
+                    //if (!_lisCtnNo[i].rfid_no.Equals(findvalue))
+                    //{
+                    //    MessageBox.Show("只接收一个RFID号:" + _lisCtnNo[i].rfid_no);
+                    //    return true;
+                    //}
                 }
                 return false;
             }
@@ -187,7 +188,7 @@ namespace AnXinWH.RFIDScan.Stock
                 addToList(item, false);
             }
             lbl0Count.Text = _lisCtnNo.Count.ToString();
-            txt21pqty.Text = _lisCtnNo.Count.ToString();
+            //txt21pqty.Text = _lisCtnNo.Count.ToString();
 
         }
         void addToListView(scanMain_stockDetails selectitem)
@@ -203,7 +204,7 @@ namespace AnXinWH.RFIDScan.Stock
             _lisCtnNo.Add(selectitem);
 
             lbl0Count.Text = _lisCtnNo.Count.ToString();
-            txt21pqty.Text = _lisCtnNo.Count.ToString();
+            //txt21pqty.Text = _lisCtnNo.Count.ToString();
 
             SetMsg(lnlTotal, "add " + selectitem.rfid_no + " success。");
 
@@ -436,11 +437,10 @@ namespace AnXinWH.RFIDScan.Stock
                 txt13Shelf_no.Text = "";
                 txt15ReceidNo.Text = "";
 
-                txt21pqty.Text = "";
 
             }
 
-            //txt21pqty.Text = "";
+            txt21pqty.Text = "";
             txt4Qty.Text = "";
             txt5nwet.Text = "";
 
@@ -612,6 +612,7 @@ namespace AnXinWH.RFIDScan.Stock
             tmpStockDetail.shelf_no = dr[MasterTableWHS.t_stockdetail.shelf_no].ToString();
             tmpStockDetail.receiptNo = dr[MasterTableWHS.t_stockdetail.receiptNo].ToString();
 
+            tmpStockDetail.pqty = dr[MasterTableWHS.t_stockdetail.pqty].ToString();
             tmpStockDetail.qty = dr[MasterTableWHS.t_stockdetail.qty].ToString();
             tmpStockDetail.nwet = dr[MasterTableWHS.t_stockdetail.nwet].ToString();
             tmpStockDetail.prdct_no = dr[MasterTableWHS.t_stockdetail.prdct_no].ToString();
@@ -635,7 +636,7 @@ namespace AnXinWH.RFIDScan.Stock
                         timer1.Enabled = true;
                     }
 
-                    if (!string.IsNullOrEmpty(txt11stockout_id.Text.Trim()) && !string.IsNullOrEmpty(txt12Rfid_no.Text.Trim()) && !string.IsNullOrEmpty(txt21CartonNo.Text.Trim()))
+                    if (!string.IsNullOrEmpty(txt11stockout_id.Text.Trim()) && !string.IsNullOrEmpty(txt12Rfid_no.Text.Trim())&& !string.IsNullOrEmpty(txt15ReceidNo.Text.Trim()) && !string.IsNullOrEmpty(txt21CartonNo.Text.Trim()))
                     {
                         var tmpshelfModel = new scanMain_stockDetails();
                         #region check shelf details
@@ -675,12 +676,42 @@ namespace AnXinWH.RFIDScan.Stock
                         else
                         {
                             tmpshelfModel = getRowToModel(dt.Rows[0]);
-                            initValueToTxt(tmpshelfModel);
-                            tmpshelfModel.ctnno_no = txt21CartonNo.Text.Trim();
-                            tmpshelfModel.pqty = dt.Rows.Count.ToString();
                         }
 
+                        //扫仓单号
+                        dis1WhereValuet_stockdetail[MasterTableWHS.t_stockdetail.receiptNo] = txt15ReceidNo.Text.Trim();
+                        dis2ForValuet_stockdetail[MasterTableWHS.t_stockdetail.receiptNo] = "true";
 
+                        var dt15 = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.t_stockdetail, dis1WhereValuet_stockdetail, dis2ForValuet_stockdetail, _disNull, "", false);
+                        if (dt15.Rows.Count <= 0)
+                        {
+                            AllInit(false);
+
+                            toSetValue = true;
+                            txt13Shelf_no.Text = "";
+                            //txt15ReceidNo.Text = "";
+                            //txt12Rfid_no.Text = "";
+                            toSetValue = false;
+
+                            txt15ReceidNo.Focus();
+
+                            //var tmpshelf = dt.Rows[0][MasterTableWHS.t_stockdetail.shelf_no].ToString();
+                            tmpmsg = "RFID：" + _rfidStrForSet + ",仓单号：" + txt15ReceidNo.Text.Trim() + " 不存在。货物编码：" + tmpshelfModel.prdct_no;
+
+                            SetMsg(lnlTotal, tmpmsg);
+                            MessageBox.Show(tmpmsg);
+                            return;
+                        }
+                        else
+                        {
+                            tmpshelfModel = getRowToModel(dt15.Rows[0]);
+
+                            tmpshelfModel.ctnno_no = txt21CartonNo.Text.Trim();
+
+                            //tmpshelfModel.pqty = dt.Rows.Count.ToString();
+                        }
+
+                        //扫箱号
                         //t_stockdetail check carton
                         dis1WhereValuet_stockdetail[MasterTableWHS.t_stockdetail.ctnno_no] = tmpshelfModel.ctnno_no;
                         dis2ForValuet_stockdetail[MasterTableWHS.t_stockdetail.ctnno_no] = "true";
@@ -694,7 +725,7 @@ namespace AnXinWH.RFIDScan.Stock
                             toSetValue = true;
 
                             txt13Shelf_no.Text = "";
-                            txt15ReceidNo.Text = "";
+                            //txt15ReceidNo.Text = "";
 
                             //txt12Rfid_no.Text = "";
                             toSetValue = false;
@@ -706,6 +737,11 @@ namespace AnXinWH.RFIDScan.Stock
                             SetMsg(lnlTotal, tmpmsg);
                             MessageBox.Show(tmpmsg);
                             return;
+                        }
+                        else
+                        {
+                            tmpshelfModel = getRowToModel(dtctn.Rows[0]);
+                            initValueToTxt(tmpshelfModel);
                         }
                         #endregion
 
@@ -753,6 +789,8 @@ namespace AnXinWH.RFIDScan.Stock
                         {
                             scanMain_stockDetails tmp = new scanMain_stockDetails();
 
+                            tmp.shelf_no = txt13Shelf_no.Text.Trim();
+
                             tmp.rfid_no = _rfidStrForSet.Trim();
 
                             tmp.receiptNo = tmpshelfModel.receiptNo;
@@ -760,6 +798,8 @@ namespace AnXinWH.RFIDScan.Stock
                             tmp.prdct_no = tmpshelfModel.prdct_no;
 
                             tmp.ctnno_no = txt21CartonNo.Text.Trim();
+
+                            tmp.pqty=txt21pqty.Text.Trim();
 
                             tmp = initTxtToValue(tmp);
 
@@ -791,7 +831,7 @@ namespace AnXinWH.RFIDScan.Stock
         {
 
             //test
-            //return true;
+            return true;
 
             var tmpmsg = "";
             bool IsStartTran = false;
@@ -1095,7 +1135,7 @@ namespace AnXinWH.RFIDScan.Stock
                         checkInList(onetext, true, onetext2);
                         this.lnlTotal.Text = "成功删除:" + colname + ":" + onetext;
                         lbl0Count.Text = _lisCtnNo.Count.ToString();
-                        txt21pqty.Text = _lisCtnNo.Count.ToString();
+                        //txt21pqty.Text = _lisCtnNo.Count.ToString();
                     }
                 }
             }
@@ -1128,7 +1168,7 @@ namespace AnXinWH.RFIDScan.Stock
 
                         txt12Rfid_no.Text = dd.rfid_no;
                         txt13Shelf_no.Text = dd.shelf_no;
-                        //txt21pqty.Text = dd.pqty;
+                        txt21pqty.Text = dd.pqty;
                         txt4Qty.Text = dd.qty;
                         txt5nwet.Text = dd.nwet;
 
@@ -1260,7 +1300,12 @@ namespace AnXinWH.RFIDScan.Stock
 
         private void txt12Rfid_no_KeyDown(object sender, KeyEventArgs e)
         {
-            setFouces(e, txt12Rfid_no, txt21CartonNo);
+            setFouces(e, txt12Rfid_no, txt15ReceidNo);
+        }
+
+        private void txt15ReceidNo_KeyDown(object sender, KeyEventArgs e)
+        {
+            setFouces(e, txt15ReceidNo, txt21CartonNo);
         }
 
 

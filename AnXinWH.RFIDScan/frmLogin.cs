@@ -103,7 +103,7 @@ namespace AnXinWH.RFIDScan
 
                 Common.GetDaoCommon(ref m_daoCommon);
                 //设置多语言 
-                SetLangeage();
+                //SetLangeage();
 
                 //画面数据初始化处理
                 SetFormValue();
@@ -629,9 +629,9 @@ namespace AnXinWH.RFIDScan
 
         private void txtUserId_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode== Keys.Enter)
+            if (e.KeyCode == Keys.Enter)
             {
-                if (txtUserId.Text.Trim().Length>=0)
+                if (txtUserId.Text.Trim().Length >= 0)
                 {
                     txtPaswd.Focus();
                 }

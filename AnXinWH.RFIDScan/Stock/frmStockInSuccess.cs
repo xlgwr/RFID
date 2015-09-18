@@ -832,6 +832,7 @@ namespace AnXinWH.RFIDScan.Stock
 
                                     dis1WhereValue_t_stockdetail[MasterTableWHS.t_stockdetail.receiptNo] = ird[MasterTableWHS.t_stockinctnnodetail.receiptNo].ToString();
                                     dis1WhereValue_t_stockdetail[MasterTableWHS.t_stockdetail.ctnno_no] = ird[MasterTableWHS.t_stockinctnnodetail.ctnno_no].ToString();
+                                    dis1WhereValue_t_stockdetail[MasterTableWHS.t_stockdetail.pqty] = ird[MasterTableWHS.t_stockinctnnodetail.pqty].ToString();
                                     dis1WhereValue_t_stockdetail[MasterTableWHS.t_stockdetail.qty] = ird[MasterTableWHS.t_stockinctnnodetail.qty].ToString();
 
 

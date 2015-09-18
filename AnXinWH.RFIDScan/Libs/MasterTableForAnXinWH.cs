@@ -262,6 +262,7 @@ namespace AnXinWH.RFIDScan.MasterTableWHS
         public const string rfid_no = "rfid_no";
         public const string ctnno_no = "ctnno_no";
         public const string receiptNo = "receiptNo";
+        public const string pqty = "pqty";
         public const string qty = "qty";
         public const string nwet = "nwet";
         public const string gwet = "gwet";
@@ -329,6 +330,7 @@ namespace AnXinWH.RFIDScan.MasterTableWHS
         public const string rfid_no = "rfid_no";
         public const string ctnno_no = "ctnno_no";
         public const string receiptNo = "receiptNo";
+        public const string pqty = "pqty";
         public const string qty = "qty";
         public const string nwet = "nwet";
         public const string gwet = "gwet";
@@ -407,6 +409,7 @@ namespace AnXinWH.RFIDScan.MasterTableWHS
         public const string shelf_no = "shelf_no";
         public const string receiptNo = "receiptNo";
         public const string ctnno_no = "ctnno_no";
+        public const string pqty = "pqty";
         public const string qty = "qty";
         public const string nwet = "nwet";
         public const string gwet = "gwet";
