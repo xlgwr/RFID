@@ -46,7 +46,7 @@
             // 
             this.lnlTotal.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular);
             this.lnlTotal.ForeColor = System.Drawing.Color.Red;
-            this.lnlTotal.Location = new System.Drawing.Point(20, 103);
+            this.lnlTotal.Location = new System.Drawing.Point(16, 28);
             this.lnlTotal.Name = "lnlTotal";
             this.lnlTotal.Size = new System.Drawing.Size(210, 88);
             this.lnlTotal.Text = "正在提交数据：";
