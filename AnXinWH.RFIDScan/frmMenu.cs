@@ -86,6 +86,8 @@ namespace AnXinWH.RFIDScan
         }
         private void button5_Click(object sender, EventArgs e)
         {
+            MessageBox.Show("正在开发中");
+            return;
             Cursor.Current = Cursors.WaitCursor;
             try
             {
@@ -105,7 +107,26 @@ namespace AnXinWH.RFIDScan
             }
 
         }
+        private void button6_Click_1(object sender, EventArgs e)
+        {
+            Cursor.Current = Cursors.WaitCursor;
+            try
+            {
+                frmStockReg frm = new frmStockReg();
+                frm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
 
+                LogManager.WriteLog(Common.LogFile.Error, ex.Message);
+                MessageBox.Show(Common.GetLanguageWord("frmDocReturn", "FDR007"),
+                     Common.GetLanguageWord(Common.COM_SECTION, "MSGTITLE"), MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
+        }
         private void button3_Click(object sender, EventArgs e)
         {
             try
@@ -179,5 +200,7 @@ namespace AnXinWH.RFIDScan
         }
 
         #endregion
+
+
     }
 }

@@ -43,6 +43,7 @@
             this.col3Weight = new System.Windows.Forms.ColumnHeader();
             this.listView1 = new System.Windows.Forms.ListView();
             this.col2pqty = new System.Windows.Forms.ColumnHeader();
+            this.col4SumPty = new System.Windows.Forms.ColumnHeader();
             this.label1 = new System.Windows.Forms.Label();
             this.txt11stockout_id = new System.Windows.Forms.TextBox();
             this.txt12Rfid_no = new System.Windows.Forms.TextBox();
@@ -66,7 +67,6 @@
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
-            this.col4SumPty = new System.Windows.Forms.ColumnHeader();
             this.plnMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -136,7 +136,7 @@
             this.listView1.Columns.Add(this.col3qty);
             this.listView1.Columns.Add(this.col3Weight);
             this.listView1.Columns.Add(this.col4SumPty);
-            this.listView1.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular);
+            this.listView1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular);
             this.listView1.FullRowSelect = true;
             this.listView1.Location = new System.Drawing.Point(2, 187);
             this.listView1.Name = "listView1";
@@ -150,6 +150,11 @@
             // 
             this.col2pqty.Text = "箱号";
             this.col2pqty.Width = 50;
+            // 
+            // col4SumPty
+            // 
+            this.col4SumPty.Text = "箱数";
+            this.col4SumPty.Width = 60;
             // 
             // label1
             // 
@@ -359,11 +364,6 @@
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(18, 20);
             this.label13.Text = "*";
-            // 
-            // col4SumPty
-            // 
-            this.col4SumPty.Text = "箱数";
-            this.col4SumPty.Width = 60;
             // 
             // frmStockOutScan
             // 

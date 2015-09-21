@@ -7,6 +7,49 @@ namespace AnXinWH.RFIDScan.MasterTableWHS
 {
 
     #region  表属性
+    public class m_terminaldevice
+    {
+        public const string terminalno = "TerminalNo";
+        public const string modelno = "ModelNo";
+        public const string terminaltype = "TerminalType";
+        public const string terminalname = "TerminalName";
+        public const string shelf_no = "shelf_no";
+        public const string connectflag = "ConnectFlag";
+        public const string serialnoipaddr = "SerialNoIPAddr";
+        public const string readtime = "ReadTime";
+        public const string readinterval = "ReadInterval";
+        public const string param1 = "param1";
+        public const string param2 = "param2";
+        public const string param3 = "param3";
+        public const string param4 = "param4";
+        public const string param5 = "param5";
+        public const string param6 = "param6";
+        public const string param7 = "param7";
+        public const string param8 = "param8";
+        public const string param9 = "param9";
+        public const string param10 = "param10";
+        public const string param11 = "param11";
+        public const string param12 = "param12";
+        public const string param13 = "param13";
+        public const string param14 = "param14";
+        public const string param15 = "param15";
+        public const string param16 = "param16";
+        public const string param17 = "param17";
+        public const string param18 = "param18";
+        public const string paramupdtime = "ParamUpdTime";
+        public const string trmnupdtime = "TrmnUpdTime";
+        public const string trmnremark = "TrmnRemark";
+        public const string ciphertext = "CipherText";
+        public const string trmnstatus = "TrmnStatus";
+        public const string adduser = "adduser";
+        public const string upduser = "upduser";
+        public const string addtime = "addtime";
+        public const string updtime = "updtime";
+        public const string upduserno = "UpdUserNo";
+        public const string depot_no = "depot_no";
+    
+    }
+    
     public class m_checkpoint
     {
         public const string CheckPointNo = "CheckPointNo";
@@ -157,46 +200,6 @@ namespace AnXinWH.RFIDScan.MasterTableWHS
         public const string upduser = "upduser";
         public const string updtime = "updtime";
 
-    }
-    public class m_terminaldevice
-    {
-
-        public const string TerminalNo = "TerminalNo";
-        public const string ModelNo = "ModelNo";
-        public const string TerminalType = "TerminalType";
-        public const string TerminalName = "TerminalName";
-        public const string shelf_no = "shelf_no";
-        public const string ConnectFlag = "ConnectFlag";
-        public const string SerialNoIPAddr = "SerialNoIPAddr";
-        public const string ReadTime = "ReadTime";
-        public const string ReadInterval = "ReadInterval";
-        public const string ParamVal1 = "ParamVal1";
-        public const string ParamVal2 = "ParamVal2";
-        public const string ParamVal3 = "ParamVal3";
-        public const string ParamVal4 = "ParamVal4";
-        public const string ParamVal5 = "ParamVal5";
-        public const string ParamVal6 = "ParamVal6";
-        public const string ParamVal7 = "ParamVal7";
-        public const string ParamVal8 = "ParamVal8";
-        public const string ParamVal9 = "ParamVal9";
-        public const string ParamVal10 = "ParamVal10";
-        public const string ParamVal11 = "ParamVal11";
-        public const string ParamVal12 = "ParamVal12";
-        public const string ParamVal13 = "ParamVal13";
-        public const string ParamVal14 = "ParamVal14";
-        public const string ParamVal15 = "ParamVal15";
-        public const string ParamVal16 = "ParamVal16";
-        public const string ParamVal17 = "ParamVal17";
-        public const string ParamVal18 = "ParamVal18";
-        public const string TrmnRemark = "TrmnRemark";
-        public const string CipherText = "CipherText";
-        public const string ParamUpdTime = "ParamUpdTime";
-        public const string TrmnUpdTime = "TrmnUpdTime";
-        public const string TrmnStatus = "TrmnStatus";
-        public const string AddDateTime = "AddDateTime";
-        public const string UpdDateTime = "UpdDateTime";
-        public const string UpdUserNo = "UpdUserNo";
-        public const string depot_no = "depot_no";
     }
     public class m_users
     {
@@ -452,7 +455,6 @@ namespace AnXinWH.RFIDScan.MasterTableWHS
         public const string m_shelf = "m_shelf";
         public const string m_sysmodule = "m_sysmodule";
         public const string m_sysmoduledetail = "m_sysmoduledetail";
-        public const string m_terminaldevice = "m_terminaldevice";
         public const string m_users = "m_users";
         public const string t_interface = "t_interface";
         public const string t_stockin = "t_stockin";
@@ -469,7 +471,9 @@ namespace AnXinWH.RFIDScan.MasterTableWHS
         public const string t_stock = "t_stock";
         public const string t_stockdetail = "t_stockdetail";
         public const string m_products = "m_products";
+        public const string m_terminaldevice = "m_terminaldevice";
 
+        
         
 
     }

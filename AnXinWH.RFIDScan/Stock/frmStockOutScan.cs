@@ -775,7 +775,10 @@ namespace AnXinWH.RFIDScan.Stock
 
                                 AllInit(false);
 
-                                txt21CartonNo.Focus();
+                                txt12Rfid_no.Text = "";
+                                txt12Rfid_no.Focus();
+
+                                //txt21CartonNo.Focus();
                                 dtIn = null;
 
 

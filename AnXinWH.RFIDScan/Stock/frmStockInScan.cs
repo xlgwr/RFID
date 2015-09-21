@@ -672,7 +672,9 @@ namespace AnXinWH.RFIDScan.Stock
                 IsStartTran = true;
                 this.lnlTotal.Visible = true;
 
-                _rfidStrForSet = txt11stockin_id.Text.Trim() + txt12prdct_no.Text.Trim() + txt13pqty.Text.Trim();
+                var tmpsum = calQtyNwet();
+
+                _rfidStrForSet = txt11stockin_id.Text.Trim() + txt12prdct_no.Text.Trim() + tmpsum[0].ToString() + tmpsum[1].ToString();
 
                 if (dt.Rows.Count <= 0)
                 {
@@ -685,7 +687,6 @@ namespace AnXinWH.RFIDScan.Stock
                     _rfidStrForSet += toGenSameStr(tonextNext.ToString().Length, 3, "0") + tonextNext.ToString();
 
                 }
-                var tmpsum = calQtyNwet();
 
                 disWhereValueMain[MasterTableWHS.t_stockinctnno.pqty] = txt13pqty.Text.Trim();
                 disWhereValueMain[MasterTableWHS.t_stockinctnno.rfid_no] = _rfidStrForSet;
