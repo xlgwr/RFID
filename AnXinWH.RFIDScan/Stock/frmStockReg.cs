@@ -141,7 +141,7 @@ namespace AnXinWH.RFIDScan.Stock
                         var tmpNo = dt.Rows[0][MasterTableWHS.m_terminaldevice.terminalno].ToString();
                         var tmpName = dt.Rows[0][MasterTableWHS.m_terminaldevice.terminalname].ToString();
 
-                        tmp0Msg = "设备早已注册！No:" + tmpNo + ",Name" + tmpName;
+                        tmp0Msg = "设备早已注册！No:" + tmpNo + ",Name:" + tmpName;
                         SetMsg(lnlTotal, tmp0Msg);
                         MessageBox.Show(tmp0Msg);
                         return true;

@@ -570,8 +570,8 @@ namespace AnXinWH.RFIDScan
 
                 this.dicItemData[MasterTableWHS.m_users.user_no] = this.txtUserId.Text.Trim();
 
-                //数据加密处理
-                this.dicItemData[MasterTableWHS.m_users.user_pwd] = this.txtPaswd.Text;// Common.EncryptPassWord(this.txtPaswd.Text);
+                //数据加密处理  this.txtPaswd.Text;
+                this.dicItemData[MasterTableWHS.m_users.user_pwd] = Common.EncryptPassWord(this.txtPaswd.Text);
 
                 this.dicConds[MasterTableWHS.m_users.user_no] = "true";
                 this.dicConds[MasterTableWHS.m_users.user_pwd] = "true";
