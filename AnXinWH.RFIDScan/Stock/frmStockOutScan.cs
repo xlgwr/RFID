@@ -751,6 +751,15 @@ namespace AnXinWH.RFIDScan.Stock
                         #endregion
 
 
+                        #region check 检查出库申请明细中是否正在对应产品
+
+                        if (!checkt_stockoutctnnoWithProduct(txt21CartonNo, tmpshelfModel.stockout_id, tmpshelfModel.prdct_no))
+                        {
+                            
+                            return;
+                        }
+                        #endregion
+
                         #region check t_stockoutctnno
 
 
@@ -1333,6 +1342,62 @@ namespace AnXinWH.RFIDScan.Stock
             {
 
                 updateInlist(_rfidStrForSet, txt21CartonNo.Text.Trim());
+            }
+        }
+        bool checkt_stockoutctnnoWithProduct(TextBox tbFocus, string tbId, string tbProduct)
+        {
+            var tmpmsg = "";
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                if (string.IsNullOrEmpty(tbId) || string.IsNullOrEmpty(tbProduct))
+                {
+                    return false;
+                }
+                #region check t_stockinctnno
+                tmpmsg = "检查出库申请No：" + tbId + ",货物编号：" + tbProduct + " 中。。。";
+                SetMsg(lnlTotal, tmpmsg);
+                //t_stockin 
+                StringDictionary dis1WhereValuet_stockin = new StringDictionary();
+                StringDictionary dis2ForValuet_stockin = new StringDictionary();
+
+                //set t_stockinvalue
+                dis1WhereValuet_stockin[MasterTableWHS.t_stockoutdetail.stockout_id] = tbId;
+                dis2ForValuet_stockin[MasterTableWHS.t_stockoutdetail.stockout_id] = "true";
+
+
+                dis1WhereValuet_stockin[MasterTableWHS.t_stockoutdetail.prdct_no] = tbProduct;
+                dis2ForValuet_stockin[MasterTableWHS.t_stockoutdetail.prdct_no] = "true";
+
+                var dtIn = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.t_stockoutdetail, dis1WhereValuet_stockin, dis2ForValuet_stockin, _disNull, "", false);
+
+                if (dtIn.Rows.Count <= 0)
+                {
+                    AllInit(false);
+
+                    tmpmsg = "不存出库申请No：" + tbId + ",货物编号：" + tbProduct + "。";
+                    SetMsg(lnlTotal, tmpmsg);
+                    MessageBox.Show(tmpmsg);
+                    
+                    Cursor.Current = Cursors.Default;
+                    return false;
+                }
+                SetMsg(lnlTotal, "");
+                Cursor.Current = Cursors.Default;
+                return true;
+
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                tbFocus.Focus();
+                Cursor.Current = Cursors.Default;
+                return false;
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
             }
         }
         bool checkStockInNo(TextBox tbFocus, TextBox tbId)
