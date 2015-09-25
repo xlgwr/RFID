@@ -512,6 +512,9 @@ namespace AnXinWH.RFIDScan.Stock
         private void txt21ctnno_no_KeyDown(object sender, KeyEventArgs e)
         {
             var tmpmsg = "";
+            var tmpprdct_no = "";
+            var tmpstockin_id = "";
+
             Cursor.Current = Cursors.WaitCursor;
             try
             {
@@ -535,8 +538,8 @@ namespace AnXinWH.RFIDScan.Stock
                         StringDictionary dis2ForValuem_shelf = new StringDictionary();
 
                         //t_stockinctnno
-                        dis1WhereValuet_stockinctnno[MasterTableWHS.t_stockinctnno.rfid_no] = txt1RfidNo.Text.Trim();
-                        dis2ForValuet_stockinctnno[MasterTableWHS.t_stockinctnno.rfid_no] = "true";
+                        dis1WhereValuet_stockinctnno[MasterTableWHS.t_stockinctnnodetail.rfid_no] = txt1RfidNo.Text.Trim();
+                        dis2ForValuet_stockinctnno[MasterTableWHS.t_stockinctnnodetail.rfid_no] = "true";
 
 
                         //check shelf no
@@ -553,16 +556,17 @@ namespace AnXinWH.RFIDScan.Stock
 
                         #region check t_stockinctnno
 
-                        var dtIn = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.t_stockinctnno, dis1WhereValuet_stockinctnno, dis2ForValuet_stockinctnno, _disNull, "", false);
+                        var dtIn = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.t_stockinctnnodetail, dis1WhereValuet_stockinctnno, dis2ForValuet_stockinctnno, _disNull, "", false);
 
                         if (dtIn.Rows.Count > 0)
                         {
-                            var tmpstatus = dtIn.Rows[0][MasterTableWHS.t_stockinctnno.status].ToString().Trim();
+                            var tmpstatus = dtIn.Rows[0][MasterTableWHS.t_stockinctnnodetail.status].ToString().Trim();
+                            tmpstockin_id = dtIn.Rows[0][MasterTableWHS.t_stockinctnnodetail.stockin_id].ToString();
+                            tmpprdct_no = dtIn.Rows[0][MasterTableWHS.t_stockinctnnodetail.prdct_no].ToString();
+
                             if (tmpstatus.Equals("0"))
                             {
-                                var tmpstockin_id = dtIn.Rows[0][MasterTableWHS.t_stockinctnno.stockin_id].ToString();
-                                var tmpshelf = dtIn.Rows[0][MasterTableWHS.t_stockinctnno.prdct_no].ToString();
-                                tmpmsg = "RFID：" + txt1RfidNo.Text + " 已失效。货物编码：" + tmpshelf + ",入库单:" + tmpstockin_id;
+                                tmpmsg = "RFID：" + txt1RfidNo.Text + " 已失效。货物编码：" + tmpprdct_no + ",入库单:" + tmpstockin_id;
 
                                 AllInit(false);
 
@@ -570,13 +574,14 @@ namespace AnXinWH.RFIDScan.Stock
                                 MessageBox.Show(tmpmsg);
                                 return;
                             }
+
                         }
                         else
                         {
                             tmpmsg = "Error1: RFID：" + txt1RfidNo.Text + " 不存在系统中。。。请检查数据的准确性。";
-                          
+
                             AllInit(false);
-                            
+
                             SetMsg(lnlTotal, tmpmsg);
                             MessageBox.Show(tmpmsg);
                             return;
@@ -633,6 +638,8 @@ namespace AnXinWH.RFIDScan.Stock
                             scanMain_stock tmp = new scanMain_stock();
                             tmp.rfid_no = txt1RfidNo.Text.Trim();
                             tmp.shelf_no = txt2ShelfNo.Text.Trim();
+                            tmp.stockin_id = tmpstockin_id;
+                            tmp.prdct_no = tmpprdct_no;
                             addToListView(tmp);
 
                         }
@@ -724,8 +731,12 @@ namespace AnXinWH.RFIDScan.Stock
                     //主表
                     //get dt stock in
 
-                    dis1WhereValueMain[MasterTableWHS.t_stockinctnno.rfid_no] = item.rfid_no;
-                    dis2ForValueMain[MasterTableWHS.t_stockinctnno.rfid_no] = "true";
+                    dis1WhereValueMain[MasterTableWHS.t_stockinctnno.stockin_id] = item.stockin_id;
+                    dis2ForValueMain[MasterTableWHS.t_stockinctnno.stockin_id] = "true";
+
+
+                    dis1WhereValueMain[MasterTableWHS.t_stockinctnno.prdct_no] = item.prdct_no;
+                    dis2ForValueMain[MasterTableWHS.t_stockinctnno.prdct_no] = "true";
 
                     dis1WhereValueMain[MasterTableWHS.t_stockinctnno.status] = "1";
                     dis2ForValueMain[MasterTableWHS.t_stockinctnno.status] = "true";
@@ -816,6 +827,14 @@ namespace AnXinWH.RFIDScan.Stock
                             //get stockindetails
                             var dis2ForValuet_stockinctnnodetail = new StringDictionary();
                             var dis1WhereValuet_stockinctnnodetail = new StringDictionary();
+
+
+                            dis2ForValuet_stockinctnnodetail[MasterTableWHS.t_stockinctnnodetail.stockin_id] = item.stockin_id;
+                            dis1WhereValuet_stockinctnnodetail[MasterTableWHS.t_stockinctnnodetail.stockin_id] = "true";
+
+
+                            dis2ForValuet_stockinctnnodetail[MasterTableWHS.t_stockinctnnodetail.prdct_no] = item.prdct_no;
+                            dis1WhereValuet_stockinctnnodetail[MasterTableWHS.t_stockinctnnodetail.prdct_no] = "true";
 
                             dis2ForValuet_stockinctnnodetail[MasterTableWHS.t_stockinctnnodetail.rfid_no] = item.rfid_no;
                             dis1WhereValuet_stockinctnnodetail[MasterTableWHS.t_stockinctnnodetail.rfid_no] = "true";
@@ -1027,6 +1046,10 @@ namespace AnXinWH.RFIDScan.Stock
     }
     public class scanMain_stock
     {
+
+        public string stockin_id { get; set; }
+        public string prdct_no { get; set; }
+
         public string rfid_no { get; set; }
         public string shelf_no { get; set; }
 

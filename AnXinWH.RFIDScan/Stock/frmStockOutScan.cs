@@ -583,6 +583,8 @@ namespace AnXinWH.RFIDScan.Stock
                 //确定上传数据？ 
                 if (MessageBox.Show(Common.GetLanguageWord(this.Name, "FIS006"), Common.GetLanguageWord(Common.COM_SECTION, "MSGTITLE"), MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.OK)
                 {
+                    if (!checkStockInNo(txt11stockout_id, txt11stockout_id))
+                    { return; }
                     if (UploadData())
                     {
 
@@ -802,6 +804,8 @@ namespace AnXinWH.RFIDScan.Stock
 
                             tmp.receiptNo = tmpshelfModel.receiptNo;
 
+                            tmp.stockout_id = txt11stockout_id.Text.Trim();
+
                             tmp.prdct_no = tmpshelfModel.prdct_no;
 
                             tmp.ctnno_no = txt21CartonNo.Text.Trim();
@@ -915,6 +919,11 @@ namespace AnXinWH.RFIDScan.Stock
                     //save t_stockoutctnnodetail
                     dis1WhereValuet_stockoutctnnodetail = new StringDictionary();
 
+
+
+                    dis1WhereValuet_stockoutctnnodetail[MasterTableWHS.t_stockoutctnnodetail.stockout_id] = item.stockout_id;
+                    dis1WhereValuet_stockoutctnnodetail[MasterTableWHS.t_stockoutctnnodetail.prdct_no] = item.prdct_no;
+
                     dis1WhereValuet_stockoutctnnodetail[MasterTableWHS.t_stockoutctnnodetail.rfid_no] = item.rfid_no;
                     dis1WhereValuet_stockoutctnnodetail[MasterTableWHS.t_stockoutctnnodetail.receiptNo] = item.receiptNo;
 
@@ -973,8 +982,8 @@ namespace AnXinWH.RFIDScan.Stock
                 foreach (var itemRfid in dictmpsumRFID.Keys)
                 {
                     var tmpRfid = itemRfid.Split(',');
-                    dis1WhereValuet_stockoutctnno[MasterTableWHS.t_stockoutctnno.rfid_no] = tmpRfid[0];
-                    dis2ForValuet_stockoutctnno[MasterTableWHS.t_stockoutctnno.rfid_no] = "true";
+                    //dis1WhereValuet_stockoutctnno[MasterTableWHS.t_stockoutctnno.rfid_no] = tmpRfid[0];
+                    //dis2ForValuet_stockoutctnno[MasterTableWHS.t_stockoutctnno.rfid_no] = "true";
 
 
                     dis1WhereValuet_stockoutctnno[MasterTableWHS.t_stockoutctnno.stockout_id] = txt11stockout_id.Text.Trim();
@@ -1326,9 +1335,82 @@ namespace AnXinWH.RFIDScan.Stock
                 updateInlist(_rfidStrForSet, txt21CartonNo.Text.Trim());
             }
         }
+        bool checkStockInNo(TextBox tbFocus, TextBox tbId)
+        {
+            var tmpmsg = "";
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
+
+                if (string.IsNullOrEmpty(tbId.Text))
+                {
+                    tbId.Focus();
+                    return false;
+                }
+                #region check t_stockinctnno
+                tmpmsg = "检查出库 No：" + tbId.Text + " 中。。。";
+                SetMsg(lnlTotal, tmpmsg);
+                //t_stockin 
+                StringDictionary dis1WhereValuet_stockin = new StringDictionary();
+                StringDictionary dis2ForValuet_stockin = new StringDictionary();
+
+                //set t_stockinvalue
+                dis1WhereValuet_stockin[MasterTableWHS.t_stockout.stockout_id] = tbId.Text.Trim();
+                dis2ForValuet_stockin[MasterTableWHS.t_stockout.stockout_id] = "true";
+
+                var dtIn = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.t_stockout, dis1WhereValuet_stockin, dis2ForValuet_stockin, _disNull, "", false);
+
+                if (dtIn.Rows.Count > 0)
+                {
+                    var tmpstatus = dtIn.Rows[0][MasterTableWHS.t_stockout.status].ToString().Trim();
+                    if (tmpstatus.Equals("0"))
+                    {
+                        //var tmpstockin_id = dtIn.Rows[0][MasterTableWHS.t_stockout].ToString();
+                        tmpmsg = "出库申请单 No：" + tbId.Text + " 已失效.";
+
+                        AllInit(true);
+
+                        SetMsg(lnlTotal, tmpmsg);
+                        MessageBox.Show(tmpmsg);
+                        tbFocus.Focus();
+                        return false;
+                    }
+                    SetMsg(lnlTotal, "");
+                    return true;
+                }
+                else
+                {
+                    tmpmsg = "出库申请单 No：" + tbId.Text + " 不存在系统中。。。请检查数据的准确性。";
+
+                    AllInit(true);
+
+                    SetMsg(lnlTotal, tmpmsg);
+                    MessageBox.Show(tmpmsg);
+                    tbFocus.Focus();
+                    return false;
+                }
+
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                tbFocus.Focus();
+                return false;
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
+        }
 
         private void txt11stockout_id_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (!checkStockInNo(txt11stockout_id, txt11stockout_id))
+                { return; }
+            }
             setFouces(e, txt11stockout_id, txt12Rfid_no);
         }
 
@@ -1373,6 +1455,8 @@ namespace AnXinWH.RFIDScan.Stock
         public string receiptNo { get; set; }
 
         public string shelf_no { get; set; }
+
+        public string stockout_id { get; set; }
         public string prdct_no { get; set; }
 
 

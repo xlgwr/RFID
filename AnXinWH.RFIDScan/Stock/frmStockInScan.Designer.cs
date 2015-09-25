@@ -66,15 +66,15 @@
             // 
             this.lnlTotal.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular);
             this.lnlTotal.ForeColor = System.Drawing.Color.Red;
-            this.lnlTotal.Location = new System.Drawing.Point(3, 253);
+            this.lnlTotal.Location = new System.Drawing.Point(3, 246);
             this.lnlTotal.Name = "lnlTotal";
-            this.lnlTotal.Size = new System.Drawing.Size(207, 15);
+            this.lnlTotal.Size = new System.Drawing.Size(233, 41);
             this.lnlTotal.Text = "正在提交数据：";
             // 
             // button3
             // 
             this.button3.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular);
-            this.button3.Location = new System.Drawing.Point(141, 273);
+            this.button3.Location = new System.Drawing.Point(141, 282);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(69, 28);
             this.button3.TabIndex = 2;
@@ -84,7 +84,7 @@
             // button2
             // 
             this.button2.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular);
-            this.button2.Location = new System.Drawing.Point(25, 273);
+            this.button2.Location = new System.Drawing.Point(25, 282);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(69, 28);
             this.button2.TabIndex = 1;

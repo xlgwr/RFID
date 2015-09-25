@@ -253,7 +253,7 @@ namespace AnXinWH.RFIDScan.MasterTableWHS
         public const string qty = "qty";
         public const string nwet = "nwet";
         public const string gwet = "gwet";
-        public const string rfid_no = "rfid_no";
+        //public const string rfid_no = "rfid_no";
         public const string status = "status";
         public const string adduser = "adduser";
         public const string upduser = "upduser";
@@ -262,6 +262,10 @@ namespace AnXinWH.RFIDScan.MasterTableWHS
     }
     public class t_stockinctnnodetail
     {
+
+        public const string stockin_id = "stockin_id";
+        public const string prdct_no = "prdct_no";
+
         public const string rfid_no = "rfid_no";
         public const string ctnno_no = "ctnno_no";
         public const string receiptNo = "receiptNo";
@@ -320,7 +324,7 @@ namespace AnXinWH.RFIDScan.MasterTableWHS
         public const string qty = "qty";
         public const string nwet = "nwet";
         public const string gwet = "gwet";
-        public const string rfid_no = "rfid_no";
+        //public const string rfid_no = "rfid_no";
         public const string status = "status";
         public const string adduser = "adduser";
         public const string upduser = "upduser";
@@ -329,6 +333,9 @@ namespace AnXinWH.RFIDScan.MasterTableWHS
     }
     public class t_stockoutctnnodetail
     {
+
+        public const string stockout_id = "stockout_id";
+        public const string prdct_no = "prdct_no";
 
         public const string rfid_no = "rfid_no";
         public const string ctnno_no = "ctnno_no";

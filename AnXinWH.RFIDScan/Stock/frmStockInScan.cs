@@ -439,12 +439,12 @@ namespace AnXinWH.RFIDScan.Stock
             if (!checkTxt())
             {
                 return;
-            }
-            Cursor.Current = Cursors.WaitCursor;
+            }           
 
             var tmpmsg = "";
             try
             {
+                Cursor.Current = Cursors.WaitCursor;
                 #region check product no
 
                 StringDictionary dis1WhereValue_m_products = new StringDictionary();
@@ -494,6 +494,21 @@ namespace AnXinWH.RFIDScan.Stock
                 //确定上传数据？ 
                 if (MessageBox.Show(Common.GetLanguageWord(this.Name, "FIS006"), Common.GetLanguageWord(Common.COM_SECTION, "MSGTITLE"), MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.OK)
                 {
+                    if (!checkStockInNo(txt11stockin_id, txt11stockin_id))
+                    {
+                        return;
+                    }
+
+                    if (!checkStockInNoWithProduct(txt12prdct_no, txt11stockin_id, txt12prdct_no))
+                    {
+                        return;
+                    }
+
+                    if (!checkt_stockinctnnoWithProduct(txt12prdct_no, txt11stockin_id, txt12prdct_no))
+                    {
+                        return;
+                    }
+
                     if (UploadData())
                     {
 
@@ -591,7 +606,7 @@ namespace AnXinWH.RFIDScan.Stock
                             scanItemDetail tmp = new scanItemDetail();
 
                             tmp.ctnno_no = txt21ctnno_no.Text.Trim();
-                            tmp.pqty = txt13pqty.Text.Trim() ;
+                            tmp.pqty = txt13pqty.Text.Trim();
                             tmp.qty = txt22qty.Text.Trim();
                             tmp.nwet = txt23nwet.Text.Trim();
 
@@ -621,6 +636,7 @@ namespace AnXinWH.RFIDScan.Stock
 
         private bool UploadData()
         {
+
             bool IsStartTran = false;
 
             //test
@@ -640,7 +656,7 @@ namespace AnXinWH.RFIDScan.Stock
 
             //主表
             DataTable dt = null;
-            disWhereValueMain[MasterTableWHS.t_stockinctnno.stockin_id] = this._stockin_id;
+            disWhereValueMain[MasterTableWHS.t_stockinctnno.stockin_id] = txt11stockin_id.Text.Trim();
             disWhereValueMain[MasterTableWHS.t_stockinctnno.prdct_no] = txt12prdct_no.Text.Trim();
             disForOrderByMain[MasterTableWHS.t_stockinctnno.stockin_id] = "true";
             disForOrderByMain[MasterTableWHS.t_stockinctnno.prdct_no] = "true";
@@ -689,7 +705,7 @@ namespace AnXinWH.RFIDScan.Stock
                 }
 
                 disWhereValueMain[MasterTableWHS.t_stockinctnno.pqty] = txt13pqty.Text.Trim();
-                disWhereValueMain[MasterTableWHS.t_stockinctnno.rfid_no] = _rfidStrForSet;
+                //disWhereValueMain[MasterTableWHS.t_stockinctnno.rfid_no] = _rfidStrForSet;
                 disWhereValueMain[MasterTableWHS.t_stockinctnno.pqty] = tmpsum[0].ToString();
                 disWhereValueMain[MasterTableWHS.t_stockinctnno.qty] = tmpsum[1].ToString();
                 disWhereValueMain[MasterTableWHS.t_stockinctnno.nwet] = tmpsum[2].ToString();
@@ -701,13 +717,16 @@ namespace AnXinWH.RFIDScan.Stock
                 //上传scan
 
                 //次表
+
+                disWhereValueItem[MasterTableWHS.t_stockinctnnodetail.stockin_id] = txt11stockin_id.Text.Trim();
+                disWhereValueItem[MasterTableWHS.t_stockinctnnodetail.prdct_no] = txt12prdct_no.Text.Trim();
                 disWhereValueItem[MasterTableWHS.t_stockinctnnodetail.rfid_no] = _rfidStrForSet;
                 foreach (var item in _lisCtnNo)
                 {
 
                     //次表
                     //仓单号
-                    disWhereValueItem[MasterTableWHS.t_stockinctnnodetail.receiptNo] = "A001";
+                    disWhereValueItem[MasterTableWHS.t_stockinctnnodetail.receiptNo] = "110";
 
                     disWhereValueItem[MasterTableWHS.t_stockinctnnodetail.ctnno_no] = item.ctnno_no;
                     disWhereValueItem[MasterTableWHS.t_stockinctnnodetail.pqty] = item.pqty.Length <= 0 ? "1" : item.pqty;
@@ -744,8 +763,214 @@ namespace AnXinWH.RFIDScan.Stock
             return false;
         }
 
+
+        bool checkStockInNo(TextBox tbFocus, TextBox tbId)
+        {
+            var tmpmsg = "";
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                if (string.IsNullOrEmpty(tbId.Text))
+                {
+                    tbId.Focus();
+                    return false;
+                }
+                #region check t_stockinctnno
+                tmpmsg = "检查入库No：" + tbId.Text + " 中。。。";
+                SetMsg(lnlTotal, tmpmsg);
+                //t_stockin 
+                StringDictionary dis1WhereValuet_stockin = new StringDictionary();
+                StringDictionary dis2ForValuet_stockin = new StringDictionary();
+
+                //set t_stockinvalue
+                dis1WhereValuet_stockin[MasterTableWHS.t_stockin.stockin_id] = tbId.Text.Trim();
+                dis2ForValuet_stockin[MasterTableWHS.t_stockin.stockin_id] = "true";
+
+
+                var dtIn = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.t_stockin, dis1WhereValuet_stockin, dis2ForValuet_stockin, _disNull, "", false);
+
+                if (dtIn.Rows.Count > 0)
+                {
+                    var tmpstatus = dtIn.Rows[0][MasterTableWHS.t_stockin.status].ToString().Trim();
+                    if (tmpstatus.Equals("0"))
+                    {
+                        var tmpstockin_id = dtIn.Rows[0][MasterTableWHS.t_stockin.op_no].ToString();
+                        tmpmsg = "入库申请单 No：" + tbId.Text + " 已失效.";
+
+                        AllInit();
+
+                        SetMsg(lnlTotal, tmpmsg);
+                        MessageBox.Show(tmpmsg);
+                        tbFocus.Focus();
+                        return false;
+                    }
+                    SetMsg(lnlTotal, "");
+                    return true;
+                }
+                else
+                {
+                    tmpmsg = "入库申请单 No：" + tbId.Text + " 不存在系统中。。。请检查数据的准确性。";
+
+                    AllInit();
+
+                    SetMsg(lnlTotal, tmpmsg);
+                    MessageBox.Show(tmpmsg);
+                    tbFocus.Focus();
+                    return false;
+                }
+
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                tbFocus.Focus();
+                return false;
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
+        }
+        bool checkStockInNoWithProduct(TextBox tbFocus, TextBox tbId, TextBox tbProduct)
+        {
+            var tmpmsg = "";
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                if (string.IsNullOrEmpty(tbId.Text))
+                {
+                    tbId.Focus();
+                    return false;
+                }
+                if (string.IsNullOrEmpty(tbProduct.Text))
+                {
+                    tbProduct.Focus();
+                    return false;
+                }
+                #region check t_stockinctnno
+                tmpmsg = "检查入库No：" + tbId.Text + ",货物编号：" + tbProduct.Text + " 中。。。";
+                SetMsg(lnlTotal, tmpmsg);
+                //t_stockin 
+                StringDictionary dis1WhereValuet_stockin = new StringDictionary();
+                StringDictionary dis2ForValuet_stockin = new StringDictionary();
+
+                //set t_stockinvalue
+                dis1WhereValuet_stockin[MasterTableWHS.t_stockindetail.stockin_id] = tbId.Text.Trim();
+                dis2ForValuet_stockin[MasterTableWHS.t_stockindetail.stockin_id] = "true";
+
+
+                dis1WhereValuet_stockin[MasterTableWHS.t_stockindetail.prdct_no] = tbProduct.Text.Trim();
+                dis2ForValuet_stockin[MasterTableWHS.t_stockindetail.prdct_no] = "true";
+
+                var dtIn = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.t_stockindetail, dis1WhereValuet_stockin, dis2ForValuet_stockin, _disNull, "", false);
+
+                if (dtIn.Rows.Count > 0)
+                {
+                    var tmpstatus = dtIn.Rows[0][MasterTableWHS.t_stockindetail.status].ToString().Trim();
+                    if (tmpstatus.Equals("0"))
+                    {
+                        //var tmpstockin_id = dtIn.Rows[0][MasterTableWHS.t_stockindetail.op_no].ToString();
+                        tmpmsg = "入库申请单 明细 No：" + tbId.Text + ",货物编号：" + tbProduct.Text + " 已失效.";
+
+                        //AllInit();
+
+                        SetMsg(lnlTotal, tmpmsg);
+                        MessageBox.Show(tmpmsg);
+                        tbFocus.Focus();
+                        return false;
+                    }
+                    SetMsg(lnlTotal, "");
+                    return true;
+                }
+                else
+                {
+                    tmpmsg = "入库申请单 明细 No：" + tbId.Text + ",货物编号：" + tbProduct.Text + " 不存在系统中。。。请检查数据的准确性。";
+
+                    //AllInit();
+
+                    SetMsg(lnlTotal, tmpmsg);
+                    MessageBox.Show(tmpmsg);
+                    tbFocus.Focus();
+                    return false;
+                }
+
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                tbFocus.Focus();
+                return false;
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
+        }
+
+        bool checkt_stockinctnnoWithProduct(TextBox tbFocus, TextBox tbId, TextBox tbProduct)
+        {
+            var tmpmsg = "";
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                if (string.IsNullOrEmpty(tbId.Text))
+                {
+                    tbId.Focus();
+                    return false;
+                }
+                if (string.IsNullOrEmpty(tbProduct.Text))
+                {
+                    tbProduct.Focus();
+                    return false;
+                }
+                #region check t_stockinctnno
+                tmpmsg = "检查已入库No：" + tbId.Text + ",货物编号：" + tbProduct.Text + " 中。。。";
+                SetMsg(lnlTotal, tmpmsg);
+                //t_stockin 
+                StringDictionary dis1WhereValuet_stockin = new StringDictionary();
+                StringDictionary dis2ForValuet_stockin = new StringDictionary();
+
+                //set t_stockinvalue
+                dis1WhereValuet_stockin[MasterTableWHS.t_stockinctnno.stockin_id] = tbId.Text.Trim();
+                dis2ForValuet_stockin[MasterTableWHS.t_stockinctnno.stockin_id] = "true";
+
+
+                dis1WhereValuet_stockin[MasterTableWHS.t_stockinctnno.prdct_no] = tbProduct.Text.Trim();
+                dis2ForValuet_stockin[MasterTableWHS.t_stockinctnno.prdct_no] = "true";
+
+                var dtIn = this.m_daoCommon.GetTableInfo(MasterTableWHS.ViewOrTable.t_stockinctnno, dis1WhereValuet_stockin, dis2ForValuet_stockin, _disNull, "", false);
+
+                if (dtIn.Rows.Count > 0)
+                {
+                    tmpmsg = "已扫描入库,入库No：" + tbId.Text + ",货物编号：" + tbProduct.Text + ".";
+                    SetMsg(lnlTotal, tmpmsg);
+                    tbProduct.Focus();
+                    Cursor.Current = Cursors.Default;
+                    return false;
+                }
+                SetMsg(lnlTotal, "");
+                Cursor.Current = Cursors.Default;
+                return true;
+
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                tbFocus.Focus();
+                Cursor.Current = Cursors.Default;
+                return false;
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
+        }
         private void button3_Click(object sender, EventArgs e)
         {
+
             Cursor.Current = Cursors.WaitCursor;
             try
             {
@@ -754,6 +979,25 @@ namespace AnXinWH.RFIDScan.Stock
                     //是否上传已经扫描的数据？ 
                     if (MessageBox.Show(Common.GetLanguageWord(this.Name, "FIS011"), Common.GetLanguageWord(Common.COM_SECTION, "MSGTITLE"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
                     {
+
+                        if (!checkTxt())
+                        {
+                            return;
+                        }
+                        if (!checkStockInNo(txt11stockin_id, txt11stockin_id))
+                        {
+                            return;
+                        }
+
+                        if (!checkStockInNoWithProduct(txt12prdct_no, txt11stockin_id, txt12prdct_no))
+                        {
+                            return;
+                        }
+
+                        if (!checkt_stockinctnnoWithProduct(txt12prdct_no, txt11stockin_id, txt12prdct_no))
+                        {
+                            return;
+                        }
                         if (UploadData())
                         {
                             #region write/get rfid
@@ -898,7 +1142,7 @@ namespace AnXinWH.RFIDScan.Stock
 
         }
 
-       
+
 
         private void txt22qty_TextChanged(object sender, EventArgs e)
         {
@@ -934,6 +1178,13 @@ namespace AnXinWH.RFIDScan.Stock
 
         private void txt11stockin_id_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (!checkStockInNo(txt11stockin_id, txt11stockin_id))
+                {
+                    return;
+                }
+            }
             setFouces(e, txt12prdct_no);
         }
         void setFouces(KeyEventArgs e, TextBox tb)
@@ -948,6 +1199,19 @@ namespace AnXinWH.RFIDScan.Stock
         }
         private void txt12prdct_no_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.Enter)
+            {
+
+                if (!checkStockInNoWithProduct(txt12prdct_no, txt11stockin_id, txt12prdct_no))
+                {
+                    return;
+                }
+                if (!checkt_stockinctnnoWithProduct(txt12prdct_no, txt11stockin_id, txt12prdct_no))
+                {
+                    return;
+                }
+
+            }
             setFouces(e, txt21ctnno_no);
         }
 
