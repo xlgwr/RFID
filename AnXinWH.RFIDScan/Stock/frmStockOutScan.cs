@@ -753,9 +753,16 @@ namespace AnXinWH.RFIDScan.Stock
 
                         #region check 检查出库申请明细中是否正在对应产品
 
-                        if (!checkt_stockoutctnnoWithProduct(txt21CartonNo, tmpshelfModel.stockout_id, tmpshelfModel.prdct_no))
+                        if (!checkt_stockoutctnnoWithProduct(txt21CartonNo, txt11stockout_id.Text, tmpshelfModel.prdct_no))
                         {
-                            
+
+                            AllInit(false);
+
+                            tmpmsg = "不存出库申请No：" + txt11stockout_id.Text + ",货物编号：" + tmpshelfModel.prdct_no + "。";
+                            SetMsg(lnlTotal, tmpmsg);
+                            MessageBox.Show(tmpmsg);
+
+                            Cursor.Current = Cursors.Default;
                             return;
                         }
                         #endregion
@@ -1373,13 +1380,7 @@ namespace AnXinWH.RFIDScan.Stock
 
                 if (dtIn.Rows.Count <= 0)
                 {
-                    AllInit(false);
 
-                    tmpmsg = "不存出库申请No：" + tbId + ",货物编号：" + tbProduct + "。";
-                    SetMsg(lnlTotal, tmpmsg);
-                    MessageBox.Show(tmpmsg);
-                    
-                    Cursor.Current = Cursors.Default;
                     return false;
                 }
                 SetMsg(lnlTotal, "");
