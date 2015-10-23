@@ -92,10 +92,10 @@ namespace AnXinWH.RFIDStockIn
 
                     this.Enabled = true;
 
-                    this.Hide();
-
                     frmMenu frm = new frmMenu();
                     frm.ShowDialog();
+
+                    //this.Hide();
 
                     this.txtPaswd.Text = "";
                     //控件设置焦点
@@ -226,7 +226,7 @@ namespace AnXinWH.RFIDStockIn
                     Common._Language = "Chinese";// Enum.Parse(typeof(Common.Language), dtUser.Rows[0][MasterTable.M_Users.Language].ToString(), true).ToString();
 
                     //操作系统时间同步处理
-                    GetServerDate();
+                    //GetServerDate();
                 }
 
                 RtnValue = true;

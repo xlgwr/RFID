@@ -37,9 +37,9 @@
             this.col0RFID = new System.Windows.Forms.ColumnHeader();
             this.col0Product = new System.Windows.Forms.ColumnHeader();
             this.col0XianHaoNum = new System.Windows.Forms.ColumnHeader();
-            this.col4Pqty = new System.Windows.Forms.ColumnHeader();
             this.col2Num = new System.Windows.Forms.ColumnHeader();
             this.col3Weight = new System.Windows.Forms.ColumnHeader();
+            this.col4Pqty = new System.Windows.Forms.ColumnHeader();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
@@ -139,11 +139,6 @@
             this.col0XianHaoNum.Text = "托盘号/箱号";
             this.col0XianHaoNum.Width = 95;
             // 
-            // col4Pqty
-            // 
-            this.col4Pqty.Text = "箱数";
-            this.col4Pqty.Width = 60;
-            // 
             // col2Num
             // 
             this.col2Num.Text = "数量";
@@ -154,6 +149,11 @@
             // 
             this.col3Weight.Text = "重量";
             this.col3Weight.Width = 60;
+            // 
+            // col4Pqty
+            // 
+            this.col4Pqty.Text = "箱数";
+            this.col4Pqty.Width = 60;
             // 
             // label9
             // 
@@ -361,6 +361,7 @@
             this.KeyPreview = true;
             this.Name = "StockInMainFrm";
             this.Text = "StockInMainFrm";
+            this.Load += new System.EventHandler(this.StockInMainFrm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.StockInMainFrm_KeyDown);
             this.ResumeLayout(false);
 

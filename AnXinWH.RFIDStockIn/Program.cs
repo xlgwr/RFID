@@ -14,7 +14,6 @@ namespace AnXinWH.RFIDStockIn
     {
         //系统登录画面
         public static frmLogin m_FrmSysLogin = null;
-
         /// <summary>
         /// The main entry point for the application.
         /// </summary>

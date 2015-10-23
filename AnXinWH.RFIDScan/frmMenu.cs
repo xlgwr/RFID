@@ -201,6 +201,11 @@ namespace AnXinWH.RFIDScan
 
         #endregion
 
+        private void lblTitle_ParentChanged(object sender, EventArgs e)
+        {
+
+        }
+
 
     }
 }

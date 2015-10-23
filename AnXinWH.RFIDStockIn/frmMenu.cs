@@ -16,7 +16,6 @@ namespace AnXinWH.RFIDStockIn
         public frmMenu()
         {
             InitializeComponent();
-
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -24,12 +23,13 @@ namespace AnXinWH.RFIDStockIn
             Cursor.Current = Cursors.WaitCursor;
             try
             {
+                //this.Hide();
                 StockInMainFrm frm = new StockInMainFrm();
                 frm.ShowDialog();
+               // this.Hide();
             }
             catch (Exception ex)
             {
-
                 LogManager.WriteLog(Common.LogFile.Error, ex.Message);
                 MessageBox.Show("进入货物卸货失败"+ex.Message,
                      "进入货物卸货失败", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1);

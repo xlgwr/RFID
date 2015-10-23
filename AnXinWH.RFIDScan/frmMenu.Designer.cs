@@ -88,6 +88,7 @@
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(234, 22);
             this.lblTitle.Text = "菜单";
+            this.lblTitle.ParentChanged += new System.EventHandler(this.lblTitle_ParentChanged);
             // 
             // picAirPort
             // 

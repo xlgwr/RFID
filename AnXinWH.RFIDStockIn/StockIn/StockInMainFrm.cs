@@ -412,6 +412,11 @@ namespace AnXinWH.RFIDStockIn.StockIn
                 Cursor.Current = Cursors.Default;
             }
         }
+
+        private void StockInMainFrm_Load(object sender, EventArgs e)
+        {
+            //this.TopMost = true;
+        }
     }
 
     public class scanItemDetail

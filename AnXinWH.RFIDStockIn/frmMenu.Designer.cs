@@ -103,7 +103,6 @@
             this.Controls.Add(this.button1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "frmMenu";
-            this.TopMost = true;
             this.Load += new System.EventHandler(this.frmMenu_Load);
             this.plnMenu.ResumeLayout(false);
             this.ResumeLayout(false);
