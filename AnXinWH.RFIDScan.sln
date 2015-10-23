@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnXinWH.RFIDScan", "AnXinWH
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework", "Framework\Framework.csproj", "{692D2DED-D74D-4724-8A4A-10BEDA3AA9E1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnXinWH.RFIDStockIn", "AnXinWH.RFIDStockIn\AnXinWH.RFIDStockIn.csproj", "{A443FAA8-E64B-4C65-98F8-8DAEB8EB388E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,12 @@ Global
 		{692D2DED-D74D-4724-8A4A-10BEDA3AA9E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{692D2DED-D74D-4724-8A4A-10BEDA3AA9E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{692D2DED-D74D-4724-8A4A-10BEDA3AA9E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A443FAA8-E64B-4C65-98F8-8DAEB8EB388E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A443FAA8-E64B-4C65-98F8-8DAEB8EB388E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A443FAA8-E64B-4C65-98F8-8DAEB8EB388E}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{A443FAA8-E64B-4C65-98F8-8DAEB8EB388E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A443FAA8-E64B-4C65-98F8-8DAEB8EB388E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A443FAA8-E64B-4C65-98F8-8DAEB8EB388E}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -24,7 +24,7 @@ ORDER BY table_name
 ---
 select CONCAT('FiledType["',column_name,'"] = MySqlDbType.',data_type,';')
 from information_schema.columns
-where table_name='m_products'  and TABLE_SCHEMA='anxinwh'
+where TABLE_SCHEMA='anxinwh'  and table_name='m_shelf'
 order by DATA_TYPE
 
 

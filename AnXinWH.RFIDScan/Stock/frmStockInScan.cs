@@ -129,7 +129,7 @@ namespace AnXinWH.RFIDScan.Stock
             tmpstr[0] = item.ctnno_no;
             tmpstr[1] = item.pqty;
             tmpstr[2] = item.qty;
-            tmpstr[3] = item.nwet;
+            tmpstr[3] = item.nwet; 
 
             ListViewItem tmpitems1 = new ListViewItem(tmpstr);
             listView1.Items.Add(tmpitems1);
