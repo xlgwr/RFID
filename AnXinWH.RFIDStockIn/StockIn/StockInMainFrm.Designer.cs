@@ -122,6 +122,7 @@
             this.listView1.Size = new System.Drawing.Size(448, 204);
             this.listView1.TabIndex = 39;
             this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.ItemActivate += new System.EventHandler(this.listView1_ItemActivate);
             // 
             // col0RFID
             // 
@@ -360,6 +361,7 @@
             this.KeyPreview = true;
             this.Name = "StockInMainFrm";
             this.Text = "StockInMainFrm";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.StockInMainFrm_KeyDown);
             this.ResumeLayout(false);
 
         }

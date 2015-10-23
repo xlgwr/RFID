@@ -7,11 +7,24 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Framework.Libs;
+using Framework.DataAccess;
 
 namespace AnXinWH.RFIDStockIn.StockIn
 {
     public partial class StockInMainFrm : Form
     {
+
+        /// <summary>
+        /// 入库编号 yyyyMMDDHHmmss
+        /// </summary>
+        public string _stockin_id = string.Empty;
+
+        /// <summary>
+        /// 共通数据对象
+        /// </summary>
+        protected CBaseConnect m_daoCommon;
+
+
         //扫描的产品及RFID
         #region att
         /// <summary>
@@ -31,6 +44,9 @@ namespace AnXinWH.RFIDStockIn.StockIn
         public void initfirst()
         {
             _dicScanItemDetail = new Dictionary<string, scanItemDetail>();
+
+            //set focus
+            txt11stockin_id.Focus();
         }
         #region basefun
         bool checkTxt()
@@ -97,11 +113,13 @@ namespace AnXinWH.RFIDStockIn.StockIn
 
                 _dicScanItemDetail.Add(tmpKey, tmpNewValue);
 
+                txt5PQty.Text = _dicScanItemDetail.Count.ToString();
+
                 //txt13pqty.Text = _lisCtnNo.Count.ToString();
             }));
 
 
-            SetMsg(lbl0Msg, "add " + tmpNewValue.ctnno_no + " success。");
+            SetMsg(lbl0Msg, "添加 " + tmpNewValue.ctnno_no + " 成功。");
 
         }
         void addToListAllView()
@@ -114,6 +132,8 @@ namespace AnXinWH.RFIDStockIn.StockIn
                 {
                     addToList(item);
                 }
+
+                txt5PQty.Text = _dicScanItemDetail.Count.ToString();
             }));
 
         }
@@ -180,50 +200,84 @@ namespace AnXinWH.RFIDStockIn.StockIn
 
         private void txt4XiangHao_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
+            var tmpmsg = "";
+
+            Cursor.Current = Cursors.WaitCursor;
+            try
             {
-                if (!checkTxt())
+                if (e.KeyCode == Keys.Enter)
                 {
-                    return;
+                    if (!checkTxt())
+                    {
+                        return;
+                    }
+                    var tmpkey = txt11stockin_id.Text.Trim() + "," + txt12prdct_no.Text.Trim() + "," + txt3RFID.Text.Trim() + "," + txt4XiangHao.Text.Trim();
+
+                    if (_dicScanItemDetail.ContainsKey(tmpkey))
+                    {
+                        _dicScanItemDetail[tmpkey].qty = txt5qty.Text.Trim();
+                        _dicScanItemDetail[tmpkey].nwet = txt6nwet.Text.Trim();
+
+                        addToListAllView();
+
+                        SetMsg(lbl0Msg, "RFID:" + txt3RFID.Text + ",托盘号：" + txt4XiangHao.Text + " 已经存在。");
+                    }
+                    else
+                    {
+                        scanItemDetail tmpscan = new scanItemDetail();
+
+                        tmpscan.stockid = txt11stockin_id.Text.Trim();
+                        tmpscan.productid = txt12prdct_no.Text.Trim();
+                        tmpscan.rfid = txt3RFID.Text.Trim();
+                        tmpscan.ctnno_no = txt4XiangHao.Text.Trim();
+                        tmpscan.pqty = "1";
+
+                        tmpscan.qty = txt5qty.Text.Trim();
+                        tmpscan.nwet = txt6nwet.Text.Trim();
+
+                        //_dicScanItemDetail.Add(tmpkey, tmpscan);
+                        addToListAllView(tmpkey, tmpscan);
+                    }
+
                 }
-                var tmpkey = txt11stockin_id.Text.Trim() + "," + txt12prdct_no.Text.Trim() + "," + txt3RFID.Text.Trim() + "," + txt4XiangHao.Text.Trim();
-
-                if (_dicScanItemDetail.ContainsKey(tmpkey))
-                {
-                    _dicScanItemDetail[tmpkey].qty = txt5qty.Text.Trim();
-                    _dicScanItemDetail[tmpkey].nwet = txt6nwet.Text.Trim();
-
-                    addToListAllView();
-                }
-                else
-                {
-                    scanItemDetail tmpscan = new scanItemDetail();
-
-                    tmpscan.stockid = txt11stockin_id.Text.Trim();
-                    tmpscan.productid = txt12prdct_no.Text.Trim();
-                    tmpscan.rfid = txt3RFID.Text.Trim();
-                    tmpscan.ctnno_no = txt4XiangHao.Text.Trim();
-                    tmpscan.pqty = "1";
-
-                    tmpscan.qty = txt5qty.Text.Trim();
-                    tmpscan.nwet = txt6nwet.Text.Trim();
-
-                    //_dicScanItemDetail.Add(tmpkey, tmpscan);
-                    addToListAllView(tmpkey, tmpscan);
-                }
-
+                setFouces(e, txt5qty);
             }
-            setFouces(e, txt5qty);
+            catch (Exception ex)
+            {
+                tmpmsg = ex.Message;
+                MessageBox.Show(ex.Message);
+                SetMsg(lbl0Msg, tmpmsg);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
+
         }
 
         private void txt5qty_KeyDown(object sender, KeyEventArgs e)
         {
+
+            if (!allTextBox(txt5qty, true))
+            {
+                return;
+            }
             setFouces(e, txt6nwet);
         }
 
         private void txt6nwet_KeyDown(object sender, KeyEventArgs e)
         {
-            setFouces(e, txt4XiangHao);
+            if (!allTextBox(txt6nwet, true))
+            {
+                return;
+            }
+            if (e.KeyCode == Keys.Enter)
+            {
+                txt3RFID.Focus();
+                txt4XiangHao.Text = "";
+            }
+            //setFouces(e, txt4XiangHao);
+
         }
         void txtChange(TextBox tb, string attV)
         {
@@ -273,6 +327,90 @@ namespace AnXinWH.RFIDStockIn.StockIn
                 txtChange(txt6nwet, "nwet");
             }
 
+        }
+
+        private void listView1_ItemActivate(object sender, EventArgs e)
+        {
+            var tmpmsg = "";
+
+            Cursor.Current = Cursors.WaitCursor;
+            try
+            {
+                //选中行的索引
+                int index = listView1.SelectedIndices[0];
+                //选中行的值
+                ListViewItem selecteditem = listView1.Items[index];
+
+                //1列名
+                var colname = listView1.Columns[0].Text;
+
+                //选中行的第一列的值
+                string rfid = listView1.Items[index].SubItems[0].Text;
+                string pruductid = listView1.Items[index].SubItems[1].Text;
+                string cton = listView1.Items[index].SubItems[2].Text;
+
+                var tmpkey = txt11stockin_id.Text.Trim() + "," + pruductid + "," + rfid + "," + cton;
+
+                if (MessageBox.Show("您确定要删除：" + tmpkey, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                {
+                    this.listView1.Items.RemoveAt(index);
+
+                    //
+                    if (_dicScanItemDetail.ContainsKey(tmpkey))
+                    {
+                        _dicScanItemDetail.Remove(tmpkey);
+
+                        addToListAllView();
+                    }
+
+                    tmpmsg = "成功删除:" + tmpkey;
+                    SetMsg(lbl0Msg, tmpmsg);
+
+
+                }
+                else
+                {
+                    SetMsg(lbl0Msg, tmpmsg);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                tmpmsg = ex.Message;
+                MessageBox.Show(ex.Message);
+                SetMsg(lbl0Msg, tmpmsg);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
+        }
+
+        private void StockInMainFrm_KeyDown(object sender, KeyEventArgs e)
+        {
+            Cursor.Current = Cursors.WaitCursor;
+            try
+            {
+                if (e.KeyCode == Keys.F11)
+                {
+                    button2_Click(null, null);
+                }
+                else if (e.KeyCode == Keys.F12)
+                {
+                    button3_Click(null, null);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                LogManager.WriteLog(Common.LogFile.Error, ex.Message);
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1);
+
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
         }
     }
 
