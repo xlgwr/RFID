@@ -7,6 +7,34 @@ namespace AnXinWH.RFIDStockIn
 {
     #region  表属性
 
+    public class m_parameter
+    {
+        public const string paramkey = "paramkey";
+        public const string paramvalue = "paramvalue";
+        public const string remark = "remark";
+        public const string paramtype = "paramtype";
+        public const string adduser = "adduser";
+        public const string upduser = "upduser";
+        public const string addtime = "addtime";
+        public const string updtime = "updtime";
+        public const string depot_no = "depot_no";
+    }
+
+    public class t_AlarmData
+    {
+        public const string recd_id = "recd_id";
+        public const string alarm_type = "alarm_type";
+        public const string depot_no = "depot_no";
+        public const string cell_no = "cell_no";
+        public const string begin_time = "begin_time";
+        public const string over_time = "over_time";
+        public const string remark = "remark";
+        public const string status = "status";
+        public const string adduser = "adduser";
+        public const string upduser = "upduser";
+        public const string addtime = "addtime";
+        public const string updtime = "updtime";
+    }
     public class t_stockinctnnodetail
     {
         public const string stockin_id = "stockin_id";

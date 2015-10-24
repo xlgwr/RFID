@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{A443FAA8-E64B-4C65-98F8-8DAEB8EB388E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -85,8 +85,13 @@
       <DependentUpon>frmLogin.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="StockIn\StockCheckWet.resx">
+      <DependentUpon>StockCheckWet.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="StockIn\StockInMainFrm.resx">
       <DependentUpon>StockInMainFrm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -98,6 +103,12 @@
     </Compile>
     <Compile Include="frmLogin.Designer.cs">
       <DependentUpon>frmLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StockIn\StockCheckWet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StockIn\StockCheckWet.Designer.cs">
+      <DependentUpon>StockCheckWet.cs</DependentUpon>
     </Compile>
     <Compile Include="StockIn\StockInMainFrm.cs">
       <SubType>Form</SubType>

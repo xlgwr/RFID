@@ -58,6 +58,7 @@
             this.label12 = new System.Windows.Forms.Label();
             this.txt5PQty = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer();
             this.SuspendLayout();
             // 
             // label7
@@ -189,6 +190,7 @@
             this.txt3RFID.Name = "txt3RFID";
             this.txt3RFID.Size = new System.Drawing.Size(215, 32);
             this.txt3RFID.TabIndex = 56;
+            this.txt3RFID.TextChanged += new System.EventHandler(this.txt3RFID_TextChanged);
             this.txt3RFID.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt3RFID_KeyDown);
             // 
             // label6
@@ -326,6 +328,10 @@
             this.label3.Text = "箱    数";
             this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // StockInMainFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -402,5 +408,6 @@
         private System.Windows.Forms.ColumnHeader col4Pqty;
         private System.Windows.Forms.TextBox txt5PQty;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Timer timer1;
     }
 }

@@ -9,14 +9,21 @@ using System.Windows.Forms;
 using Framework.Libs;
 using Framework.DataAccess;
 using System.Collections.Specialized;
+using System.IO.Ports;
 
 namespace AnXinWH.RFIDStockIn.StockIn
 {
     public partial class StockInMainFrm : Form
     {
+        //rfid set
+        private Action<string> invokeHandler = null;
+        SerialPort serialport = null;
+        bool isHex = true;
+        byte[] buffer = new byte[4096];
+        string _rfid = string.Empty;
 
         /// <summary>
-        /// 入库编号 yyyyMMDDHHmmss
+        /// 入库编号 yyyyMMddHHmmss
         /// </summary>
         public string _stockin_id = string.Empty;
 
@@ -40,8 +47,98 @@ namespace AnXinWH.RFIDStockIn.StockIn
         {
             InitializeComponent();
 
+
+            //
+            this.Closing += new CancelEventHandler(StockInMainFrm_Closing);
+            
+            //initdemo
+            initTestDemo();
+            
+            //rfid
+            initRFID();
             //
             initfirst();
+        }
+        void initTestDemo()
+        {
+            _isChangeTxt = true;
+            txt11stockin_id.Text = DateTime.Now.ToString("yyyyMMddHHmmss");
+            txt12prdct_no.Text = "1";
+            txt3RFID.Text = "";
+            txt4XiangHao.Text = "1";
+            txt5PQty.Text = "0";
+            txt5qty.Text = "100";
+            txt6nwet.Text = "100";
+            _isChangeTxt = false;
+        }
+        void StockInMainFrm_Closing(object sender, CancelEventArgs e)
+        {
+            //throw new NotImplementedException();
+            if (serialport.IsOpen)
+            {
+                serialport.Close();
+            }
+            timer1.Enabled = false;
+        }
+        void initRFID()
+        {
+            invokeHandler = new Action<string>(SetRFID);
+            serialport = new SerialPort("COM1", 9600, Parity.None, 8, StopBits.One);
+            serialport.DataReceived += new SerialDataReceivedEventHandler(serialport_DataReceived);
+            serialport.Open();
+            serialport.DtrEnable = true;
+            serialport.RtsEnable = true;
+        }
+        private void serialport_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            while (serialport.IsOpen && serialport.BytesToRead > 0)
+            {
+                try
+                {
+                    int bytesToRead = serialport.BytesToRead;
+                    bytesToRead = serialport.BytesToRead > buffer.Length ? buffer.Length : serialport.BytesToRead;
+                    int bytesRead = serialport.Read(buffer, 0, bytesToRead);
+                    if (bytesRead <= 0)
+                        return;
+
+                    string temp = "";
+                    if (isHex)
+                    {
+                        temp = BitConverter.ToString(buffer, 0, bytesRead).Replace("-", " ");
+                    }
+                    else
+                    {
+                        temp = Encoding.ASCII.GetString(buffer, 0, bytesRead);
+                    }
+                    if (temp.Length == 0)
+                        return;
+
+                    this.BeginInvoke(invokeHandler, temp);
+                }
+                catch (Exception ex)
+                {
+                    buffer = new byte[4096];
+                }
+            }
+        }
+        void SetRFID(string tmpRFID)
+        {
+            var msg = "";
+            var tmprfid = tmpRFID.Replace(" ", "").Substring(6, 6);
+            if (string.IsNullOrEmpty(_rfid))
+            {
+                _rfid = tmprfid;
+
+                timer1.Enabled = false;
+                txt3RFID.Text = _rfid;
+                txt11stockin_id.Focus();
+                msg = "扫到RFID:" + _rfid;
+            }
+            else
+            {
+                msg = "已扫RFID:" + _rfid + "，扫到RFID:" + tmprfid;
+            }
+            SetMsg(lbl0Msg, msg);
         }
         public void initfirst()
         {
@@ -160,6 +257,7 @@ namespace AnXinWH.RFIDStockIn.StockIn
         {
             _dicScanItemDetail.Clear();
             listView1.Items.Clear();
+            _rfid = "";
 
             _isChangeTxt = true;
             txt11stockin_id.Text = "";
@@ -334,7 +432,7 @@ namespace AnXinWH.RFIDStockIn.StockIn
                     disWhereValueItem[t_stockinctnnodetail.pqty] = item.pqty.Length <= 0 ? "1" : item.pqty;
                     disWhereValueItem[t_stockinctnnodetail.qty] = item.qty.Length <= 0 ? "0" : item.qty;
                     disWhereValueItem[t_stockinctnnodetail.nwet] = item.nwet.Length <= 0 ? "0" : item.nwet;
-                    disWhereValueItem[t_stockinctnnodetail.status] = "1";
+                    disWhereValueItem[t_stockinctnnodetail.status] = "2";//默认1:可用 0:不可用  2：卸料
 
                     this.m_daoCommon.SetInsertDataItem(ViewOrTable.t_stockinctnnodetail, disWhereValueItem, DidUserCollum);
 
@@ -403,16 +501,26 @@ namespace AnXinWH.RFIDStockIn.StockIn
 
         private void txt11stockin_id_KeyDown(object sender, KeyEventArgs e)
         {
+
             setFouces(e, txt12prdct_no);
+
         }
 
         private void txt12prdct_no_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (!string.IsNullOrEmpty(txt12prdct_no.Text))
+                {
+                    timer1.Enabled = true;
+                }
+            }
             setFouces(e, txt3RFID);
         }
 
         private void txt3RFID_KeyDown(object sender, KeyEventArgs e)
         {
+            timer1.Enabled = true;
             setFouces(e, txt4XiangHao);
         }
 
@@ -634,6 +742,27 @@ namespace AnXinWH.RFIDStockIn.StockIn
         private void StockInMainFrm_Load(object sender, EventArgs e)
         {
             //this.TopMost = true;
+            timer1.Enabled = true;
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if (!serialport.IsOpen)
+            {
+                if (string.IsNullOrEmpty(txt3RFID.Text) || string.IsNullOrEmpty(_rfid))
+                {
+                    serialport.Open();
+                }
+            }
+        }
+
+        private void txt3RFID_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txt3RFID.Text))
+            {
+                _rfid = "";
+                timer1.Enabled = true;
+            }
         }
     }
 
@@ -646,6 +775,7 @@ namespace AnXinWH.RFIDStockIn.StockIn
         public string pqty { get; set; }
         public string qty { get; set; }
         public string nwet { get; set; }
+        public string gwet { get; set; }
 
     }
 }

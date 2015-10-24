@@ -236,7 +236,7 @@ namespace AnXinWH.RFIDStockIn
             {
 
                 //系统登录失败，请检查网络是否正常连接！
-                MessageBox.Show(Common.GetLanguageWord(this.Name, "FLG007"), Declare.Info_SysName,
+                MessageBox.Show("系统登录失败，请检查网络是否正常连接！", Declare.Info_SysName,
                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
                 throw ex;
             }
