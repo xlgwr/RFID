@@ -92,10 +92,10 @@ namespace AnXinWH.RFIDStockIn
 
                     this.Enabled = true;
 
-                    frmMenu frm = new frmMenu();
-                    frm.ShowDialog();
 
                     //this.Hide();
+                    frmMenu frm = new frmMenu();
+                    frm.ShowDialog();
 
                     this.txtPaswd.Text = "";
                     //控件设置焦点

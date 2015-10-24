@@ -359,8 +359,11 @@
             this.Controls.Add(this.lbl0Msg);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.KeyPreview = true;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "StockInMainFrm";
             this.Text = "StockInMainFrm";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.StockInMainFrm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.StockInMainFrm_KeyDown);
             this.ResumeLayout(false);

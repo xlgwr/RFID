@@ -26,7 +26,6 @@ namespace AnXinWH.RFIDStockIn
                 //this.Hide();
                 StockInMainFrm frm = new StockInMainFrm();
                 frm.ShowDialog();
-               // this.Hide();
             }
             catch (Exception ex)
             {
