@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using Framework.Libs;
 using Framework.DataAccess;
+using System.Collections.Specialized;
 
 namespace AnXinWH.RFIDStockIn.StockIn
 {
@@ -23,7 +24,8 @@ namespace AnXinWH.RFIDStockIn.StockIn
         /// 共通数据对象
         /// </summary>
         protected CBaseConnect m_daoCommon;
-
+        StringDictionary _disNull = new StringDictionary();
+        StringDictionary DicData = new StringDictionary();
 
         //扫描的产品及RFID
         #region att
@@ -43,6 +45,7 @@ namespace AnXinWH.RFIDStockIn.StockIn
         }
         public void initfirst()
         {
+            Common.GetDaoCommon(ref m_daoCommon);
             _dicScanItemDetail = new Dictionary<string, scanItemDetail>();
 
             //set focus
@@ -153,7 +156,213 @@ namespace AnXinWH.RFIDStockIn.StockIn
             listView1.Items[0].Selected = true;
         }
         #endregion
+        void AllInit()
+        {
+            _dicScanItemDetail.Clear();
+            listView1.Items.Clear();
 
+            _isChangeTxt = true;
+            txt11stockin_id.Text = "";
+            txt12prdct_no.Text = "";
+            txt3RFID.Text = "";
+            txt4XiangHao.Text = "";
+            txt5PQty.Text = "";
+            txt5qty.Text = "";
+            txt6nwet.Text = "";
+            _isChangeTxt = false;
+
+            txt11stockin_id.Focus();
+        }
+        decimal[] calQtyNwet()
+        {
+            decimal[] tmpSum = new decimal[3];
+
+            decimal tmpqty = 0;
+            decimal tmpPqty = 0;
+            decimal tmpnwet = 0;
+
+            foreach (var item in _dicScanItemDetail.Values)
+            {
+                if (string.IsNullOrEmpty(item.pqty))
+                {
+                    item.pqty = "1";
+                }
+                if (string.IsNullOrEmpty(item.qty))
+                {
+                    item.qty = "0";
+                }
+                if (string.IsNullOrEmpty(item.nwet))
+                {
+                    item.nwet = "0";
+                }
+
+                tmpPqty += decimal.Parse(item.pqty);
+                tmpqty += decimal.Parse(item.qty);
+                tmpnwet += decimal.Parse(item.nwet);
+            }
+            tmpSum[0] = tmpPqty;
+            tmpSum[1] = tmpqty;
+            tmpSum[2] = tmpnwet;
+            return tmpSum;
+        }
+        private bool UploadData()
+        {
+            string tmpmsg = "";
+            bool IsStartTran = false;
+
+            //test
+            //return true;
+
+            //set value
+            StringDictionary disWhereValueMain = new StringDictionary();
+            var dis5ForPrimaryKey_t_stock = new StringDictionary();
+            StringDictionary disWhereValueItem = new StringDictionary();
+            //select            
+            StringDictionary disForValueMain = new StringDictionary();
+            StringDictionary disForValueItem = new StringDictionary();
+            //order by            
+            StringDictionary disForOrderByMain = new StringDictionary();
+            StringDictionary disForOrderByItem = new StringDictionary();
+            //user
+            StringDictionary DidUserCollum = new StringDictionary();
+
+            //主表
+            DataTable dt = null;
+            disWhereValueMain[t_stockinctnno.stockin_id] = txt11stockin_id.Text.Trim();
+            disWhereValueMain[t_stockinctnno.prdct_no] = txt12prdct_no.Text.Trim();
+
+
+            //primary key
+            dis5ForPrimaryKey_t_stock[t_stockinctnno.stockin_id] = txt11stockin_id.Text.Trim();
+            dis5ForPrimaryKey_t_stock[t_stockinctnno.prdct_no] = txt12prdct_no.Text.Trim();
+
+            disForOrderByMain[t_stockinctnno.stockin_id] = "true";
+            disForOrderByMain[t_stockinctnno.prdct_no] = "true";
+
+            //log for use
+            DidUserCollum[t_stockinctnno.adduser] = "true";
+            DidUserCollum[t_stockinctnno.addtime] = "true";
+            DidUserCollum[t_stockinctnno.updtime] = "true";
+            DidUserCollum[t_stockinctnno.upduser] = "true";
+
+
+            Cursor.Current = Cursors.WaitCursor;
+            try
+            {
+
+                //打开数据库连接
+                Common.AdoConnect.Connect.ConnectOpen();
+                //主表
+                //get dt
+                dt = this.m_daoCommon.GetTableInfo(ViewOrTable.t_stockinctnno, disWhereValueMain, disForOrderByMain, _disNull, "", false);
+
+                Common.AdoConnect.Connect.CreateSqlTransaction();
+                IsStartTran = true;
+                lbl0Msg.Visible = true;
+
+                var tmpsum = calQtyNwet();
+
+                var _rfidStrForSet = txt3RFID.Text.Trim();
+
+                if (dt.Rows.Count <= 0)
+                {
+
+                    disWhereValueMain[t_stockinctnno.pqty] = tmpsum[0].ToString();
+                    disWhereValueMain[t_stockinctnno.qty] = tmpsum[1].ToString();
+                    disWhereValueMain[t_stockinctnno.nwet] = tmpsum[2].ToString();
+                    disWhereValueMain[t_stockinctnno.gwet] = "0";
+                    disWhereValueMain[t_stockinctnno.status] = "1";
+
+                    //上传主表
+                    this.m_daoCommon.SetInsertDataItem(ViewOrTable.t_stockinctnno, disWhereValueMain, DidUserCollum);
+                }
+                else
+                {
+                    tmpmsg = "订单号：" + txt11stockin_id.Text + ",货物编码：" + txt12prdct_no.Text + " 已存在入库记录，是否继续。";
+
+                    if (MessageBox.Show(tmpmsg, "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.OK)
+                    {
+                        var dr = dt.Rows[0];
+                        //edit data
+                        var tmp_pqty_StockIn = decimal.Parse(dr[t_stockinctnno.pqty].ToString());
+                        var tmp_qty_StockIn = decimal.Parse(dr[t_stockinctnno.qty].ToString());
+                        var tmp_nwet_StockIn = decimal.Parse(dr[t_stockinctnno.nwet].ToString());
+                        var tmp_gwet_StockIn = decimal.Parse(dr[t_stockinctnno.gwet].ToString());
+
+                        disWhereValueMain[t_stock.pqty] = (tmpsum[0] + tmp_pqty_StockIn).ToString();
+                        disWhereValueMain[t_stock.qty] = (tmpsum[1] + tmp_qty_StockIn).ToString();
+                        disWhereValueMain[t_stock.nwet] = (tmpsum[2] + tmp_nwet_StockIn).ToString();
+                        disWhereValueMain[t_stock.status] = "1";
+
+
+                        var dis00UserCollum2 = new StringDictionary();
+                        dis00UserCollum2[t_stockinctnno.updtime] = "true";
+                        dis00UserCollum2[t_stockinctnno.upduser] = "true";
+
+                        this.m_daoCommon.SetModifyDataItem(ViewOrTable.t_stockinctnno, disWhereValueMain, dis5ForPrimaryKey_t_stock, dis00UserCollum2);
+
+                    }
+                    else
+                    {
+                        if (IsStartTran)
+                            Common.AdoConnect.Connect.TransactionRollback();
+                        Cursor.Current = Cursors.Default;
+                        return false;
+                    }
+
+                }
+
+
+                //上传scan
+
+                //次表
+
+
+                foreach (var item in _dicScanItemDetail.Values)
+                {
+
+                    //次表 primary key
+                    disWhereValueItem[t_stockinctnnodetail.stockin_id] = item.stockid;
+                    disWhereValueItem[t_stockinctnnodetail.prdct_no] = item.productid;
+
+                    disWhereValueItem[t_stockinctnnodetail.rfid_no] = item.rfid;
+                    disWhereValueItem[t_stockinctnnodetail.ctnno_no] = item.ctnno_no;
+
+                    //仓单号
+                    disWhereValueItem[t_stockinctnnodetail.receiptno] = "";
+
+                    disWhereValueItem[t_stockinctnnodetail.pqty] = item.pqty.Length <= 0 ? "1" : item.pqty;
+                    disWhereValueItem[t_stockinctnnodetail.qty] = item.qty.Length <= 0 ? "0" : item.qty;
+                    disWhereValueItem[t_stockinctnnodetail.nwet] = item.nwet.Length <= 0 ? "0" : item.nwet;
+                    disWhereValueItem[t_stockinctnnodetail.status] = "1";
+
+                    this.m_daoCommon.SetInsertDataItem(ViewOrTable.t_stockinctnnodetail, disWhereValueItem, DidUserCollum);
+
+                }
+
+                Common.AdoConnect.Connect.TransactionCommit();
+                tmpmsg = "上传数据成功。" + _rfidStrForSet;
+                SetMsg(lbl0Msg, tmpmsg);
+                MessageBox.Show(tmpmsg);
+
+
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                if (IsStartTran)
+                    Common.AdoConnect.Connect.TransactionRollback();
+                LogManager.WriteLog(Common.LogFile.Error, ex.Message);
+                SetMsg(lbl0Msg, ex.Message);
+                Cursor.Current = Cursors.Default;
+                return false;
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
+        }
         private void button2_Click(object sender, EventArgs e)
         {
             var tmpmsg = "";
@@ -167,6 +376,14 @@ namespace AnXinWH.RFIDStockIn.StockIn
                     txt11stockin_id.Focus();
                     return;
                 }
+                //确定上传数据？ 
+                if (MessageBox.Show("确定上传数据？", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.OK)
+                {
+                    if (UploadData())
+                    {
+                        // AllInit();
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -175,6 +392,7 @@ namespace AnXinWH.RFIDStockIn.StockIn
             }
             finally
             {
+                AllInit();
                 Cursor.Current = Cursors.Default;
             }
         }
