@@ -607,14 +607,19 @@ namespace AnXinWH.RFIDStockIn.StockIn
                         tmpmsg="RFID:" + txt3RFID.Text + "已经在使用中1。";
                         SetMsg(lbl0Msg, tmpmsg);
                         MessageBox.Show(tmpmsg);
+                        txt3RFID.Text = "";
+                        _rfid = "";
                         return;
                     }
                     var tmpCheckScan2 = Check_RFID_t_stockinctnnodetail(txt3RFID.Text.Trim(), "2");
                     if (tmpCheckScan2 != null)
                     {
+                        
                         tmpmsg = "RFID:" + txt3RFID.Text + "已经在使用中2。";
                         SetMsg(lbl0Msg, tmpmsg);
                         MessageBox.Show(tmpmsg);
+                        txt3RFID.Text = "";
+                        _rfid = "";
                         return;
                     }
 

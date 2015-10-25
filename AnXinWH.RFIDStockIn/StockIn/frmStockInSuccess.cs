@@ -531,6 +531,71 @@ namespace AnXinWH.RFIDStockIn.StockIn
                 Cursor.Current = Cursors.Default;
             }
         }
+        public scanItemDetail getRFID_t_stockDetails(scanItemDetail item)
+        {
+            scanItemDetail tmpScan = new scanItemDetail();
+
+            StringDictionary disWhereValueItem = new StringDictionary();
+            StringDictionary disForValueItem = new StringDictionary();
+
+            //table
+            DataTable dt = null;
+            disWhereValueItem[t_stockdetail.rfid_no] = item.rfid;
+            disForValueItem[t_stockdetail.rfid_no] = "true";
+
+            disWhereValueItem[t_stockdetail.prdct_no] = item.productid;
+            disForValueItem[t_stockdetail.status] = "true";
+
+
+            Cursor.Current = Cursors.WaitCursor;
+            try
+            {
+                //get dt
+                dt = this.m_daoCommon.GetTableInfo(ViewOrTable.t_stockdetail, disWhereValueItem, disForValueItem, _disNull, "", false);
+
+                if (dt.Rows.Count > 0)
+                {
+                    var dr = dt.Rows[0];
+
+                    //tmpScan.stockid = dr[t_stockdetail.].ToString();
+                    tmpScan.productid = dr[t_stockdetail.prdct_no].ToString();
+
+                    tmpScan.receiptno = dr[t_stockdetail.receiptno].ToString();
+
+
+                    tmpScan.rfid = dr[t_stockdetail.rfid_no].ToString();
+                    tmpScan.ctnno_no = dr[t_stockdetail.ctnno_no].ToString();
+
+                    tmpScan.pqty = dr[t_stockdetail.pqty].ToString();
+                    tmpScan.qty = dr[t_stockdetail.qty].ToString();
+                    tmpScan.nwet = dr[t_stockdetail.nwet].ToString();
+                    tmpScan.gwet = dr[t_stockdetail.gwet].ToString();
+
+                    Cursor.Current = Cursors.Default;
+                    return tmpScan;
+                }
+                else
+                {
+                    Cursor.Current = Cursors.Default;
+                    return null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                var msg = "RFID:"+ item.rfid+",Product:"+item.productid + "," + ex.Message;
+                LogManager.WriteLog(Common.LogFile.Error, msg);
+                SetMsg(lbl0Msg, msg);
+                MessageBox.Show(msg);
+                Cursor.Current = Cursors.Default;
+                return null;
+            }
+            finally
+            {
+
+                Cursor.Current = Cursors.Default;
+            }
+        }
 
         public bool Update_t_Stock(scanItemDetail item)
         {
@@ -652,6 +717,12 @@ namespace AnXinWH.RFIDStockIn.StockIn
                         {
                             tmpGetStock.shelf_no = item.shelf_no;
 
+                            var checkStockDetails = getRFID_t_stockDetails(tmpGetStock);
+
+                            if (checkStockDetails!=null)
+                            {
+                                throw new Exception("库存明细表中存在对应的记录,RFID:" + tmpGetStock.rfid + ",Product:" + tmpGetStock.productid);
+                            }
                             InserToT_stockdetail(tmpGetStock);
                             Update_stockdetail(tmpGetStock);
                             //更新库存.

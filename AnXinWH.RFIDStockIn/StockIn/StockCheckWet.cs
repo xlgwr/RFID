@@ -361,6 +361,11 @@ namespace AnXinWH.RFIDStockIn.StockIn
                 _rfid = "";
                 timer1.Enabled = true;
             }
+            else
+            {
+                KeyEventArgs tmpE = new KeyEventArgs(Keys.Enter);
+                txt3RFID_KeyDown(sender, tmpE);
+            }
         }
 
         private void StockCheckWet_Load(object sender, EventArgs e)
@@ -618,6 +623,15 @@ namespace AnXinWH.RFIDStockIn.StockIn
                     }
 
                 }
+            }
+        }
+
+        private void txt6gwet_TextChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(txt6gwet.Text))
+            {
+                KeyEventArgs tmpE = new KeyEventArgs(Keys.Enter);
+                txt6gwet_KeyDown(sender, tmpE);
             }
         }
 
