@@ -80,6 +80,28 @@ namespace AnXinWH.RFIDStockIn
             }
 
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+            Cursor.Current = Cursors.WaitCursor;
+            try
+            {
+                //this.Hide();
+                frmStockInSuccess frm = new frmStockInSuccess();
+                frm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                LogManager.WriteLog(Common.LogFile.Error, ex.Message);
+                MessageBox.Show("进入货物上架失败" + ex.Message,
+                     "进入货物上架失败", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
+        }
       
     }
 }

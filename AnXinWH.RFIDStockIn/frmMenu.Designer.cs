@@ -34,6 +34,7 @@
             this.lblTitle = new System.Windows.Forms.Label();
             this.timStatus = new System.Windows.Forms.Timer();
             this.button2 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
             this.plnMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -50,7 +51,7 @@
             // button3
             // 
             this.button3.Font = new System.Drawing.Font("Tahoma", 16F, System.Drawing.FontStyle.Regular);
-            this.button3.Location = new System.Drawing.Point(142, 400);
+            this.button3.Location = new System.Drawing.Point(142, 398);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(180, 69);
             this.button3.TabIndex = 6;
@@ -83,12 +84,22 @@
             // button2
             // 
             this.button2.Font = new System.Drawing.Font("Tahoma", 16F, System.Drawing.FontStyle.Regular);
-            this.button2.Location = new System.Drawing.Point(142, 252);
+            this.button2.Location = new System.Drawing.Point(142, 202);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(180, 69);
             this.button2.TabIndex = 9;
             this.button2.Text = "货物抽检";
             this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button4
+            // 
+            this.button4.Font = new System.Drawing.Font("Tahoma", 16F, System.Drawing.FontStyle.Regular);
+            this.button4.Location = new System.Drawing.Point(142, 300);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(180, 69);
+            this.button4.TabIndex = 9;
+            this.button4.Text = "货物上架";
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // frmMenu
             // 
@@ -97,6 +108,7 @@
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(480, 640);
             this.ControlBox = false;
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.plnMenu);
             this.Controls.Add(this.button3);
@@ -117,5 +129,6 @@
         internal System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Timer timStatus;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button4;
     }
 }

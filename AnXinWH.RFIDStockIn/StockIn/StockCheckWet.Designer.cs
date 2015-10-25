@@ -181,6 +181,7 @@
             this.txt6gwet.Name = "txt6gwet";
             this.txt6gwet.Size = new System.Drawing.Size(162, 32);
             this.txt6gwet.TabIndex = 83;
+            this.txt6gwet.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt6gwet_KeyDown);
             // 
             // txt5PQty
             // 

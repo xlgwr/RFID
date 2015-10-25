@@ -56,7 +56,6 @@ namespace AnXinWH.RFIDStockIn
             FiledType["type"] = MySqlDbType.Int16;
             FiledType["trmnstatus"] = MySqlDbType.Int16;
             FiledType["frmstatus"] = MySqlDbType.Int16;
-            FiledType["remark"] = MySqlDbType.Int16;
             FiledType["status"] = MySqlDbType.Int16;
             FiledType["flag"] = MySqlDbType.Int16;
             FiledType["checktime"] = MySqlDbType.Time;

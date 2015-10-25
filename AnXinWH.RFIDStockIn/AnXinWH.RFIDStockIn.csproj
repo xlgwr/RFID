@@ -85,6 +85,10 @@
       <DependentUpon>frmLogin.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="StockIn\frmStockInSuccess.resx">
+      <DependentUpon>frmStockInSuccess.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="StockIn\StockCheckWet.resx">
       <DependentUpon>StockCheckWet.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -103,6 +107,12 @@
     </Compile>
     <Compile Include="frmLogin.Designer.cs">
       <DependentUpon>frmLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StockIn\frmStockInSuccess.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StockIn\frmStockInSuccess.Designer.cs">
+      <DependentUpon>frmStockInSuccess.cs</DependentUpon>
     </Compile>
     <Compile Include="StockIn\StockCheckWet.cs">
       <SubType>Form</SubType>

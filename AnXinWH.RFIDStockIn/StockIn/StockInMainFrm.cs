@@ -523,7 +523,71 @@ namespace AnXinWH.RFIDStockIn.StockIn
             timer1.Enabled = true;
             setFouces(e, txt4XiangHao);
         }
+        public scanItemDetail Check_RFID_t_stockinctnnodetail(string tmprfid, string isStatus)
+        {
+            scanItemDetail tmpScan = new scanItemDetail();
 
+            StringDictionary disWhereValueItem = new StringDictionary();
+            StringDictionary disForValueItem = new StringDictionary();
+
+            //table
+            DataTable dt = null;
+            disWhereValueItem[t_stockinctnnodetail.rfid_no] = tmprfid;
+            disForValueItem[t_stockinctnnodetail.rfid_no] = "true";
+
+            disWhereValueItem[t_stockinctnnodetail.status] = isStatus;
+            disForValueItem[t_stockinctnnodetail.status] = "true";
+
+
+            Cursor.Current = Cursors.WaitCursor;
+            try
+            {
+                //get dt
+                dt = this.m_daoCommon.GetTableInfo(ViewOrTable.t_stockinctnnodetail, disWhereValueItem, disForValueItem, _disNull, "", false);
+
+                if (dt.Rows.Count > 0)
+                {
+                    var dr = dt.Rows[0];
+
+                    tmpScan.stockid = dr[t_stockinctnnodetail.stockin_id].ToString();
+                    tmpScan.productid = dr[t_stockinctnnodetail.prdct_no].ToString();
+
+                    tmpScan.receiptno = dr[t_stockinctnnodetail.receiptno].ToString();
+
+
+                    tmpScan.rfid = dr[t_stockinctnnodetail.rfid_no].ToString();
+                    tmpScan.ctnno_no = dr[t_stockinctnnodetail.ctnno_no].ToString();
+
+                    tmpScan.pqty = dr[t_stockinctnnodetail.pqty].ToString();
+                    tmpScan.qty = dr[t_stockinctnnodetail.qty].ToString();
+                    tmpScan.nwet = dr[t_stockinctnnodetail.nwet].ToString();
+                    tmpScan.gwet = dr[t_stockinctnnodetail.gwet].ToString();
+
+                    Cursor.Current = Cursors.Default;
+                    return tmpScan;
+                }
+                else
+                {
+                    Cursor.Current = Cursors.Default;
+                    return null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                var msg = tmprfid + "," + ex.Message;
+                LogManager.WriteLog(Common.LogFile.Error, msg);
+                SetMsg(lbl0Msg, msg);
+                MessageBox.Show(msg);
+                Cursor.Current = Cursors.Default;
+                return null;
+            }
+            finally
+            {
+
+                Cursor.Current = Cursors.Default;
+            }
+        }
         private void txt4XiangHao_KeyDown(object sender, KeyEventArgs e)
         {
             var tmpmsg = "";
@@ -537,6 +601,23 @@ namespace AnXinWH.RFIDStockIn.StockIn
                     {
                         return;
                     }
+                    var tmpCheckScan1 = Check_RFID_t_stockinctnnodetail(txt3RFID.Text.Trim(), "1");
+                    if (tmpCheckScan1!=null)
+                    {
+                        tmpmsg="RFID:" + txt3RFID.Text + "已经在使用中1。";
+                        SetMsg(lbl0Msg, tmpmsg);
+                        MessageBox.Show(tmpmsg);
+                        return;
+                    }
+                    var tmpCheckScan2 = Check_RFID_t_stockinctnnodetail(txt3RFID.Text.Trim(), "2");
+                    if (tmpCheckScan2 != null)
+                    {
+                        tmpmsg = "RFID:" + txt3RFID.Text + "已经在使用中2。";
+                        SetMsg(lbl0Msg, tmpmsg);
+                        MessageBox.Show(tmpmsg);
+                        return;
+                    }
+
                     var tmpkey = txt11stockin_id.Text.Trim() + "," + txt12prdct_no.Text.Trim() + "," + txt3RFID.Text.Trim() + "," + txt4XiangHao.Text.Trim();
 
                     if (_dicScanItemDetail.ContainsKey(tmpkey))
@@ -770,12 +851,17 @@ namespace AnXinWH.RFIDStockIn.StockIn
     {
         public string stockid { get; set; }
         public string productid { get; set; }
+
         public string rfid { get; set; }
         public string ctnno_no { get; set; }
+
         public string pqty { get; set; }
         public string qty { get; set; }
         public string nwet { get; set; }
         public string gwet { get; set; }
+
+        public string shelf_no { get; set; }
+        public string receiptno { get; set; }
 
     }
 }

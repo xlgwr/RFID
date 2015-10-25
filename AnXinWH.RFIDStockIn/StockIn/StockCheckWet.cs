@@ -104,19 +104,23 @@ namespace AnXinWH.RFIDStockIn.StockIn
         {
             var msg = "";
             var tmprfid = tmpRFID.Replace(" ", "").Substring(6, 6);
-            if (string.IsNullOrEmpty(_rfid))
-            {
-                _rfid = tmprfid;
-
-                timer1.Enabled = false;
-                txt3RFID.Text = _rfid;
-                txt3RFID.Focus();
-                msg = "扫到RFID:" + _rfid;
-            }
-            else
+            if (_dicScanItemDetail.Keys.Contains(tmprfid))
             {
                 msg = "已扫RFID:" + _rfid + "，扫到RFID:" + tmprfid;
             }
+            else
+            {
+                if (string.IsNullOrEmpty(_rfid))
+                {
+                    _rfid = tmprfid;
+
+                    timer1.Enabled = false;
+                    txt3RFID.Text = _rfid;
+                    txt3RFID.Focus();
+                    msg = "扫到RFID:" + _rfid;
+                }
+            }            
+
             SetMsg(lbl0Msg, msg);
         }
         public void initfirst()
@@ -192,13 +196,10 @@ namespace AnXinWH.RFIDStockIn.StockIn
 
                 _dicScanItemDetail.Add(tmpKey, tmpNewValue);
 
-                txt5PQty.Text = _dicScanItemDetail.Count.ToString();
-
-                //txt13pqty.Text = _lisCtnNo.Count.ToString();
             }));
 
 
-            SetMsg(lbl0Msg, "添加 " + tmpNewValue.ctnno_no + " 成功。");
+            SetMsg(lbl0Msg, "添加 " + tmpNewValue.rfid + " 成功。");
 
         }
         void addToListAllView()
@@ -212,20 +213,18 @@ namespace AnXinWH.RFIDStockIn.StockIn
                     addToList(item);
                 }
 
-                txt5PQty.Text = _dicScanItemDetail.Count.ToString();
             }));
 
         }
         void addToList(scanItemDetail item)
         {
-            string[] tmpstr = new string[6];
+            string[] tmpstr = new string[5];
 
             tmpstr[0] = item.rfid;
-            tmpstr[1] = item.productid;
-            tmpstr[2] = item.ctnno_no;
-            tmpstr[3] = item.qty;
-            tmpstr[4] = item.nwet;
-            tmpstr[5] = item.pqty;
+            tmpstr[1] = item.pqty;
+            tmpstr[2] = item.qty;
+            tmpstr[3] = item.nwet;
+            tmpstr[4] = item.gwet;
 
             ListViewItem tmpitems1 = new ListViewItem(tmpstr);
             listView1.Items.Add(tmpitems1);
@@ -244,9 +243,115 @@ namespace AnXinWH.RFIDStockIn.StockIn
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="notice"></param>
+        /// <returns></returns>
+        bool InserToNotice(scanItemDetail item, string notice)
+        {
+            try
+            {
+                StringDictionary dicItemValue = new StringDictionary();
+                //user
+                StringDictionary DidUserCollum = new StringDictionary();
+                //log for use
+                DidUserCollum[t_alarmdata.adduser] = "true";
+                DidUserCollum[t_alarmdata.addtime] = "true";
+                DidUserCollum[t_alarmdata.updtime] = "true";
+                DidUserCollum[t_alarmdata.upduser] = "true";
+
+                dicItemValue[t_alarmdata.recd_id] = DateTime.Now.ToString("yyyyMMddHHmmss") + "R" + item.rfid;
+                dicItemValue[t_alarmdata.alarm_type] = "Alarm_03";
+                dicItemValue[t_alarmdata.depot_no] = item.rfid;
+                dicItemValue[t_alarmdata.cell_no] = item.ctnno_no;
+                dicItemValue[t_alarmdata.begin_time] = DateTime.Now.ToString();
+                dicItemValue[t_alarmdata.over_time] = DateTime.Now.ToString();
+                dicItemValue[t_alarmdata.remark] = "抽检实际重量大于1%。重量：" + item.nwet + ",实际重量：" + item.gwet + ",误差:" + notice;
+                dicItemValue[t_alarmdata.status] = "1";
+
+
+                this.m_daoCommon.SetInsertDataItem(ViewOrTable.t_alarmdata, dicItemValue, DidUserCollum);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         private void button2_Click(object sender, EventArgs e)
         {
+            Cursor.Current = Cursors.WaitCursor;
+            string noticeRFID = "";
+            string tmpmsg = "";
+            bool IsStartTran = false;
+            timer1.Enabled = false;
 
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                if (listView1.Items.Count <= 0)
+                {
+                    //尚未扫描到任何数据！ 
+                    MessageBox.Show("没有扫到任何记录", "提示", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1);
+                    txt3RFID.Focus();
+                    return;
+                }
+                //确定上传数据？ 
+                if (MessageBox.Show("确定上传数据？", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.OK)
+                {
+
+                    //打开数据库连接
+                    Common.AdoConnect.Connect.ConnectOpen();
+
+                    Common.AdoConnect.Connect.CreateSqlTransaction();
+                    IsStartTran = true;
+                    lbl0Msg.Visible = true;
+
+                    foreach (var item in _dicScanItemDetail.Values)
+                    {
+                        var tmpnwget = double.Parse(item.nwet);
+                        var tmpgwet = double.Parse(item.gwet);
+
+                        var tmpabsV = Math.Abs(tmpnwget - tmpgwet);
+
+                        double perNotice = tmpabsV / tmpnwget;
+                        double baseV = 0.01;
+
+                        if (perNotice >= baseV)
+                        {
+                            InserToNotice(item, perNotice.ToString() + "%");
+                            noticeRFID += item.rfid + ",";
+                            //MessageBox.Show("RFID:" + item.rfid + ",重量不符。>1%");
+                        }
+                    }
+
+                    Common.AdoConnect.Connect.TransactionCommit();
+                    tmpmsg = "上传数据成功。";
+                    if (!string.IsNullOrEmpty(noticeRFID))
+                    {
+                        tmpmsg += "其中 RFID:" + noticeRFID + ",重量不符。>1%";
+                    }
+                    SetMsg(lbl0Msg, tmpmsg);
+                    MessageBox.Show(tmpmsg);
+                    AllInit(true);
+                }
+                txt3RFID.Focus();
+            }
+            catch (Exception ex)
+            {
+                if (IsStartTran)
+                    Common.AdoConnect.Connect.TransactionRollback();
+                LogManager.WriteLog(Common.LogFile.Error, ex.Message);
+                SetMsg(lbl0Msg, ex.Message);
+                Cursor.Current = Cursors.Default;
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+                timer1.Enabled = true;
+            }
         }
 
         private void txt3RFID_TextChanged(object sender, EventArgs e)
@@ -294,6 +399,47 @@ namespace AnXinWH.RFIDStockIn.StockIn
         {
             this.Close();
         }
+        public string getActualWeight()
+        {
+            StringDictionary disWhereValueItem = new StringDictionary();
+            StringDictionary disForValueItem = new StringDictionary();
+
+            //table
+            DataTable dt = null;
+            disWhereValueItem[m_parameter.paramkey] = "ActualWeight";
+            disForValueItem[m_parameter.paramkey] = "true";
+
+            try
+            {
+
+                //打开数据库连接
+                Common.AdoConnect.Connect.ConnectOpen();
+                //主表
+                //get dt
+                dt = this.m_daoCommon.GetTableInfo(ViewOrTable.m_parameter, disWhereValueItem, disForValueItem, _disNull, "", false);
+
+                if (dt.Rows.Count > 0)
+                {
+                    var dr = dt.Rows[0];
+
+                    var tmpWet = dr[m_parameter.paramvalue].ToString();
+
+                    return tmpWet;
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogManager.WriteLog(Common.LogFile.Error, ex.Message);
+                SetMsg(lbl0Msg, ex.Message);
+                return null;
+            }
+
+        }
         public scanItemDetail getRFID_t_stockinctnnodetail(string tmprfid)
         {
             scanItemDetail tmpScan = new scanItemDetail();
@@ -320,6 +466,7 @@ namespace AnXinWH.RFIDStockIn.StockIn
                     var dr = dt.Rows[0];
 
                     tmpScan.rfid = dr[t_stockinctnnodetail.rfid_no].ToString();
+                    tmpScan.ctnno_no = dr[t_stockinctnnodetail.ctnno_no].ToString();
                     tmpScan.pqty = dr[t_stockinctnnodetail.pqty].ToString();
                     tmpScan.qty = dr[t_stockinctnnodetail.qty].ToString();
                     tmpScan.nwet = dr[t_stockinctnnodetail.nwet].ToString();
@@ -343,12 +490,15 @@ namespace AnXinWH.RFIDStockIn.StockIn
         }
         void initToTxt(scanItemDetail s)
         {
+            _currScanItem = s;
+
             _isChangeTxt = true;
             txt5PQty.Text = s.pqty;
             txt5qty.Text = s.qty;
             txt5nWet.Text = s.nwet;
             _isChangeTxt = false;
         }
+        public scanItemDetail _currScanItem { get; set; }
         private void txt3RFID_KeyDown(object sender, KeyEventArgs e)
         {
             if (!string.IsNullOrEmpty(txt3RFID.Text))
@@ -359,7 +509,27 @@ namespace AnXinWH.RFIDStockIn.StockIn
 
                     if (tmpScan != null)
                     {
+                        timer1.Enabled = false;
+
                         initToTxt(tmpScan);
+
+                        //get wet
+
+                        string tmpwgt = getActualWeight();
+
+                        if (!string.IsNullOrEmpty(tmpwgt))
+                        {
+                            _isChangeTxt = true;
+                            txt6gwet.Text = tmpwgt;
+                            _isChangeTxt = false;
+                        }
+                        else
+                        {
+                            var msg = "没有找到实际重量.";
+                            MessageBox.Show(msg);
+                            SetMsg(lbl0Msg, msg);
+                        }
+                        txt6gwet.Focus();
                     }
                     else
                     {
@@ -367,6 +537,86 @@ namespace AnXinWH.RFIDStockIn.StockIn
                         MessageBox.Show(msg);
                         SetMsg(lbl0Msg, msg);
                     }
+                }
+            }
+        }
+        void AllInit(bool isall)
+        {
+            if (isall)
+            {
+                _dicScanItemDetail.Clear();
+                listView1.Items.Clear();
+
+            }
+            _rfid = "";
+
+            _isChangeTxt = true;
+            txt3RFID.Text = "";
+            txt5PQty.Text = "";
+            txt5qty.Text = "";
+            txt5nWet.Text = "";
+            txt6gwet.Text = "";
+            _isChangeTxt = false;
+
+            txt3RFID.Focus();
+        }
+        private void txt6gwet_KeyDown(object sender, KeyEventArgs e)
+        {
+
+            if (!string.IsNullOrEmpty(txt6gwet.Text))
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    var tmpmsg = "";
+
+                    Cursor.Current = Cursors.WaitCursor;
+                    try
+                    {
+                        if (!checkTxt())
+                        {
+                            return;
+                        }
+                        var tmpkey = txt3RFID.Text.Trim();
+
+                        if (_dicScanItemDetail.ContainsKey(tmpkey))
+                        {
+                            _dicScanItemDetail[tmpkey].gwet = txt6gwet.Text.Trim();
+
+                            addToListAllView();
+
+                            SetMsg(lbl0Msg, "RFID:" + txt3RFID.Text + " 已经存在。");
+                        }
+                        else
+                        {
+                            scanItemDetail tmpscan = new scanItemDetail();
+
+                            tmpscan.rfid = txt3RFID.Text.Trim();
+                            tmpscan.pqty = txt5PQty.Text.Trim();
+                            tmpscan.qty = txt5qty.Text.Trim();
+                            tmpscan.nwet = txt5nWet.Text.Trim();
+
+                            tmpscan.gwet = txt6gwet.Text.Trim();
+
+                            tmpscan.ctnno_no = _currScanItem.ctnno_no;
+
+                            //_dicScanItemDetail.Add(tmpkey, tmpscan);
+                            addToListAllView(tmpkey, tmpscan);
+
+                        }
+                        AllInit(false);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        tmpmsg = ex.Message;
+                        MessageBox.Show(ex.Message);
+                        SetMsg(lbl0Msg, tmpmsg);
+                    }
+                    finally
+                    {
+                        Cursor.Current = Cursors.Default;
+                    }
+
                 }
             }
         }

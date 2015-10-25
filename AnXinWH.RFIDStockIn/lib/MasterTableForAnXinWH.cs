@@ -20,7 +20,7 @@ namespace AnXinWH.RFIDStockIn
         public const string depot_no = "depot_no";
     }
 
-    public class t_AlarmData
+    public class t_alarmdata
     {
         public const string recd_id = "recd_id";
         public const string alarm_type = "alarm_type";
