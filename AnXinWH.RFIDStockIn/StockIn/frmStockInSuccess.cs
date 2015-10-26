@@ -772,5 +772,60 @@ namespace AnXinWH.RFIDStockIn.StockIn
             }
         }
 
+        private void listView1_ItemActivate(object sender, EventArgs e)
+        {
+            var tmpmsg = "";
+
+            Cursor.Current = Cursors.WaitCursor;
+            try
+            {
+                //选中行的索引
+                int index = listView1.SelectedIndices[0];
+                //选中行的值
+                ListViewItem selecteditem = listView1.Items[index];
+
+                //1列名
+                var colname = listView1.Columns[0].Text;
+
+                //选中行的第一列的值
+                string rfid = listView1.Items[index].SubItems[0].Text;
+
+                var tmpkey = rfid;
+
+                if (MessageBox.Show("您确定要删除：" + tmpkey, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                {
+                    this.listView1.Items.RemoveAt(index);
+
+                    //
+                    if (_dicScanItemDetail.ContainsKey(tmpkey))
+                    {
+                        _dicScanItemDetail.Remove(tmpkey);
+
+                        addToListAllView();
+                    }
+
+                    tmpmsg = "成功删除:" + tmpkey;
+                    SetMsg(lbl0Msg, tmpmsg);
+
+
+                }
+                else
+                {
+                    SetMsg(lbl0Msg, tmpmsg);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                tmpmsg = ex.Message;
+                MessageBox.Show(ex.Message);
+                SetMsg(lbl0Msg, tmpmsg);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
+        }
+
     }
 }

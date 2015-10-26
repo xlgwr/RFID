@@ -52,7 +52,7 @@ namespace AnXinWH.RFIDStockIn.StockIn
             this.Closing += new CancelEventHandler(StockInMainFrm_Closing);
             
             //initdemo
-            initTestDemo();
+            //initTestDemo();
             
             //rfid
             initRFID();

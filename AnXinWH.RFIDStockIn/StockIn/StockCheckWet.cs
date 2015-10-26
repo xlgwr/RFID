@@ -361,11 +361,11 @@ namespace AnXinWH.RFIDStockIn.StockIn
                 _rfid = "";
                 timer1.Enabled = true;
             }
-            else
-            {
-                KeyEventArgs tmpE = new KeyEventArgs(Keys.Enter);
-                txt3RFID_KeyDown(sender, tmpE);
-            }
+            //else
+            //{
+            //    KeyEventArgs tmpE = new KeyEventArgs(Keys.Enter);
+            //    txt3RFID_KeyDown(sender, tmpE);
+            //}
         }
 
         private void StockCheckWet_Load(object sender, EventArgs e)
@@ -527,6 +527,12 @@ namespace AnXinWH.RFIDStockIn.StockIn
                             _isChangeTxt = true;
                             txt6gwet.Text = tmpwgt;
                             _isChangeTxt = false;
+
+                            if (!string.IsNullOrEmpty(txt6gwet.Text))
+                            {
+                                KeyEventArgs tmpE = new KeyEventArgs(Keys.Enter);
+                                txt6gwet_KeyDown(sender, tmpE);
+                            }
                         }
                         else
                         {
@@ -538,9 +544,13 @@ namespace AnXinWH.RFIDStockIn.StockIn
                     }
                     else
                     {
-                        var msg = "没有找到RFID:" + tmpScan + ",的入库记录.";
+                        var msg = "没有找到RFID:" + txt3RFID.Text + ",的入库记录.";
+                       
                         MessageBox.Show(msg);
-                        SetMsg(lbl0Msg, msg);
+                        SetMsg(lbl0Msg, msg); 
+
+                        //txt3RFID.Text = "";
+                        //_rfid = "";
                     }
                 }
             }
@@ -628,10 +638,67 @@ namespace AnXinWH.RFIDStockIn.StockIn
 
         private void txt6gwet_TextChanged(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(txt6gwet.Text))
+            //if (!string.IsNullOrEmpty(txt6gwet.Text))
+            //{
+            //    KeyEventArgs tmpE = new KeyEventArgs(Keys.Enter);
+            //    txt6gwet_KeyDown(sender, tmpE);
+            //}
+        }
+
+        private void listView1_ItemActivate(object sender, EventArgs e)
+        {
+            var tmpmsg = "";
+
+            Cursor.Current = Cursors.WaitCursor;
+            try
             {
-                KeyEventArgs tmpE = new KeyEventArgs(Keys.Enter);
-                txt6gwet_KeyDown(sender, tmpE);
+                //选中行的索引
+                int index = listView1.SelectedIndices[0];
+                //选中行的值
+                ListViewItem selecteditem = listView1.Items[index];
+
+                //1列名
+                var colname = listView1.Columns[0].Text;
+
+                //选中行的第一列的值
+                string rfid = listView1.Items[index].SubItems[0].Text;
+                string pruductid = listView1.Items[index].SubItems[1].Text;
+                string cton = listView1.Items[index].SubItems[2].Text;
+
+                var tmpkey = rfid;
+
+                if (MessageBox.Show("您确定要删除：" + tmpkey, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                {
+                    this.listView1.Items.RemoveAt(index);
+
+                    //
+                    if (_dicScanItemDetail.ContainsKey(tmpkey))
+                    {
+                        _dicScanItemDetail.Remove(tmpkey);
+
+                        addToListAllView();
+                    }
+
+                    tmpmsg = "成功删除:" + tmpkey;
+                    SetMsg(lbl0Msg, tmpmsg);
+
+
+                }
+                else
+                {
+                    SetMsg(lbl0Msg, tmpmsg);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                tmpmsg = ex.Message;
+                MessageBox.Show(ex.Message);
+                SetMsg(lbl0Msg, tmpmsg);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
             }
         }
 

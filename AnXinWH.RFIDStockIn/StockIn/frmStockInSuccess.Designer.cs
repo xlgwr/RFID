@@ -85,6 +85,7 @@
             this.listView1.Size = new System.Drawing.Size(448, 396);
             this.listView1.TabIndex = 111;
             this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.ItemActivate += new System.EventHandler(this.listView1_ItemActivate);
             // 
             // col0RFID
             // 
