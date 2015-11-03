@@ -779,7 +779,7 @@ namespace AnXinWH.RFIDStockIn.StockIn
             }
             finally
             {
-                Program.InserToLog(m_daoCommon, message, "1", resutl, "货物上架");
+                Program.InserToLog(m_daoCommon, message, "2", resutl, "货物上架");
                 Cursor.Current = Cursors.Default;
                 timer1.Enabled = true;
             }

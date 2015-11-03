@@ -162,7 +162,7 @@ namespace AnXinWH.RFIDStockIn.StockIn
             finally
             {
 
-                Program.InserToLog(m_daoCommon, message, "1", resutl, "注册设备");
+                Program.InserToLog(m_daoCommon, message, "3", resutl, "注册设备");
                 Cursor.Current = Cursors.Default;
             }
             return false;

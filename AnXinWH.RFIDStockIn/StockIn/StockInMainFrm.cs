@@ -464,7 +464,7 @@ namespace AnXinWH.RFIDStockIn.StockIn
             finally
             {
 
-                Program.InserToLog(m_daoCommon, message, "1", resutl, "货物卸货");
+                Program.InserToLog(m_daoCommon, message, "0", resutl, "货物卸货");
 
                 Cursor.Current = Cursors.Default;
             }

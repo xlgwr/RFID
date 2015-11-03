@@ -390,7 +390,7 @@ namespace AnXinWH.RFIDStockIn.StockIn
             }
             finally
             {
-                Program.InserToLog(m_daoCommon, message, "1", resutl, "货物抽检");
+                Program.InserToLog(m_daoCommon, message, "0", resutl, "货物抽检");
                 Cursor.Current = Cursors.Default;
                 timer1.Enabled = true;
             }
@@ -492,6 +492,50 @@ namespace AnXinWH.RFIDStockIn.StockIn
             }
 
         }
+        public string getRFID_t_sampling(scanItemDetail tmprfid)
+        {
+
+            StringDictionary disWhereValueItem = new StringDictionary();
+            StringDictionary disForValueItem = new StringDictionary();
+
+            //table
+            DataTable dt = null;
+            disWhereValueItem[t_sampling.stockin_id] = tmprfid.stockid;
+            disForValueItem[t_sampling.stockin_id] = "true";
+
+            disWhereValueItem[t_sampling.rfid_no] = tmprfid.rfid;
+            disForValueItem[t_sampling.rfid_no] = "true";
+
+            try
+            {
+
+                //打开数据库连接
+                Common.AdoConnect.Connect.ConnectOpen();
+                //主表
+                //get dt
+                dt = this.m_daoCommon.GetTableInfo(ViewOrTable.t_sampling, disWhereValueItem, disForValueItem, _disNull, "", false);
+
+                if (dt.Rows.Count > 0)
+                {
+
+                    var dr = dt.Rows[0];
+                    return dr[t_sampling.stockin_id].ToString();
+                }
+                else
+                {
+                    return "";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogManager.WriteLog(Common.LogFile.Error, ex.Message);
+                SetMsg(lbl0Msg, ex.Message);
+                return "";
+            }
+
+        }
+
         public scanItemDetail getRFID_t_stockinctnnodetail(string tmprfid)
         {
             scanItemDetail tmpScan = new scanItemDetail();
@@ -503,6 +547,9 @@ namespace AnXinWH.RFIDStockIn.StockIn
             DataTable dt = null;
             disWhereValueItem[t_stockinctnnodetail.rfid_no] = tmprfid;
             disForValueItem[t_stockinctnnodetail.rfid_no] = "true";
+
+            disWhereValueItem[t_stockinctnnodetail.status] = "1";
+            disForValueItem[t_stockinctnnodetail.status] = "true";
 
             try
             {
@@ -560,8 +607,23 @@ namespace AnXinWH.RFIDStockIn.StockIn
                 {
                     var tmpScan = getRFID_t_stockinctnnodetail(txt3RFID.Text.Trim());
 
+
                     if (tmpScan != null)
                     {
+                        var tmpstockid = getRFID_t_sampling(tmpScan);
+                        if (!string.IsNullOrEmpty(tmpstockid))
+                        {
+                            var msg = "入库单号：" + tmpstockid + ",RFID:" + txt3RFID.Text + ",已抽检过.";
+
+                            MessageBox.Show(msg);
+                            SetMsg(lbl0Msg, msg);
+
+                            txt3RFID.Focus();
+                            txt3RFID.Text = "";
+                            return;
+                        }
+
+
                         timer1.Enabled = false;
 
                         initToTxt(tmpScan);

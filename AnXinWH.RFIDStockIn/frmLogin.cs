@@ -254,7 +254,7 @@ namespace AnXinWH.RFIDStockIn
             }
             finally
             {
-                Program.InserToLog(m_daoCommon, message, "1", resutl, "手持端登录");
+                Program.InserToLog(m_daoCommon, message, "3", resutl, "手持端登录");
             }
 
             return RtnValue;

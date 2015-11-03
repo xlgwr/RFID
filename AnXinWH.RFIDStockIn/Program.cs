@@ -69,6 +69,15 @@ namespace AnXinWH.RFIDStockIn
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="m_daoCommon"></param>
+        /// <param name="message"></param>
+        /// <param name="type">0:入库、1：出库、2：上架、3：基本信息</param>
+        /// <param name="result"></param>
+        /// <param name="mod_id"></param>
+        /// <returns></returns>
         
         public static bool InserToLog(CBaseConnect m_daoCommon, string message, string type, string result, string mod_id)
         {
@@ -88,7 +97,7 @@ namespace AnXinWH.RFIDStockIn
 
                 dicItemValue[t_syslogrecd.log_id] = DateTime.Now.ToString("yyyyMMddhhmmss") + "D" + rand.Next(100000).ToString();
 
-                dicItemValue[t_syslogrecd.operatorid] = Common._personname; //DateTime.Now.ToString("yyyyMMddHHmmss") + "R" + item.rfid;
+                dicItemValue[t_syslogrecd.operatorid] = Common._personid;//Common._personname; //DateTime.Now.ToString("yyyyMMddHHmmss") + "R" + item.rfid;
                 dicItemValue[t_syslogrecd.message] = message;
                 dicItemValue[t_syslogrecd.type] = type;
                 dicItemValue[t_syslogrecd.mod_id] = mod_id;
