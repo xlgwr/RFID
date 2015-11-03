@@ -33,6 +33,7 @@ namespace AnXinWH.RFIDStockIn
             FiledType["gwgt"] = MySqlDbType.Float;
             FiledType["pqty"] = MySqlDbType.Float;
             FiledType["gwet"] = MySqlDbType.Float;
+            FiledType["agwet"] = MySqlDbType.Float;
             FiledType["readtime"] = MySqlDbType.Int32;
             FiledType["modeflag"] = MySqlDbType.Int32;
             FiledType["type"] = MySqlDbType.Int32;
@@ -46,7 +47,7 @@ namespace AnXinWH.RFIDStockIn
             FiledType["islast"] = MySqlDbType.Int32;
             FiledType["connectflag"] = MySqlDbType.Int32;
             FiledType["recd_id"] = MySqlDbType.Int32;
-            FiledType["log_id"] = MySqlDbType.Int32;
+            FiledType["log_id"] = MySqlDbType.VarChar;
             FiledType["cls_typno"] = MySqlDbType.Int32;
             FiledType["rolestatus"] = MySqlDbType.Int16;
             FiledType["result"] = MySqlDbType.Int16;
@@ -111,6 +112,7 @@ namespace AnXinWH.RFIDStockIn
             FiledType["relation1"] = MySqlDbType.VarChar;
             FiledType["mobile"] = MySqlDbType.VarChar;
             FiledType["address"] = MySqlDbType.VarChar;
+            FiledType["operatorid"] = MySqlDbType.VarChar;
             FiledType["operator"] = MySqlDbType.VarChar;
             FiledType["trmnremark"] = MySqlDbType.VarChar;
             FiledType["param4"] = MySqlDbType.VarChar;

@@ -48,7 +48,7 @@ namespace AnXinWH.RFIDStockIn.StockIn
             this.Load += new EventHandler(frmStockInSuccess_Load);
             this.KeyDown += new KeyEventHandler(frmStockInSuccess_KeyDown);
             //demo
-            initDemo();
+           // initDemo();
             //rfid
             initRFID();
             //
@@ -544,7 +544,20 @@ namespace AnXinWH.RFIDStockIn.StockIn
             disForValueItem[t_stockdetail.rfid_no] = "true";
 
             disWhereValueItem[t_stockdetail.prdct_no] = item.productid;
+            disForValueItem[t_stockdetail.prdct_no] = "true";
+
+
+            disWhereValueItem[t_stockdetail.shelf_no] = item.shelf_no;
+            disForValueItem[t_stockdetail.shelf_no] = "true";
+
+
+            disWhereValueItem[t_stockdetail.status] = "1";
             disForValueItem[t_stockdetail.status] = "true";
+
+
+
+            disWhereValueItem[t_stockdetail.ctnno_no] = item.ctnno_no;
+            disForValueItem[t_stockdetail.ctnno_no] = "true";
 
 
             Cursor.Current = Cursors.WaitCursor;
@@ -564,6 +577,8 @@ namespace AnXinWH.RFIDStockIn.StockIn
 
 
                     tmpScan.rfid = dr[t_stockdetail.rfid_no].ToString();
+                    tmpScan.shelf_no = dr[t_stockdetail.shelf_no].ToString();
+
                     tmpScan.ctnno_no = dr[t_stockdetail.ctnno_no].ToString();
 
                     tmpScan.pqty = dr[t_stockdetail.pqty].ToString();
@@ -688,7 +703,8 @@ namespace AnXinWH.RFIDStockIn.StockIn
             string tmpmsg = "";
             bool IsStartTran = false;
             timer1.Enabled = false;
-
+            var message = "货物上架:";
+            var resutl = "0";
             try
             {
                 if (listView1.Items.Count <= 0)
@@ -719,10 +735,14 @@ namespace AnXinWH.RFIDStockIn.StockIn
 
                             var checkStockDetails = getRFID_t_stockDetails(tmpGetStock);
 
+                            message += tmpGetStock.rfid + ",";
+
                             if (checkStockDetails!=null)
                             {
                                 throw new Exception("库存明细表中存在对应的记录,RFID:" + tmpGetStock.rfid + ",Product:" + tmpGetStock.productid);
                             }
+
+
                             InserToT_stockdetail(tmpGetStock);
                             Update_stockdetail(tmpGetStock);
                             //更新库存.
@@ -736,6 +756,7 @@ namespace AnXinWH.RFIDStockIn.StockIn
                     }
 
                     Common.AdoConnect.Connect.TransactionCommit();
+                    resutl = "1";
                     tmpmsg = "上传数据完成。";
                     if (!string.IsNullOrEmpty(noticeRFID))
                     {
@@ -758,11 +779,11 @@ namespace AnXinWH.RFIDStockIn.StockIn
             }
             finally
             {
+                Program.InserToLog(m_daoCommon, message, "1", resutl, "货物上架");
                 Cursor.Current = Cursors.Default;
                 timer1.Enabled = true;
             }
         }
-
         private void txt3RFID_TextChanged(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txt3RFID.Text))

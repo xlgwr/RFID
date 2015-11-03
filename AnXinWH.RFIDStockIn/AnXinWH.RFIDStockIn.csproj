@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{A443FAA8-E64B-4C65-98F8-8DAEB8EB388E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -70,6 +70,7 @@
     <Compile Include="lib\comPort.cs" />
     <Compile Include="lib\Declare.cs" />
     <Compile Include="lib\MasterTableForAnXinWH.cs" />
+    <Compile Include="lib\SysInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="frmMenu.resx">
@@ -87,6 +88,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="StockIn\frmStockInSuccess.resx">
       <DependentUpon>frmStockInSuccess.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StockIn\frmStockReg.resx">
+      <DependentUpon>frmStockReg.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="StockIn\StockCheckWet.resx">
@@ -113,6 +118,12 @@
     </Compile>
     <Compile Include="StockIn\frmStockInSuccess.Designer.cs">
       <DependentUpon>frmStockInSuccess.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StockIn\frmStockReg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StockIn\frmStockReg.Designer.cs">
+      <DependentUpon>frmStockReg.cs</DependentUpon>
     </Compile>
     <Compile Include="StockIn\StockCheckWet.cs">
       <SubType>Form</SubType>

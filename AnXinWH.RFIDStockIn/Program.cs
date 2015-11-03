@@ -7,6 +7,7 @@ using Framework.Libs;
 using System.IO;
 using Framework.FileOperate;
 using Framework.DataAccess;
+using System.Collections.Specialized;
 
 namespace AnXinWH.RFIDStockIn
 {
@@ -14,6 +15,9 @@ namespace AnXinWH.RFIDStockIn
     {
         //系统登录画面
         public static frmLogin m_FrmSysLogin = null;
+        public static string _tmpMac = SysInfo.GetMac();
+        public static string _tmpIp = SysInfo.GetIpAddress();
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -59,13 +63,47 @@ namespace AnXinWH.RFIDStockIn
             }
             catch (Exception ex)
             {
-
+                Application.Exit();
                 MessageBox.Show(ex.Message);
-                throw ex;
 
             }
         }
 
+        
+        public static bool InserToLog(CBaseConnect m_daoCommon, string message, string type, string result, string mod_id)
+        {
+            try
+            {
+                StringDictionary dicItemValue = new StringDictionary();
+                //user
+                StringDictionary DidUserCollum = new StringDictionary();
+                //log for use
+                DidUserCollum[t_syslogrecd.adduser] = "true";
+                DidUserCollum[t_syslogrecd.addtime] = "true";
+                //DidUserCollum[t_alarmdata.updtime] = "true";
+                //DidUserCollum[t_alarmdata.upduser] = "true";
+
+                var guid=Guid.NewGuid();
+                var rand= new Random();
+
+                dicItemValue[t_syslogrecd.log_id] = DateTime.Now.ToString("yyyyMMddhhmmss") + "D" + rand.Next(100000).ToString();
+
+                dicItemValue[t_syslogrecd.operatorid] = Common._personname; //DateTime.Now.ToString("yyyyMMddHHmmss") + "R" + item.rfid;
+                dicItemValue[t_syslogrecd.message] = message;
+                dicItemValue[t_syslogrecd.type] = type;
+                dicItemValue[t_syslogrecd.mod_id] = mod_id;
+                dicItemValue[t_syslogrecd.result] = result;
+                dicItemValue[t_syslogrecd.org_no] = "RFID";
+
+                m_daoCommon.SetInsertDataItem(ViewOrTable.t_syslogrecd, dicItemValue, DidUserCollum);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                //throw ex;
+                return false;
+            }
+        }
         #region 读取配置信息
 
         //***********************************************************************

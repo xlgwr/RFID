@@ -83,7 +83,7 @@
             this.listView1.Location = new System.Drawing.Point(13, 207);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(448, 396);
-            this.listView1.TabIndex = 111;
+            this.listView1.TabIndex = 4;
             this.listView1.View = System.Windows.Forms.View.Details;
             this.listView1.ItemActivate += new System.EventHandler(this.listView1_ItemActivate);
             // 
@@ -112,7 +112,7 @@
             this.txt3RFID.Location = new System.Drawing.Point(167, 48);
             this.txt3RFID.Name = "txt3RFID";
             this.txt3RFID.Size = new System.Drawing.Size(215, 32);
-            this.txt3RFID.TabIndex = 117;
+            this.txt3RFID.TabIndex = 0;
             this.txt3RFID.TextChanged += new System.EventHandler(this.txt3RFID_TextChanged);
             this.txt3RFID.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt3RFID_KeyDown);
             // 
@@ -122,7 +122,7 @@
             this.txt2Shelf.Location = new System.Drawing.Point(167, 80);
             this.txt2Shelf.Name = "txt2Shelf";
             this.txt2Shelf.Size = new System.Drawing.Size(215, 32);
-            this.txt2Shelf.TabIndex = 114;
+            this.txt2Shelf.TabIndex = 1;
             this.txt2Shelf.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt5PQty_KeyDown);
             // 
             // button3
@@ -131,7 +131,7 @@
             this.button3.Location = new System.Drawing.Point(310, 131);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(96, 48);
-            this.button3.TabIndex = 113;
+            this.button3.TabIndex = 3;
             this.button3.Text = "取消(S2)";
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -141,7 +141,7 @@
             this.button2.Location = new System.Drawing.Point(64, 131);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(96, 48);
-            this.button2.TabIndex = 112;
+            this.button2.TabIndex = 2;
             this.button2.Text = "提交(S1)";
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 

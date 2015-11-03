@@ -7,6 +7,60 @@ namespace AnXinWH.RFIDStockIn
 {
     #region  表属性
 
+    public class t_syslogrecd
+    {
+        public const string log_id = "log_id";
+        public const string operatorid = "operatorid";
+        public const string message = "message";
+        public const string type = "type";
+        public const string result = "result";
+        public const string mod_id = "mod_id";
+        public const string adduser = "adduser";
+        public const string addtime = "addtime";
+        public const string org_no = "org_no";
+    }
+    public class m_terminaldevice
+    {
+        public const string terminalno = "TerminalNo";
+        public const string modelno = "ModelNo";
+        public const string terminaltype = "TerminalType";
+        public const string terminalname = "TerminalName";
+        public const string shelf_no = "shelf_no";
+        public const string connectflag = "ConnectFlag";
+        public const string serialnoipaddr = "SerialNoIPAddr";
+        public const string readtime = "ReadTime";
+        public const string readinterval = "ReadInterval";
+        public const string param1 = "param1";
+        public const string param2 = "param2";
+        public const string param3 = "param3";
+        public const string param4 = "param4";
+        public const string param5 = "param5";
+        public const string param6 = "param6";
+        public const string param7 = "param7";
+        public const string param8 = "param8";
+        public const string param9 = "param9";
+        public const string param10 = "param10";
+        public const string param11 = "param11";
+        public const string param12 = "param12";
+        public const string param13 = "param13";
+        public const string param14 = "param14";
+        public const string param15 = "param15";
+        public const string param16 = "param16";
+        public const string param17 = "param17";
+        public const string param18 = "param18";
+        public const string paramupdtime = "ParamUpdTime";
+        public const string trmnupdtime = "TrmnUpdTime";
+        public const string trmnremark = "TrmnRemark";
+        public const string ciphertext = "CipherText";
+        public const string trmnstatus = "TrmnStatus";
+        public const string adduser = "adduser";
+        public const string upduser = "upduser";
+        public const string addtime = "addtime";
+        public const string updtime = "updtime";
+        public const string upduserno = "UpdUserNo";
+        public const string depot_no = "depot_no";
+    }
+
     public class m_parameter
     {
         public const string paramkey = "paramkey";
@@ -83,6 +137,23 @@ namespace AnXinWH.RFIDStockIn
         public const string gwet = "gwet";
         public const string quanlity = "quanlity";
         public const string remark = "remark";
+        public const string status = "status";
+        public const string adduser = "adduser";
+        public const string upduser = "upduser";
+        public const string addtime = "addtime";
+        public const string updtime = "updtime";
+    }
+
+
+    public class t_sampling
+    {
+        //public const string bespeak_no = "bespeak_no";
+        public const string stockin_id = "stockin_id";
+        public const string rfid_no = "rfid_no";
+        public const string qty = "qty";
+        public const string nwet = "nwet";
+        public const string gwet = "gwet";
+        public const string agwet = "agwet";
         public const string status = "status";
         public const string adduser = "adduser";
         public const string upduser = "upduser";
@@ -216,6 +287,7 @@ namespace AnXinWH.RFIDStockIn
         public const string t_roles = "t_roles";
         public const string t_stock = "t_stock";
         public const string t_stockdetail = "t_stockdetail";
+        public const string t_sampling = "t_sampling";
         public const string t_stockin = "t_stockin";
         public const string t_stockinctnno = "t_stockinctnno";
         public const string t_stockinctnnodetail = "t_stockinctnnodetail";

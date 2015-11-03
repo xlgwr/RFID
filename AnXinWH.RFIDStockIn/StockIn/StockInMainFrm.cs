@@ -308,6 +308,9 @@ namespace AnXinWH.RFIDStockIn.StockIn
             string tmpmsg = "";
             bool IsStartTran = false;
 
+            var message = "货物卸货:";
+            var resutl = "0";
+
             //test
             //return true;
 
@@ -344,6 +347,7 @@ namespace AnXinWH.RFIDStockIn.StockIn
             DidUserCollum[t_stockinctnno.upduser] = "true";
 
 
+            message += "订单号：" + txt11stockin_id.Text;
             Cursor.Current = Cursors.WaitCursor;
             try
             {
@@ -439,6 +443,7 @@ namespace AnXinWH.RFIDStockIn.StockIn
                 }
 
                 Common.AdoConnect.Connect.TransactionCommit();
+                resutl = "1";
                 tmpmsg = "上传数据成功。" + _rfidStrForSet;
                 SetMsg(lbl0Msg, tmpmsg);
                 MessageBox.Show(tmpmsg);
@@ -458,6 +463,9 @@ namespace AnXinWH.RFIDStockIn.StockIn
             }
             finally
             {
+
+                Program.InserToLog(m_daoCommon, message, "1", resutl, "货物卸货");
+
                 Cursor.Current = Cursors.Default;
             }
         }
@@ -494,6 +502,7 @@ namespace AnXinWH.RFIDStockIn.StockIn
                 Cursor.Current = Cursors.Default;
             }
         }
+     
         private void button3_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -864,6 +873,7 @@ namespace AnXinWH.RFIDStockIn.StockIn
         public string qty { get; set; }
         public string nwet { get; set; }
         public string gwet { get; set; }
+        public string agwet { get; set; }
 
         public string shelf_no { get; set; }
         public string receiptno { get; set; }

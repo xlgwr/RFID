@@ -121,7 +121,7 @@
             this.listView1.Location = new System.Drawing.Point(12, 376);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(448, 204);
-            this.listView1.TabIndex = 39;
+            this.listView1.TabIndex = 9;
             this.listView1.View = System.Windows.Forms.View.Details;
             this.listView1.ItemActivate += new System.EventHandler(this.listView1_ItemActivate);
             // 
@@ -189,7 +189,7 @@
             this.txt3RFID.Location = new System.Drawing.Point(166, 114);
             this.txt3RFID.Name = "txt3RFID";
             this.txt3RFID.Size = new System.Drawing.Size(215, 32);
-            this.txt3RFID.TabIndex = 56;
+            this.txt3RFID.TabIndex = 2;
             this.txt3RFID.TextChanged += new System.EventHandler(this.txt3RFID_TextChanged);
             this.txt3RFID.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt3RFID_KeyDown);
             // 
@@ -207,7 +207,7 @@
             this.txt6nwet.Location = new System.Drawing.Point(166, 242);
             this.txt6nwet.Name = "txt6nwet";
             this.txt6nwet.Size = new System.Drawing.Size(162, 32);
-            this.txt6nwet.TabIndex = 55;
+            this.txt6nwet.TabIndex = 6;
             this.txt6nwet.TextChanged += new System.EventHandler(this.txt6nwet_TextChanged);
             this.txt6nwet.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt6nwet_KeyDown);
             // 
@@ -217,7 +217,7 @@
             this.txt5qty.Location = new System.Drawing.Point(166, 210);
             this.txt5qty.Name = "txt5qty";
             this.txt5qty.Size = new System.Drawing.Size(215, 32);
-            this.txt5qty.TabIndex = 54;
+            this.txt5qty.TabIndex = 5;
             this.txt5qty.TextChanged += new System.EventHandler(this.txt5qty_TextChanged);
             this.txt5qty.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt5qty_KeyDown);
             // 
@@ -227,7 +227,7 @@
             this.txt12prdct_no.Location = new System.Drawing.Point(166, 82);
             this.txt12prdct_no.Name = "txt12prdct_no";
             this.txt12prdct_no.Size = new System.Drawing.Size(215, 32);
-            this.txt12prdct_no.TabIndex = 51;
+            this.txt12prdct_no.TabIndex = 1;
             this.txt12prdct_no.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt12prdct_no_KeyDown);
             // 
             // button3
@@ -236,7 +236,7 @@
             this.button3.Location = new System.Drawing.Point(310, 281);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(96, 48);
-            this.button3.TabIndex = 43;
+            this.button3.TabIndex = 8;
             this.button3.Text = "取消(S2)";
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -257,7 +257,7 @@
             this.button2.Location = new System.Drawing.Point(64, 281);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(96, 48);
-            this.button2.TabIndex = 41;
+            this.button2.TabIndex = 7;
             this.button2.Text = "提交(S1)";
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -270,7 +270,7 @@
             this.txt11stockin_id.Location = new System.Drawing.Point(166, 50);
             this.txt11stockin_id.Name = "txt11stockin_id";
             this.txt11stockin_id.Size = new System.Drawing.Size(215, 32);
-            this.txt11stockin_id.TabIndex = 48;
+            this.txt11stockin_id.TabIndex = 0;
             this.txt11stockin_id.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt11stockin_id_KeyDown);
             // 
             // lbl0Msg
@@ -299,7 +299,7 @@
             this.txt4XiangHao.Location = new System.Drawing.Point(166, 146);
             this.txt4XiangHao.Name = "txt4XiangHao";
             this.txt4XiangHao.Size = new System.Drawing.Size(215, 32);
-            this.txt4XiangHao.TabIndex = 61;
+            this.txt4XiangHao.TabIndex = 3;
             this.txt4XiangHao.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt4XiangHao_KeyDown);
             // 
             // label12
@@ -317,7 +317,7 @@
             this.txt5PQty.Location = new System.Drawing.Point(166, 178);
             this.txt5PQty.Name = "txt5PQty";
             this.txt5PQty.Size = new System.Drawing.Size(215, 32);
-            this.txt5PQty.TabIndex = 54;
+            this.txt5PQty.TabIndex = 5;
             // 
             // label3
             // 

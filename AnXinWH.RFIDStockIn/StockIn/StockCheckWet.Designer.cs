@@ -133,7 +133,7 @@
             this.listView1.Location = new System.Drawing.Point(13, 322);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(448, 285);
-            this.listView1.TabIndex = 76;
+            this.listView1.TabIndex = 7;
             this.listView1.View = System.Windows.Forms.View.Details;
             this.listView1.ItemActivate += new System.EventHandler(this.listView1_ItemActivate);
             // 
@@ -171,7 +171,7 @@
             this.txt3RFID.Location = new System.Drawing.Point(167, 44);
             this.txt3RFID.Name = "txt3RFID";
             this.txt3RFID.Size = new System.Drawing.Size(215, 32);
-            this.txt3RFID.TabIndex = 84;
+            this.txt3RFID.TabIndex = 0;
             this.txt3RFID.TextChanged += new System.EventHandler(this.txt3RFID_TextChanged);
             this.txt3RFID.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt3RFID_KeyDown);
             // 
@@ -181,7 +181,7 @@
             this.txt6gwet.Location = new System.Drawing.Point(167, 172);
             this.txt6gwet.Name = "txt6gwet";
             this.txt6gwet.Size = new System.Drawing.Size(162, 32);
-            this.txt6gwet.TabIndex = 83;
+            this.txt6gwet.TabIndex = 4;
             this.txt6gwet.TextChanged += new System.EventHandler(this.txt6gwet_TextChanged);
             this.txt6gwet.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt6gwet_KeyDown);
             // 
@@ -191,7 +191,7 @@
             this.txt5PQty.Location = new System.Drawing.Point(167, 76);
             this.txt5PQty.Name = "txt5PQty";
             this.txt5PQty.Size = new System.Drawing.Size(215, 32);
-            this.txt5PQty.TabIndex = 81;
+            this.txt5PQty.TabIndex = 1;
             // 
             // txt5qty
             // 
@@ -199,7 +199,7 @@
             this.txt5qty.Location = new System.Drawing.Point(167, 108);
             this.txt5qty.Name = "txt5qty";
             this.txt5qty.Size = new System.Drawing.Size(215, 32);
-            this.txt5qty.TabIndex = 82;
+            this.txt5qty.TabIndex = 2;
             // 
             // button3
             // 
@@ -207,7 +207,7 @@
             this.button3.Location = new System.Drawing.Point(311, 227);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(96, 48);
-            this.button3.TabIndex = 78;
+            this.button3.TabIndex = 6;
             this.button3.Text = "取消(S2)";
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -217,7 +217,7 @@
             this.button2.Location = new System.Drawing.Point(65, 227);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(96, 48);
-            this.button2.TabIndex = 77;
+            this.button2.TabIndex = 5;
             this.button2.Text = "提交(S1)";
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -253,7 +253,7 @@
             this.txt5nWet.Location = new System.Drawing.Point(167, 140);
             this.txt5nWet.Name = "txt5nWet";
             this.txt5nWet.Size = new System.Drawing.Size(162, 32);
-            this.txt5nWet.TabIndex = 100;
+            this.txt5nWet.TabIndex = 3;
             // 
             // timer1
             // 

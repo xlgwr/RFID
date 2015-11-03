@@ -119,7 +119,7 @@ namespace AnXinWH.RFIDStockIn.StockIn
                     txt3RFID.Focus();
                     msg = "扫到RFID:" + _rfid;
                 }
-            }            
+            }
 
             SetMsg(lbl0Msg, msg);
         }
@@ -249,6 +249,42 @@ namespace AnXinWH.RFIDStockIn.StockIn
         /// <param name="item"></param>
         /// <param name="notice"></param>
         /// <returns></returns>
+        bool InserTot_sampling(scanItemDetail item)
+        {
+            try
+            {
+                StringDictionary dicItemValue = new StringDictionary();
+                //user
+                StringDictionary DidUserCollum = new StringDictionary();
+                //log for use
+                DidUserCollum[t_sampling.adduser] = "true";
+                DidUserCollum[t_sampling.addtime] = "true";
+                DidUserCollum[t_sampling.updtime] = "true";
+                DidUserCollum[t_sampling.upduser] = "true";
+
+                dicItemValue[t_sampling.stockin_id] = item.stockid;
+                dicItemValue[t_sampling.rfid_no] = item.rfid;
+                dicItemValue[t_sampling.qty] = item.qty;
+                dicItemValue[t_sampling.nwet] = item.nwet;
+                dicItemValue[t_sampling.gwet] = item.gwet;
+                dicItemValue[t_sampling.agwet] = item.agwet;
+                dicItemValue[t_sampling.status] = "1";
+
+
+                this.m_daoCommon.SetInsertDataItem(ViewOrTable.t_sampling, dicItemValue, DidUserCollum);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="notice"></param>
+        /// <returns></returns>
         bool InserToNotice(scanItemDetail item, string notice)
         {
             try
@@ -287,7 +323,8 @@ namespace AnXinWH.RFIDStockIn.StockIn
             string tmpmsg = "";
             bool IsStartTran = false;
             timer1.Enabled = false;
-
+            var message = "货物抽检:";
+            var resutl = "0";
             try
             {
                 Cursor.Current = Cursors.WaitCursor;
@@ -319,15 +356,19 @@ namespace AnXinWH.RFIDStockIn.StockIn
                         double perNotice = tmpabsV / tmpnwget;
                         double baseV = 0.01;
 
+
                         if (perNotice >= baseV)
                         {
                             InserToNotice(item, perNotice.ToString() + "%");
                             noticeRFID += item.rfid + ",";
                             //MessageBox.Show("RFID:" + item.rfid + ",重量不符。>1%");
                         }
+                        message += item.rfid + ",";
+                        InserTot_sampling(item);
                     }
 
                     Common.AdoConnect.Connect.TransactionCommit();
+                    resutl = "1";
                     tmpmsg = "上传数据成功。";
                     if (!string.IsNullOrEmpty(noticeRFID))
                     {
@@ -349,6 +390,7 @@ namespace AnXinWH.RFIDStockIn.StockIn
             }
             finally
             {
+                Program.InserToLog(m_daoCommon, message, "1", resutl, "货物抽检");
                 Cursor.Current = Cursors.Default;
                 timer1.Enabled = true;
             }
@@ -356,16 +398,21 @@ namespace AnXinWH.RFIDStockIn.StockIn
 
         private void txt3RFID_TextChanged(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txt3RFID.Text))
+            if (!_isChangeTxt)
             {
-                _rfid = "";
-                timer1.Enabled = true;
+                if (string.IsNullOrEmpty(txt3RFID.Text))
+                {
+                    _rfid = "";
+                    timer1.Enabled = true;
+                }
+                //else
+                //{
+                //    KeyEventArgs tmpE = new KeyEventArgs(Keys.Enter);
+                //    txt3RFID_KeyDown(sender, tmpE);
+                //}
+
             }
-            //else
-            //{
-            //    KeyEventArgs tmpE = new KeyEventArgs(Keys.Enter);
-            //    txt3RFID_KeyDown(sender, tmpE);
-            //}
+
         }
 
         private void StockCheckWet_Load(object sender, EventArgs e)
@@ -470,6 +517,7 @@ namespace AnXinWH.RFIDStockIn.StockIn
                 {
                     var dr = dt.Rows[0];
 
+                    tmpScan.stockid = dr[t_stockinctnnodetail.stockin_id].ToString();
                     tmpScan.rfid = dr[t_stockinctnnodetail.rfid_no].ToString();
                     tmpScan.ctnno_no = dr[t_stockinctnnodetail.ctnno_no].ToString();
                     tmpScan.pqty = dr[t_stockinctnnodetail.pqty].ToString();
@@ -526,6 +574,7 @@ namespace AnXinWH.RFIDStockIn.StockIn
                         {
                             _isChangeTxt = true;
                             txt6gwet.Text = tmpwgt;
+                            txt6gwet.Focus();
                             _isChangeTxt = false;
 
                             if (!string.IsNullOrEmpty(txt6gwet.Text))
@@ -545,12 +594,11 @@ namespace AnXinWH.RFIDStockIn.StockIn
                     else
                     {
                         var msg = "没有找到RFID:" + txt3RFID.Text + ",的入库记录.";
-                       
-                        MessageBox.Show(msg);
-                        SetMsg(lbl0Msg, msg); 
 
-                        //txt3RFID.Text = "";
-                        //_rfid = "";
+                        MessageBox.Show(msg);
+                        SetMsg(lbl0Msg, msg);
+
+                        txt3RFID.Text = "";
                     }
                 }
             }
@@ -610,9 +658,11 @@ namespace AnXinWH.RFIDStockIn.StockIn
                             tmpscan.qty = txt5qty.Text.Trim();
                             tmpscan.nwet = txt5nWet.Text.Trim();
 
-                            tmpscan.gwet = txt6gwet.Text.Trim();
+                            tmpscan.agwet = txt6gwet.Text.Trim();
 
                             tmpscan.ctnno_no = _currScanItem.ctnno_no;
+                            tmpscan.stockid = _currScanItem.stockid;
+                            tmpscan.gwet = _currScanItem.gwet;
 
                             //_dicScanItemDetail.Add(tmpkey, tmpscan);
                             addToListAllView(tmpkey, tmpscan);

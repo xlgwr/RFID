@@ -69,7 +69,7 @@ namespace AnXinWH.RFIDStockIn
 
         private void frmLogin_Load(object sender, EventArgs e)
         {
-            
+
         }
 
         #endregion
@@ -105,7 +105,7 @@ namespace AnXinWH.RFIDStockIn
             catch (Exception ex)
             {
                 LogManager.WriteLog(Common.LogFile.Error, ex.Message);
-               
+
                 MessageBox.Show(ex.Message,
                    "Notice", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1);
             }
@@ -165,6 +165,9 @@ namespace AnXinWH.RFIDStockIn
             bool RtnValue = false;
             DataTable dtUser = null;
 
+            var message = "用户登录:";
+            var resutl = "0";
+
             try
             {
 
@@ -198,7 +201,7 @@ namespace AnXinWH.RFIDStockIn
                 //打开数据库连接
                 Common.AdoConnect.Connect.ConnectOpen();
 
-              
+
                 //================登录验证处理==========
 
                 //获取画面控件数据
@@ -214,6 +217,8 @@ namespace AnXinWH.RFIDStockIn
 
                     //控件设置焦点
                     SetFocsu(this.txtPaswd);
+
+                    message += "用户编号或密码输入错误";
                     return false;
                 }
                 else
@@ -224,6 +229,13 @@ namespace AnXinWH.RFIDStockIn
                     Common._personpswd = dtUser.Rows[0][m_users.user_pwd].ToString();
 
                     Common._Language = "Chinese";// Enum.Parse(typeof(Common.Language), dtUser.Rows[0][MasterTable.M_Users.Language].ToString(), true).ToString();
+
+
+                    resutl = "1";
+
+                    //Update_LoginIP();
+
+                    message += Common._personid + "," + Common._personname + "," + Program._tmpIp + "," + Program._tmpMac;
 
                     //操作系统时间同步处理
                     //GetServerDate();
@@ -236,12 +248,60 @@ namespace AnXinWH.RFIDStockIn
             {
 
                 //系统登录失败，请检查网络是否正常连接！
-                MessageBox.Show("系统登录失败，请检查网络是否正常连接！", Declare.Info_SysName,
+                MessageBox.Show("系统登录失败，请检查网络是否正常连接！" + ex.Message, Declare.Info_SysName,
                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
                 throw ex;
             }
+            finally
+            {
+                Program.InserToLog(m_daoCommon, message, "1", resutl, "手持端登录");
+            }
 
             return RtnValue;
+        }
+
+        public bool Update_LoginIP()
+        {
+            Cursor.Current = Cursors.WaitCursor;
+            try
+            {
+
+
+                Program._tmpMac = SysInfo.GetMac();
+                Program._tmpIp = SysInfo.GetIpAddress();
+
+                StringDictionary dicItemValue = new StringDictionary();
+
+
+                dicItemValue[m_terminaldevice.serialnoipaddr] = Program._tmpIp;
+                dicItemValue[m_terminaldevice.param1] = Program._tmpMac;
+
+                //primary key
+                StringDictionary disPrimaryKey = new StringDictionary();
+
+
+                disPrimaryKey[m_terminaldevice.param1] = Program._tmpMac;
+
+
+                var dis00UserCollum2 = new StringDictionary();
+                dis00UserCollum2[m_terminaldevice.updtime] = "true";
+                dis00UserCollum2[m_terminaldevice.upduser] = "true";
+
+                this.m_daoCommon.SetModifyDataItem(ViewOrTable.m_terminaldevice, dicItemValue, disPrimaryKey, dis00UserCollum2);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                //throw ex;
+                return false;
+            }
+            finally
+            {
+
+                Cursor.Current = Cursors.Default;
+
+            }
         }
 
         /// <summary>
@@ -328,7 +388,7 @@ namespace AnXinWH.RFIDStockIn
                 this.dicItemData[m_users.user_no] = this.txtUserId.Text.Trim();
 
                 //数据加密处理  this.txtPaswd.Text;
-               // var dd = Common.DecryptPassWord("FP81WJidZmk=");
+                // var dd = Common.DecryptPassWord("FP81WJidZmk=");
 
                 this.dicItemData[m_users.user_pwd] = Common.EncryptPassWord(this.txtPaswd.Text);
 

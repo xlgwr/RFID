@@ -6,6 +6,10 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using Framework.DataAccess;
+using System.Collections.Specialized;
+using System.Runtime.InteropServices;
+
 using Framework.Libs;
 using AnXinWH.RFIDStockIn.StockIn;
 
@@ -13,9 +17,17 @@ namespace AnXinWH.RFIDStockIn
 {
     public partial class frmMenu : Form
     {
+        /// <summary>
+        /// 共通数据对象
+        /// </summary>
+        protected CBaseConnect m_daoCommon;
+
         public frmMenu()
         {
             InitializeComponent();
+
+            Common.GetDaoCommon(ref m_daoCommon);
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -30,7 +42,7 @@ namespace AnXinWH.RFIDStockIn
             catch (Exception ex)
             {
                 LogManager.WriteLog(Common.LogFile.Error, ex.Message);
-                MessageBox.Show("进入货物卸货失败"+ex.Message,
+                MessageBox.Show("进入货物卸货失败" + ex.Message,
                      "进入货物卸货失败", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1);
             }
             finally
@@ -54,9 +66,9 @@ namespace AnXinWH.RFIDStockIn
             }
 
         }
+        
         private void frmMenu_Load(object sender, EventArgs e)
         {
-            
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -102,6 +114,28 @@ namespace AnXinWH.RFIDStockIn
                 Cursor.Current = Cursors.Default;
             }
         }
-      
+
+        private void btn3Regedit_Click(object sender, EventArgs e)
+        {
+            Cursor.Current = Cursors.WaitCursor;
+            try
+            {
+                //this.Hide();
+                frmStockReg frm = new frmStockReg();
+                frm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                LogManager.WriteLog(Common.LogFile.Error, ex.Message);
+                MessageBox.Show("进入设备注册失败" + ex.Message,
+                     "进入设备注册失败", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
+
+        }
+
     }
 }
