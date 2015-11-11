@@ -224,7 +224,7 @@ namespace AnXinWH.RFIDStockIn.StockIn
             tmpstr[1] = item.pqty;
             tmpstr[2] = item.qty;
             tmpstr[3] = item.nwet;
-            tmpstr[4] = item.gwet;
+            tmpstr[4] = item.agwet;
 
             ListViewItem tmpitems1 = new ListViewItem(tmpstr);
             listView1.Items.Add(tmpitems1);
@@ -692,6 +692,12 @@ namespace AnXinWH.RFIDStockIn.StockIn
             {
                 if (e.KeyCode == Keys.Enter)
                 {
+                    if (txt6gwet.Text.Equals("0"))
+                    {
+                        txt6gwet.Focus();
+                        return;
+                    }
+
                     var tmpmsg = "";
 
                     Cursor.Current = Cursors.WaitCursor;

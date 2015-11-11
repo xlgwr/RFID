@@ -10,10 +10,11 @@ where TABLE_SCHEMA='anxinwh'
 
 ORDER BY table_name
 --3
-select CONCAT("public const string ",table_name,'="',table_name,'";')
+select CONCAT("public const string ",LOWER(table_name),'="',LOWER(table_name),'";')
 from information_schema.`TABLES`
 where TABLE_SCHEMA='anxinwh' 
 ORDER BY table_name
+
 
 
 

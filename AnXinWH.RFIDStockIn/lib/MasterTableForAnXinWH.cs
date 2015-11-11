@@ -6,7 +6,18 @@ using System.Text;
 namespace AnXinWH.RFIDStockIn
 {
     #region  表属性
-
+    public class m_checkpoint
+    {
+        public const string checkpointno = "checkpointno";
+        public const string checktime = "checktime";
+        public const string remark = "remark";
+        public const string status = "status";
+        public const string adduser = "adduser";
+        public const string upduser = "upduser";
+        public const string addtime = "addtime";
+        public const string updtime = "updtime";
+        public const string depot_no = "depot_no";
+    }
     public class t_syslogrecd
     {
         public const string log_id = "log_id";
@@ -174,6 +185,122 @@ namespace AnXinWH.RFIDStockIn
         public const string addtime = "addtime";
         public const string updtime = "updtime";
     }
+    public class m_classinfo
+    {
+        public const string cls_no = "cls_no";
+        public const string infoval = "infoval";
+        public const string infoval2 = "infoval2";
+        public const string infoval3 = "infoval3";
+        public const string cls_typno = "cls_typno";
+        public const string sort = "sort";
+        public const string status = "status";
+        public const string adduser = "adduser";
+        public const string upduser = "upduser";
+        public const string updtime = "updtime";
+        public const string addtime = "addtime";
+    }
+    public class t_checkdetailresult
+    {
+        public const string check_id = "check_id";
+        public const string out_item_no = "out_item_no";
+        public const string prdct_no = "prdct_no";
+        public const string rfid_no = "rfid_no";
+        public const string receiptno = "receiptNo";
+        public const string qty = "qty";
+        public const string nwet = "nwet";
+        public const string gwet = "gwet";
+        public const string cell_no = "cell_no";
+        public const string remark = "remark";
+        public const string status = "status";
+        public const string adduser = "adduser";
+        public const string upduser = "upduser";
+        public const string addtime = "addtime";
+        public const string updtime = "updtime";
+    }
+    public class t_checkresult
+    {
+        public const string check_id = "check_id";
+        public const string check_date = "check_date";
+        public const string bespeak_no = "bespeak_no";
+        public const string bespeak_date = "bespeak_date";
+        public const string user_no = "user_no";
+        public const string user_nm = "user_nm";
+        public const string status = "status";
+        public const string flag = "flag";
+        public const string remark = "remark";
+        public const string adduser = "adduser";
+        public const string upduser = "upduser";
+        public const string addtime = "addtime";
+        public const string updtime = "updtime";
+    }
+    public class t_stockoutctnnodetail
+    {
+        public const string stockout_id = "stockout_id";
+        public const string prdct_no = "prdct_no";
+        public const string rfid_no = "rfid_no";
+        public const string ctnno_no = "ctnno_no";
+        public const string receiptno = "receiptNo";
+        public const string pqty = "pqty";
+        public const string qty = "qty";
+        public const string nwet = "nwet";
+        public const string gwet = "gwet";
+        public const string status = "status";
+        public const string adduser = "adduser";
+        public const string upduser = "upduser";
+        public const string addtime = "addtime";
+        public const string updtime = "updtime";
+    }
+    public class t_stockoutctnno
+    {
+        public const string stockout_id = "stockout_id";
+        public const string prdct_no = "prdct_no";
+        public const string pqty = "pqty";
+        public const string qty = "qty";
+        public const string nwet = "nwet";
+        public const string gwet = "gwet";
+        public const string status = "status";
+        public const string adduser = "adduser";
+        public const string upduser = "upduser";
+        public const string addtime = "addtime";
+        public const string updtime = "updtime";
+    }
+    public class t_stockout
+    {
+        public const string stockout_id = "stockout_id";
+        public const string stockout_date = "stockout_date";
+        public const string user_no = "user_no";
+        public const string pickup_user = "pickup_user";
+        public const string pickup_card = "pickup_card";
+        public const string pickup_mobile = "pickup_mobile";
+        public const string status = "status";
+        public const string remark = "remark";
+        public const string adduser = "adduser";
+        public const string upduser = "upduser";
+        public const string addtime = "addtime";
+        public const string updtime = "updtime";
+    }
+    public class t_stockoutdetail
+    {
+        public const string stockout_id = "stockout_id";
+        public const string out_item_no = "out_item_no";
+        public const string rfid_no = "rfid_no";
+        public const string cash_no = "cash_no";
+        public const string item_no = "item_no";
+        public const string prdct_no = "prdct_no";
+        public const string pc = "pc";
+        public const string receiptno = "receiptNo";
+        public const string pqty = "pqty";
+        public const string qty = "qty";
+        public const string nwet = "nwet";
+        public const string gwet = "gwet";
+        public const string quanlity = "quanlity";
+        public const string status = "status";
+        public const string adduser = "adduser";
+        public const string upduser = "upduser";
+        public const string addtime = "addtime";
+        public const string updtime = "updtime";
+        public const string remark = "remark";
+    }
 
     public class t_stockdetail
     {
@@ -282,16 +409,20 @@ namespace AnXinWH.RFIDStockIn
         public const string t_bespeakdetail = "t_bespeakdetail";
         public const string t_cash = "t_cash";
         public const string t_cashdetail = "t_cashdetail";
+        public const string t_checkdetailresult = "t_checkdetailresult";
+        public const string t_checkresult = "t_checkresult";
         public const string t_functioninfo = "t_functioninfo";
         public const string t_interface = "t_interface";
         public const string t_roles = "t_roles";
+        public const string t_sampling = "t_sampling";
+        public const string t_sensorinfo = "t_sensorinfo";
         public const string t_stock = "t_stock";
         public const string t_stockdetail = "t_stockdetail";
-        public const string t_sampling = "t_sampling";
         public const string t_stockin = "t_stockin";
         public const string t_stockinctnno = "t_stockinctnno";
         public const string t_stockinctnnodetail = "t_stockinctnnodetail";
         public const string t_stockindetail = "t_stockindetail";
+        public const string t_stockinsign = "t_stockinsign";
         public const string t_stockout = "t_stockout";
         public const string t_stockoutctnno = "t_stockoutctnno";
         public const string t_stockoutctnnodetail = "t_stockoutctnnodetail";
@@ -299,7 +430,6 @@ namespace AnXinWH.RFIDStockIn
         public const string t_stockoutsign = "t_stockoutsign";
         public const string t_syslogrecd = "t_syslogrecd";
         public const string t_terminaalarm = "t_terminaalarm";
-
 
 
 

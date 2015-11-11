@@ -66,7 +66,7 @@ namespace AnXinWH.RFIDStockIn
             }
 
         }
-        
+
         private void frmMenu_Load(object sender, EventArgs e)
         {
         }
@@ -135,6 +135,49 @@ namespace AnXinWH.RFIDStockIn
                 Cursor.Current = Cursors.Default;
             }
 
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+
+            Cursor.Current = Cursors.WaitCursor;
+            try
+            {
+                //this.Hide();
+                StockOutMainFrm frm = new StockOutMainFrm();
+                frm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                LogManager.WriteLog(Common.LogFile.Error, ex.Message);
+                MessageBox.Show("进入货物出库失败" + ex.Message,
+                     "进入货物出库失败", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            Cursor.Current = Cursors.WaitCursor;
+            try
+            {
+                //this.Hide();
+                frmRFIDCheck frm = new frmRFIDCheck();
+                frm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                LogManager.WriteLog(Common.LogFile.Error, ex.Message);
+                MessageBox.Show("进入货物补检失败" + ex.Message,
+                     "进入货物补检失败", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
         }
 
     }
